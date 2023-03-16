@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import UsuariosListVue from '../views/usuarios/UsuariosListVue.vue'
+import UsuariosCadVue from '../views/usuarios/UsuariosCadVue.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,7 +12,7 @@ const router = createRouter({
     },
     {
       path: '/usuarios',
-      component: UsuariosListVue
+      component: UsuariosCadVue
     },
     {
       path: '/usuarios/id',

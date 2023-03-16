@@ -1,6 +1,5 @@
 <template>
   <div class="about">
-    <h1>  {{ user.name}}</h1>
     {{ user}}
   </div>
  

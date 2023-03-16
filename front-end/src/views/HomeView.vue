@@ -6,24 +6,24 @@
     <form>
         <br><br>
         <div class="form-group col-md-6">
-            <label for="exampleInputEmail1">Nome</label>
+            <label for="nome">Nome</label>
             <br>
-            <input type="nome" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Nome">
+            <input type="nome" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Nome">
         </div>
         <br>
         <div class="form-group col-md-6">
-            <label for="exampleInputPassword1">CPF</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="CPF">
+            <label for="cpf">CPF</label>
+            <input type="password" class="form-control" id="cpf" placeholder="CPF">
         </div>
         <br>
         <div class="form-group col-md-2">
-            <label for="exampleInputPassword1">Data Inicio</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Inicio">
+            <label for="date">Data Inicio</label>
+            <input type="password" class="form-control" id="date" placeholder="Inicio">
         </div> 
         <br>
         <div class="form-group col-md-2">
-            <label for="exampleInputPassword1">Data Fim</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Fim">
+            <label for="date">Data Fim</label>
+            <input type="password" class="form-control" id="date" placeholder="Fim">
         </div>
         <br>
         <button type="submit" class="btn btn-primary">Filtrar</button>
@@ -70,7 +70,7 @@
               <router-link
                 :to="{ name: 'user-todo', params: { id: user.id }}"
               >
-                {{ user.name }} //{{ user.email }}
+                    {{ user.created_at }} //{{ user.name }} //{{ user.cpf }} //{{ user.email }}//{{user.role.name }} 
               </router-link>
           </div>
       </div>
@@ -87,7 +87,6 @@
             fetch('http://127.0.0.1:8000/api/index').then(response=> response.json())
             .then((res) =>{
                 this.users = res.data;
-             //   this.users = res.data.data
             });
         },
     }
