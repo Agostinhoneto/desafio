@@ -80,7 +80,33 @@
                             <div class="card-body">
                                 <td>{{ user.cep }}</td>
                             </div>
-                        </div>      
+                            <div>
+                            <div>
+                                <small>
+                                    <a
+                                        href=""
+                                        class="text-primary"
+                                        @click.stop.prevent="toBeUpdated = todo"
+                                    >
+                                        Update
+                                    </a>
+                                </small>
+
+                                |
+                                    
+                                <small>
+                                    <a
+                                        href=""
+                                        class="text-danger"
+                                        @click.stop.prevent="deleteTodo(todo.id)"
+                                    >
+                                        Delete
+                                    </a>
+                                </small>
+                            </div>
+                          </div>
+                        </div>  
+                            
                     </td>       
                 </tr>   
             </tbody>
@@ -110,20 +136,20 @@ export default {
         data() {
             return {
                 id: null,
-                title: '',
-                description: '',
-                dueDate: '',
-                isDone: true,
+                name: '',
+                email: '',
+          //      dueDate: '',
+            //    isDone: true,
             };
         },
 
         watch: {
             todo(vl) {
                 this.id = vl.id;
-                this.title = vl.title;
-                this.description = vl.description;
-                this.dueDate = vl.due_date;
-                this.isDone = vl.is_done;
+                this.name = vl.name;
+                this.email = vl.email;
+                //this.dueDate = vl.due_date;
+                //this.isDone = vl.is_done;
             },
         },
 
@@ -145,7 +171,6 @@ export default {
                     this.storeTodo(payload);
                 }
             },
-
             storeTodo(payload) {
                 fetch(`http://localhost:8000/api/store/`,
                     {
@@ -163,9 +188,8 @@ export default {
                         this.resetForm()
                     });
             },
-            
             updateTodo(payload) {
-                fetch(`http://127.0.0.1:8000/api/todos/${this.id}`,
+                fetch(`http://localhost:8000/api/update/${this.id}`,
                     {
                         method: 'PUT',
                         headers: {
@@ -183,12 +207,40 @@ export default {
             },
 
             resetForm() {
-                this.title = '';
-                this.description = '';
-                this.dueDate = '';
-                this.isDone = true;
+                this.name = '';
+                this.email = '';
+                this.cep = '';
+                this.logradouro = '';
             },
             
+        },
+
+        data(){
+            return {
+                users:[],
+            };
+        }, 
+        mounted(){
+            fetch('http://127.0.0.1:8000/api/index').then(response=> response.json())
+            .then((res) =>{
+                this.users = res.data;
+            });
+        }, 
+
+        deleteTodo(userId) {
+            fetch(`http://127.0.0.1:8000/api/destroy/${id}`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                })
+                .then(() => {
+                    const todos = this.user.todos;
+                    const idx = todos.findIndex(o => o.id === userId);
+                    todos.splice(idx, 1);
+                });
         },
 };
     /*
@@ -205,18 +257,7 @@ export default {
     },
    
 
-    data(){
-            return {
-                users:[],
-            };
-        }, 
-        mounted(){
-            fetch('http://127.0.0.1:8000/api/index').then(response=> response.json())
-            .then((res) =>{
-                this.users = res.data;
-            });
-        },
-    };
+    
      */
 
 </script>
