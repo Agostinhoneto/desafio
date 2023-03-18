@@ -91,16 +91,22 @@
                                         Update
                                     </a>
                                 </small>
-
-                                |
-                                    
+                                    ////
+                                <a
+                                    href=""
+                                    rotulo="remover"
+                                   @click.stop.prevent="remover(user.id)"
+                                >
+                                    Delete{{ user.id }}
+                                  </a>
+                                  ////
                                 <small>
                                     <a
                                         href=""
                                         class="text-danger"
-                                        @click.stop.prevent="deleteTodo(todo.id)"
+                                        @click.stop.prevent="deleteUser(user.id)"
                                     >
-                                        Delete
+                                        Delete{{ user.id }}
                                     </a>
                                 </small>
                             </div>
@@ -130,6 +136,13 @@ export default {
                 default: null,
             },
         },
+
+    computed: {
+        userId() {
+            return this.$route.params.id;
+        },
+    },
+
         data() {
             return {
                 id: null,
@@ -216,8 +229,10 @@ export default {
                 this.users = res.data;
             });
         }, 
-        deleteTodo(userId) {
-            fetch(`http://127.0.0.1:8000/api/destroy/${id}`,
+
+
+        deleteUser(userId) {
+            fetch(`http://127.0.0.1:8000/api/destroy/${userId}`,
                 {
                     method: 'DELETE',
                     headers: {
@@ -226,11 +241,26 @@ export default {
                     },
                 })
                 .then(() => {
-                    const todos = this.user.todos;
+                    const todos = this.user;
                     const idx = todos.findIndex(o => o.id === userId);
                     todos.splice(idx, 1);
                 });
         },
+
+        methods: {
+          remover(userId) {
+           const users =  this.$route.params.id
+            fetch(`http://127.0.0.1:8000/api/destroy/${userId}`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                })
+            alert(userId);
+      },
+    },
 };
     /*
     props: {
