@@ -9,9 +9,7 @@ class Endereco extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['endereco'];
+    protected $fillable = ['enderecos'];
 
-    public function users(){
-        return $this->hasMany(User::class);
-    }
+   
 }

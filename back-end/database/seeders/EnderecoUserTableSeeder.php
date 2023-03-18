@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Endereco;
+use App\Models\EnderecoUser;
 use Illuminate\Database\Seeder;
 
-class EnderecoTableSeeder extends Seeder
+class EnderecoUserTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,7 @@ class EnderecoTableSeeder extends Seeder
      */
     public function run()
     {
-        Endereco::create([
+        EnderecoUser::create([
             'logradouro' => 'av manoel novais',
             'cep'     => '4880000',
         ]);

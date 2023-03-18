@@ -16,7 +16,7 @@ class CreateEnderecoUserTable extends Migration
         Schema::create('endereco_user', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('endereco_id')->constrained('endereco')->onDelete('cascade');
+            $table->foreignId('endereco_id')->constrained('enderecos')->onDelete('cascade');
             $table->timestamps();
         });
     }
