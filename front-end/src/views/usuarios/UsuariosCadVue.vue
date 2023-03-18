@@ -157,8 +157,6 @@ export default {
                 this.email = vl.email;
                 this.cpf = vl.cpf;
                 this.logradouro = vl.logradouro;
-
-           
             },
         },
         methods: {
@@ -173,6 +171,7 @@ export default {
                 if (this.id) {
                     this.update(payload);
                 } else {
+                    alert(this.id);
                     this.storeTodo(payload);
                 }
             },
@@ -194,11 +193,12 @@ export default {
                         this.resetForm()
                     });
             },
+
             update(payload){
                 alert(payload);
                 fetch(`http://localhost:8000/api/update/${payload}`,
                     {
-                        method: 'PUT',
+                        method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'Accept': 'application/json',
@@ -208,11 +208,11 @@ export default {
                     .then(response => response.json())
                     .then((res) => {
                         this.$emit('update', res.data);
-                        this.resetForm()
+                      //  this.resetForm()
                     });
             },
+
             remover(userId) {
-            // const users =  this.$route.params.id
             fetch(`http://127.0.0.1:8000/api/destroy/${userId}`,
                 {
                     method: 'DELETE',
@@ -221,6 +221,11 @@ export default {
                         'Accept': 'application/json',
                     },
                 })
+                .then(() => {
+                    const todos = this.user;
+                    const idx = todos.findIndex(o => o.id === userId);
+                    todos.splice(idx, 1);
+                });
                 alert(userId);
             },
             resetForm() {

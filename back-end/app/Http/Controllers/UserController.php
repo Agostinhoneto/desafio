@@ -46,7 +46,8 @@ class UserController extends Controller
             'lagradouro' => $request->lagradouro,
             'perfil' => $request->perfil,
             'cep' => $request->cep,
-            'role_id' => 1           
+            'role_id' => 1,
+            'endereco_id'  => $request->endereco_id         
         ]);
 
         return response()->json(['data' =>$user]);     
