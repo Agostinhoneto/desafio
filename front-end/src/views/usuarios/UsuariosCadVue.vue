@@ -117,7 +117,6 @@
 </div>
 </template>
 <script>
-
 export default {
     name: 'UsuariosCadVue',
     
@@ -126,13 +125,11 @@ export default {
                 type: Object,
                 default: () => ({}),
             },
-
             userId: {
                 type: [String, Number],
                 default: null,
             },
         },
-
         data() {
             return {
                 id: null,
@@ -142,7 +139,6 @@ export default {
             //    isDone: true,
             };
         },
-
         watch: {
             todo(vl) {
                 this.id = vl.id;
@@ -152,7 +148,6 @@ export default {
                 //this.isDone = vl.is_done;
             },
         },
-
         methods: {
             submit() {
                 const payload = {
@@ -164,7 +159,6 @@ export default {
                     role_id: this.role_id,
                   
                 };
-
                 if (this.id) {
                     this.updateTodo(payload);
                 } else {
@@ -184,7 +178,6 @@ export default {
                     .then(response => response.json())
                     .then((res) => {
                         this.$emit('save', res.data);
-
                         this.resetForm()
                     });
             },
@@ -201,11 +194,9 @@ export default {
                     .then(response => response.json())
                     .then((res) => {
                         this.$emit('update', res.data);
-
                         this.resetForm()
                     });
             },
-
             resetForm() {
                 this.name = '';
                 this.email = '';
@@ -214,7 +205,6 @@ export default {
             },
             
         },
-
         data(){
             return {
                 users:[],
@@ -226,7 +216,6 @@ export default {
                 this.users = res.data;
             });
         }, 
-
         deleteTodo(userId) {
             fetch(`http://127.0.0.1:8000/api/destroy/${id}`,
                 {
@@ -249,19 +238,12 @@ export default {
         type: Object,
         default: () => ({}),
     },
-
     userId: {
         type: [String, Number],
         default: null,
     },
     },
    
-
     
      */
-
 </script>
-   
-
-
-
