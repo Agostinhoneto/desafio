@@ -91,24 +91,15 @@
                                         Update
                                     </a>
                                 </small>
-                                    ////
+                                   | 
                                 <a
                                     href=""
+                                    class="text-danger"
                                     rotulo="remover"
                                    @click.stop.prevent="remover(user.id)"
                                 >
                                     Delete{{ user.id }}
-                                  </a>
-                                  ////
-                                <small>
-                                    <a
-                                        href=""
-                                        class="text-danger"
-                                        @click.stop.prevent="deleteUser(user.id)"
-                                    >
-                                        Delete{{ user.id }}
-                                    </a>
-                                </small>
+                               </a>
                             </div>
                           </div>
                         </div>  
@@ -210,6 +201,18 @@ export default {
                         this.resetForm()
                     });
             },
+            remover(userId) {
+            // const users =  this.$route.params.id
+            fetch(`http://127.0.0.1:8000/api/destroy/${userId}`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                })
+                alert(userId);
+            },
             resetForm() {
                 this.name = '';
                 this.email = '';
@@ -229,38 +232,6 @@ export default {
                 this.users = res.data;
             });
         }, 
-
-
-        deleteUser(userId) {
-            fetch(`http://127.0.0.1:8000/api/destroy/${userId}`,
-                {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                    },
-                })
-                .then(() => {
-                    const todos = this.user;
-                    const idx = todos.findIndex(o => o.id === userId);
-                    todos.splice(idx, 1);
-                });
-        },
-
-        methods: {
-          remover(userId) {
-           const users =  this.$route.params.id
-            fetch(`http://127.0.0.1:8000/api/destroy/${userId}`,
-                {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                    },
-                })
-            alert(userId);
-      },
-    },
 };
     /*
     props: {
