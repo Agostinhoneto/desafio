@@ -6,9 +6,15 @@
     <div>
         <router-link :to="{ name: 'home'}">Voltar</router-link>
     </div>
+        <UserTodoForm
+            :todo="updateUser"
+            :user-id="userId"
+            @save="onSave"
+            @update="onUpdate"
+        />
     <div class="row">
      <form @submit.stop.prevent="submit">
-               <br><br>
+        <br><br>
         <div class="form-group col-md-6">
             <label for="exampleInputEmail1">Nome</label>
             <input type="text" v-model="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Nome">
@@ -83,13 +89,14 @@
                             <div>
                             <div>
                                 <small>
-                                    <a
-                                        href=""
-                                        class="text-primary"
-                                        @click.stop.prevent="toBeUpdated = todo"
-                                    >
-                                        Update
-                                    </a>
+                                <a
+                                    href=""
+                                    class="text-update"
+                                    rotulo="update"
+                                   @click.stop.prevent="update(user.id)"
+                                >
+                                    Update
+                               </a>
                                 </small>
                                    | 
                                 <a
@@ -139,8 +146,8 @@ export default {
                 id: null,
                 name: '',
                 email: '',
-          //      dueDate: '',
-            //    isDone: true,
+                cpf: '',
+                logradouro: '',
             };
         },
         watch: {
@@ -148,8 +155,10 @@ export default {
                 this.id = vl.id;
                 this.name = vl.name;
                 this.email = vl.email;
-                //this.dueDate = vl.due_date;
-                //this.isDone = vl.is_done;
+                this.cpf = vl.cpf;
+                this.logradouro = vl.logradouro;
+
+           
             },
         },
         methods: {
@@ -159,16 +168,16 @@ export default {
                     email: this.email,
                     cpf: this.cpf,
                     logradouro: this.logradouro,
-                    cep: this.cep,
-                    role_id: this.role_id,
-                  
                 };
+
                 if (this.id) {
-                    this.updateTodo(payload);
+                    this.update(payload);
                 } else {
                     this.storeTodo(payload);
                 }
             },
+
+
             storeTodo(payload) {
                 fetch(`http://localhost:8000/api/store/`,
                     {
@@ -185,8 +194,9 @@ export default {
                         this.resetForm()
                     });
             },
-            updateTodo(payload) {
-                fetch(`http://localhost:8000/api/update/${this.id}`,
+            update(payload){
+                alert(payload);
+                fetch(`http://localhost:8000/api/update/${payload}`,
                     {
                         method: 'PUT',
                         headers: {
