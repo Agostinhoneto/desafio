@@ -19,7 +19,6 @@ class Admin extends Seeder
             'email' => 'admin@admin.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password'),
-            'perfil' => 1
         ]);
     }
 }

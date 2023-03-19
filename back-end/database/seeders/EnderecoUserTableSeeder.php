@@ -15,8 +15,8 @@ class EnderecoUserTableSeeder extends Seeder
     public function run()
     {
         EnderecoUser::create([
-            'logradouro' => 'av manoel novais',
-            'cep'     => '4880000',
+            'endereco_id' => '1',
+            'user_id'     => '10',
         ]);
     }
 }

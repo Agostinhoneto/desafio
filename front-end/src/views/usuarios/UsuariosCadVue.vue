@@ -17,7 +17,7 @@
         <br><br>
         <div class="form-group col-md-6">
             <label for="exampleInputEmail1">Nome</label>
-            <input type="text" v-model="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Nome">
+            <input type="text" v-model="this.name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Nome">
         </div>
         <br>
         <div class="form-group col-md-6">
@@ -28,93 +28,24 @@
         <div class="form-group col-md-6">
             <label for="exampleInputPassword1">Email</label>
             <br>
-            <input type="email" v-model="email" class="form-control" id="email" placeholder="Email">
+            <input type="email" v-model="this.email" class="form-control" id="email" placeholder="Email">
         </div>
         <br>
-        <div class="form-group col-md-6">
-            <label for="exampleInputPassword1">Perfil</label>
-            <br>
-            <select type="" v-model="role_id"  id="role_id" class="form-select" aria-label="Default select example">
-                <option value="1">Admin</option>
-                <option value="2">Usuário</option>
-            </select>
-        </div>
+      
         <br>
-        <div class="form-group col-md-6">
-            <label for="exampleInputPassword1">Logradouro</label>
-            <input type="text" v-model="logradouro" class="form-control" id="logradouro" placeholder="Logradouro">
-        </div>
-        <br>
-        <div class="form-group col-md-2">
-            <label for="exampleInputPassword1">Cep</label>
-            <input type="number" v-model="cep" class="form-control" id="cep" placeholder="Cep">
-        </div> 
-        <br>
+       
         <div class="mt-2">
-            <button
-                type="submit"
+            <button type="submit"
                 class="btn btn-primary"
             >
-                ENVIAR
+                SALVAR
             </button>
         </div>
     </form> 
     </div>     
     <br><hr>     
     <div class="col-md-9">
-        <table class="table">
-            <tbody>
-                <tr>
-                    <td>
-                        <div v-for="user in users" :key="user.id">    
-                            <hr>
-                            <div>Usuarios:</div>
-                            <hr>
-                            <div class="card-body">
-                                <td>{{ user.name }}</td>
-                            </div>
-                            
-                            <div class="card-body">
-                                <td>{{ user.email }}</td>
-                            </div>
-                            <div class="card-body">
-                                <td>{{ user.Logradouro }}</td>
-                            </div>
-                            <div class="card-body">
-                                <td>{{ user.role.name }}</td>
-                            </div>
-                            <div class="card-body">
-                                <td>{{ user.cep }}</td>
-                            </div>
-                            <div>
-                            <div>
-                                <small>
-                                <a
-                                    href=""
-                                    class="text-update"
-                                    rotulo="update"
-                                   @click.stop.prevent="update(user.id)"
-                                >
-                                    Update
-                               </a>
-                                </small>
-                                   | 
-                                <a
-                                    href=""
-                                    class="text-danger"
-                                    rotulo="remover"
-                                   @click.stop.prevent="remover(user.id)"
-                                >
-                                    Delete{{ user.id }}
-                               </a>
-                            </div>
-                          </div>
-                        </div>  
-                            
-                    </td>       
-                </tr>   
-            </tbody>
-        </table> 
+       
     </div>
 </div>
 <div>
@@ -133,14 +64,16 @@ export default {
                 type: [String, Number],
                 default: null,
             },
+           
         },
-
+        /*
     computed: {
         userId() {
             return this.$route.params.id;
         },
     },
-
+    */
+        /*
         data() {
             return {
                 id: null,
@@ -150,6 +83,14 @@ export default {
                 logradouro: '',
             };
         },
+        */
+        data() {
+        return {
+            user: {},
+            toBeUpdated: {},
+            };
+        },
+        
         watch: {
             todo(vl) {
                 this.id = vl.id;
@@ -161,7 +102,9 @@ export default {
         },
         methods: {
             submit() {
+                console.log('id',this.id);
                 const payload = {
+                    id: this.id,
                     name: this.name,
                     email: this.email,
                     cpf: this.cpf,
@@ -195,10 +138,10 @@ export default {
             },
 
             update(payload){
-                alert(payload);
-                fetch(`http://localhost:8000/api/update/${payload}`,
+                console.log(payload);
+                fetch(`http://localhost:8000/api/update/${payload.id}`,
                     {
-                        method: 'POST',
+                        method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
                             'Accept': 'application/json',
@@ -239,14 +182,41 @@ export default {
         data(){
             return {
                 users:[],
+                id : '',
+                name : '',
+                email : '',
+                
             };
         }, 
+        
+        
+        async mounted(){
+            const userId = this.$route.params.id;
+            var resp = null;
+            this.id = userId;
+            await fetch(`http://127.0.0.1:8000/api/show/${userId}`)
+            .then(response => response.json())
+            .then(res => resp = {...res.data});
+            this.name = resp.name
+            this.email = resp.email
+            console.log('response',resp)
+            
+          /*  fetch('http://127.0.0.1:8000/api/index').then(response=> response.json())
+            .then((res) =>{
+                this.users = res.data;
+            });
+           */ 
+        }, 
+       
+
+        /*
         mounted(){
             fetch('http://127.0.0.1:8000/api/index').then(response=> response.json())
             .then((res) =>{
                 this.users = res.data;
             });
         }, 
+        */
 };
     /*
     props: {
@@ -259,7 +229,5 @@ export default {
         default: null,
     },
     },
-   
-    
      */
 </script>

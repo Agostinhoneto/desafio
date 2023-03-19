@@ -18,10 +18,6 @@ class AdminSeeder extends Seeder
     {
         $userRole = Role::create(['name' => 'User']);
         $adminRole = Role::create(['name' => 'Admin']);
-        $endereco = Endereco::create(['id' => '1']);
-     
-
-        
         User::create([
             'name' => 'Admin',
             'email' => 'admin@admin.com',
@@ -29,8 +25,6 @@ class AdminSeeder extends Seeder
             'password' => bcrypt('password'),
             'email_verified_at' => now(),
             'role_id' => $adminRole->id,
-            'endereco_id' => $endereco->id
-
         ]);
 
         User::create([
@@ -40,7 +34,6 @@ class AdminSeeder extends Seeder
             'password' => bcrypt('password'),
             'email_verified_at' => now(),
             'role_id' => $userRole->id,
-            'endereco_id' => $endereco->id
         ]);
     }
 }

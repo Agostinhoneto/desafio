@@ -64,9 +64,6 @@
                             <div class="card-body">
                                 <td>{{ user.role.name }}</td>
                             </div>
-                            <div class="card-body">
-                                <td>{{ user.cep }}</td>
-                            </div>
                         </div>      
                     </td>       
                 </tr>   

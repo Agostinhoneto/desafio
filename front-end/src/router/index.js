@@ -12,6 +12,7 @@ const router = createRouter({
     },
     {
       path: '/usuarios',
+      name: 'cad-usuarios',
       component: UsuariosCadVue
     },
     {

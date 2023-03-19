@@ -53,10 +53,19 @@
       >
           <div class="card-body">
               <router-link
-                :to="{ name: 'user-todo', params: { id: user.id }}"
+                :to="{ name: 'cad-usuarios', params: { id: user.id }}"
               >
-              {{ user.id }} // {{ user.created_at }} //{{ user.name }} //{{ user.cpf }} //{{ user.email }}//{{user.role.name }} 
-              </router-link>
+              <button
+                    type="button"
+                    class="btn btn-primary"
+                >
+                    Update
+                </button>
+            </router-link>
+     
+                  {{ user.id }} // {{ user.created_at }} //{{ user.name }} //{{ user.cpf }} //{{ user.email }}//{{user.role.name }} 
+              <div class="mt-2">
+            </div>
           </div>
       </div>
   </div>

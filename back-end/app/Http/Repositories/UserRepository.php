@@ -18,7 +18,7 @@ class UserRepository{
     }
 
     public function getById($id){
-        return $this->user->where('id',$id)->get();
+        return $this->user->where('id',$id)->first();
     }
 
     public function save($name, $email,$password)
