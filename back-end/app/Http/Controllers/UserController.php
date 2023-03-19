@@ -22,10 +22,7 @@ class UserController extends Controller
 
     public function index()
     {
-      
-      //  $users = User::with('role')->get();
-       // return UserResource::collection($users);
-      
+       
        $data = User::with('role')->get();
        return response()->json(['data' =>$data]);
     }
@@ -43,11 +40,8 @@ class UserController extends Controller
             'email' =>$request->email,
             'password' =>bcrypt($request->password),
             'cpf' => $request->cpf,
-            'perfil' => $request->perfil,
-            'role_id' => 1,
-            'endereco_id'  => $request->endereco_id         
+            'role_id' => $request->role_id
         ]);
-
         return response()->json(['msg' => 'Dados Salvos com sucesso', 'data' => $data]);
      }
  

@@ -22,7 +22,7 @@
         <br>
         <div class="form-group col-md-6">
             <label for="exampleInputPassword1">CPF</label>
-            <input type="number" v-model="cpf" class="form-control" id="cpf" placeholder="CPF">
+            <input type="text" v-model="cpf" class="form-control" id="cpf" placeholder="CPF">
         </div>
         <br>
         <div class="form-group col-md-6">
@@ -30,16 +30,28 @@
             <br>
             <input type="email" v-model="this.email" class="form-control" id="email" placeholder="Email">
         </div>
+        <div class="form-group col-md-6">
+            <label for="">Pefil</label>
+            <br>
+            <select class="form-select" v-model="this.role_id" aria-label="Default select example">
+                <option selected> selecione</option>
+                <option value="1">Admin</option>
+                <option value="2">Usuario</option>
+            </select>
+        </div>
         <br>
-      
         <br>
-       
         <div class="mt-2">
             <button type="submit"
                 class="btn btn-primary"
             >
                 SALVAR
             </button>
+            <meu-botao
+            tipo="button"
+            rotulo="remover"
+            @botaoAtivado="remover(userId)"
+            />
         </div>
     </form> 
     </div>     
@@ -108,13 +120,14 @@ export default {
                     name: this.name,
                     email: this.email,
                     cpf: this.cpf,
-                    logradouro: this.logradouro,
+                    role_id: this.role_id,
+                             
                 };
 
                 if (this.id) {
                     this.update(payload);
                 } else {
-                    alert(this.id);
+                 //   alert(this.id);
                     this.storeTodo(payload);
                 }
             },
@@ -151,12 +164,11 @@ export default {
                     .then(response => response.json())
                     .then((res) => {
                         this.$emit('update', res.data);
-                      //  this.resetForm()
+                        this.resetForm()
                     });
-            },
-
+            }, 
             remover(userId) {
-            fetch(`http://127.0.0.1:8000/api/destroy/${userId}`,
+                fetch(`http://127.0.0.1:8000/api/destroy/${userId}`,
                 {
                     method: 'DELETE',
                     headers: {
@@ -169,13 +181,12 @@ export default {
                     const idx = todos.findIndex(o => o.id === userId);
                     todos.splice(idx, 1);
                 });
-                alert(userId);
             },
             resetForm() {
                 this.name = '';
                 this.email = '';
-                this.cep = '';
-                this.logradouro = '';
+                this.cpf = '';
+                this.role_id = '';
             },
             
         },
@@ -185,6 +196,8 @@ export default {
                 id : '',
                 name : '',
                 email : '',
+                cpf :'',
+                role_id :'',
                 
             };
         }, 
@@ -199,6 +212,8 @@ export default {
             .then(res => resp = {...res.data});
             this.name = resp.name
             this.email = resp.email
+            this.cpf = resp.cpf
+            this.role.name = resp.role_id
             console.log('response',resp)
             
           /*  fetch('http://127.0.0.1:8000/api/index').then(response=> response.json())

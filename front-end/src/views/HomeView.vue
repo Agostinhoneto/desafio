@@ -1,7 +1,9 @@
 
 <template>
     <h2>Lista de Usuários</h2>
-    <button type="submit" class="btn btn-primary">Novo</button>
+    <router-link :to="{ name: 'cad-usuarios'}">
+        <button type="submit" class="btn btn-success">Novo</button>
+    </router-link>
     <br>
     <form>
         <br><br>
@@ -29,46 +31,94 @@
         <button type="submit" class="btn btn-primary">Filtrar</button>
     </form>
     <br><br>
-    <table class="table">
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>Logradouro</th>
-            <th>CEP</th>
-            <th>Ação</th>
-        </tr>
-    </thead>
+    <hr>
+    <table  class="table">
+        <thead>
+            <tr>
+            <th >#</th>
+            <th >Data de Cadastro</th>
 
-    <tbody>
-        <tr>
-        
-        </tr>
-    </tbody>
-    </table>
-  <div> 
-      <div
-          v-for="user in users"
-          :key="user.id"
-          class="card m-3"
-      >
-          <div class="card-body">
-              <router-link
-                :to="{ name: 'cad-usuarios', params: { id: user.id }}"
-              >
-              <button
-                    type="button"
-                    class="btn btn-primary"
+            <th >Nome</th>
+            <th >Email</th>
+            <th >CPF</th>
+            <th >Perfil</th>
+            </tr>
+        </thead>
+        <tbody  v-for="user in users"
+            :key="user.id">
+            <tr>
+                <td >{{user.id }}</td>
+                <td >{{user.name }}</td>
+                <td>{{user.email }}</td>
+                <td>{{user.cpf }}</td>
+
+                <td>{{ user.role.name }}</td>
+         
+                <router-link
+                    :to="{ name: 'cad-usuarios', params: { id: user.id }}"
                 >
-                    Update
-                </button>
-            </router-link>
-     
-                  {{ user.id }} // {{ user.created_at }} //{{ user.name }} //{{ user.cpf }} //{{ user.email }}//{{user.role.name }} 
-              <div class="mt-2">
-            </div>
-          </div>
-      </div>
-  </div>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-outline-primary">Detalhar</button>
+                    </div>   
+                </router-link> 
+                <router-link
+                    :to="{ name: 'cad-usuarios', params: { id: user.id }}"
+                >
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-primary">Editar</button>
+                    </div>   
+                </router-link> 
+                <small>
+                    <a
+                        href=""
+                        class="text-danger"
+                        @click.stop.prevent="remover(user.id)"
+                    >
+                    <button type="button" class="btn btn-danger"> Delete</button>
+                    </a>
+                </small>    
+            </tr>         
+        </tbody>
+    </table>
+   
+    <table class="table table-dark table-striped">
+        <tbody>
+            <div
+                v-for="user in users"
+                :key="user.id"
+                class="card m-3"
+                >
+                    <tr>
+                        <th scope="row"> {{user.id }}</th>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.cpf }}</td>
+                        <td>{{ user.role.name }}</td>
+                        
+                    </tr>
+                    <div class="card-body">
+                        <router-link
+                            :to="{ name: 'cad-usuarios', params: { id: user.id }}"
+                        >
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-primary">Editar</button>
+                            </div>   
+                                    
+                                    
+                            <small>
+                                <a
+                                    href=""
+                                    class="text-danger"
+                                    @click.stop.prevent="remover(user.id)"
+                                >
+                                    Delete{{ user.id }}
+                                </a>
+                            </small>    
+                        </router-link>     
+                    </div>
+            </div>  
+        </tbody>
+    </table>
 </template>
 <script>
     export default {
@@ -82,6 +132,27 @@
             .then((res) =>{
                 this.users = res.data;
             });
+        },
+        
+      methods: 
+        {
+            remover(userId) {
+                alert(userId);
+                fetch(`http://127.0.0.1:8000/api/destroy/${userId}`,
+                    {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        },
+                    })
+                    .then(() => {
+                        const todos = this.user;
+                        const idx = todos.findIndex(o => o.id === userId);
+                        todos.splice(idx, 1);
+                    });
+                    alert(userId);
+            },
         },
     }
 </script>

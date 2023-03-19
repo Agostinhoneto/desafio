@@ -25,7 +25,10 @@
         <div class="form-group col-md-6">
             <label for="exampleInputPassword1">Perfil</label>
             <br>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Perfil">
+            <select type="" v-model="role_id"  id="role_id" class="form-select" aria-label="Default select example">
+                <option value="1">Admin</option>
+                <option value="2">Usuário</option>
+            </select>
         </div>
         <br>
         <div class="form-group col-md-6">
