@@ -42,57 +42,62 @@
                 <option value="2">Usuario</option>
             </select>
         </div>
-        <br>
-            
-        <label for=""><h4>Endereço :</h4></label>
-     
-        <div class="form-group col-md-4">
-            <label for="">Logradouro:</label>
-            <input type="cep" v-model="this.email" class="form-control" id="cep" placeholder="Logradouro">
-            <br>
-        </div>
-        <div class="form-group col-md-4">
-            <label for="">CEP :</label>
-            <br>
-            <input type="cep" v-model="this.email" class="form-control" id="cep" placeholder="CEP">
-        </div>
-        <br>
+         
         <div class="mt-2">
             <button type="submit"
                 class="btn btn-success"
             >
-                SALVAR
+                ADCIONAR
             </button>
         </div>
         <br><br>
-        </form> 
-
-        <table  class="table">
+        </form>
+        <br>
+        <label for=""><h4>Endereço :</h4></label>
+        <div v-for="endereco in enderecos"
+            :key="endereco.id">
+            <label for="">Logradouro</label>
+            <select class="form-select"  aria-label="Default select example">
+                <option selected> selecione</option>
+                <option>{{ endereco.logradouro }}</option>
+            </select>
+            <label for="">CEP</label>
+            <select class="form-select" aria-label="Default select example">
+                <option selected> selecione</option>
+                <option>{{ endereco.cep }}</option>
+            </select>
+        </div> 
+    
+       <table  class="table">
             <thead>
                 <tr>
                 <th >#</th>
                 <th >Logradouro</th>
-                <th >Ceps</th>
+                <th >CEP</th>
                 <th >Ações</th>
                 </tr>
             </thead>
-            <tbody  v-for="endereco in enderecos"
-            :key="endereco.id">
+            <tbody  v-for="endereco in enderecos">
                 <tr>
                     <td >{{endereco.id }}</td>
                     <td >{{endereco.logradouro }}</td>
-                    <td>{{endereco.cep }}</td>
+                    <td> {{endereco.cep }}</td>
+                    <small>
+                        <a
+                            href=""
+                            class="text-danger"
+                            @click.stop.prevent="remover(user.id)"
+                        >
+                            <button type="button" class="btn btn-danger"> Delete</button>
+                        </a>
+                    </small>
                 </tr>
             </tbody>        
         </table>
     </div>     
-    <br><hr>     
-    <div class="col-md-9">
-       
-    </div>
+    <br><hr> 
 </div>
-<div>
-</div>
+
 </template>
 <script>
 export default {
@@ -218,15 +223,20 @@ export default {
             this.email = resp.email
             this.cpf = resp.cpf
             this.role.name = resp.role_id
-            console.log('response',resp)          
-        },
-
-        mounted(){
-        fetch('http://127.0.0.1:8000/api/enderecoIndex').then(response=> response.json())
+            console.log('response',resp)
+            
+            await fetch('http://127.0.0.1:8000/api/enderecoIndex').then(response=> response.json())
             .then((res) =>{
                 this.enderecos = res.data;
-        });
+            });    
+        },   
+
+        async mounted(){
+        await fetch('http://127.0.0.1:8000/api/enderecoIndex').then(response=> response.json())
+            .then((res) =>{
+                this.enderecos = res.data;
+            });
         },
-         
+        
 };
 </script>

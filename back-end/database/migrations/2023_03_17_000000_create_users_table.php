@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('cpf')->nullable();      
             $table->string('password');
             $table->rememberToken();
+            $table->date('data_cadastro')->nullable(); 
             $table->timestamps();
         });
     }

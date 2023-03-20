@@ -25,7 +25,8 @@ class User extends Authenticatable
         'logradouro',
         'cep',          
         'password',
-        'role_id'
+        'role_id',
+        'data_cadastro'
      ];
 
     /**

@@ -34,5 +34,7 @@ Route::controller(UserController::class)->group(function () {
 
 Route::controller(EnderecoController::class)->group(function () {
     Route::get('enderecoIndex','enderecoIndex');
+    Route::delete('enderecoDestroy/{id}','enderecoDestroy');
+
 });
 

@@ -6,6 +6,8 @@ use App\Http\Requests\UserFormRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\UserService;
+use Carbon\Carbon;
+use DateTimeImmutable;
 use Illuminate\Http\Request;
 use Exception;
 
@@ -32,14 +34,18 @@ class UserController extends Controller
         //
     }
     
+
+
     public function store(UserFormRequest $request)
     {
+        $date = Carbon::now()->format('d-m-Y');
         $data = User::create([
             'name' =>$request->name,
             'email' =>$request->email,
             'password' =>bcrypt($request->password),
             'cpf' => $request->cpf,
-            'role_id' => $request->role_id
+            'role_id' => $request->role_id,
+            'created_at' =>Carbon::now($date), 
         ]);
         return response()->json(['msg' => 'Dados Salvos com sucesso', 'data' => $data]);
      }
