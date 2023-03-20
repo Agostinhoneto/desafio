@@ -4,7 +4,9 @@
     <h2>Cadastrar Usuários</h2>
     <hr> 
     <div>
-        <router-link :to="{ name: 'home'}">Voltar</router-link>
+        <router-link :to="{ name: 'home'}">
+            <button type="submit" class="btn btn-success">Voltar</button>
+        </router-link>
     </div>
         <UserTodoForm
             :todo="updateUser"
@@ -43,7 +45,7 @@
         <br>
         <div class="mt-2">
             <button type="submit"
-                class="btn btn-primary"
+                class="btn btn-success"
             >
                 SALVAR
             </button>
@@ -127,7 +129,6 @@ export default {
                 if (this.id) {
                     this.update(payload);
                 } else {
-                 //   alert(this.id);
                     this.storeTodo(payload);
                 }
             },
@@ -233,16 +234,4 @@ export default {
         }, 
         */
 };
-    /*
-    props: {
-    todo: {
-        type: Object,
-        default: () => ({}),
-    },
-    userId: {
-        type: [String, Number],
-        default: null,
-    },
-    },
-     */
 </script>

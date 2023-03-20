@@ -1,5 +1,6 @@
 
 <template>
+    <br>
     <h2>Lista de Usuários</h2>
     <router-link :to="{ name: 'cad-usuarios'}">
         <button type="submit" class="btn btn-success">Novo</button>
@@ -37,86 +38,51 @@
             <tr>
             <th >#</th>
             <th >Data de Cadastro</th>
-
             <th >Nome</th>
             <th >Email</th>
             <th >CPF</th>
             <th >Perfil</th>
+            <th >Ações</th>
             </tr>
         </thead>
         <tbody  v-for="user in users"
             :key="user.id">
             <tr>
                 <td >{{user.id }}</td>
+                <td >{{user.created_at }}</td>
                 <td >{{user.name }}</td>
                 <td>{{user.email }}</td>
                 <td>{{user.cpf }}</td>
-
                 <td>{{ user.role.name }}</td>
-         
-                <router-link
-                    :to="{ name: 'cad-usuarios', params: { id: user.id }}"
-                >
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-outline-primary">Detalhar</button>
-                    </div>   
-                </router-link> 
-                <router-link
-                    :to="{ name: 'cad-usuarios', params: { id: user.id }}"
-                >
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-primary">Editar</button>
-                    </div>   
-                </router-link> 
-                <small>
-                    <a
-                        href=""
-                        class="text-danger"
-                        @click.stop.prevent="remover(user.id)"
+                <td>
+                    |  
+                    <router-link
+                        :to="{ name: 'user-todo', params: { id: user.id }}"
                     >
-                    <button type="button" class="btn btn-danger"> Delete</button>
-                    </a>
-                </small>    
-            </tr>         
-        </tbody>
-    </table>
-   
-    <table class="table table-dark table-striped">
-        <tbody>
-            <div
-                v-for="user in users"
-                :key="user.id"
-                class="card m-3"
-                >
-                    <tr>
-                        <th scope="row"> {{user.id }}</th>
-                        <td>{{ user.name }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.cpf }}</td>
-                        <td>{{ user.role.name }}</td>
-                        
-                    </tr>
-                    <div class="card-body">
-                        <router-link
-                            :to="{ name: 'cad-usuarios', params: { id: user.id }}"
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-light">Detalhar</button>
+                        </div> 
+                    </router-link>
+                    |   
+                    <router-link
+                        :to="{ name: 'cad-usuarios', params: { id: user.id }}"
+                    >
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-primary">Editar</button>
+                        </div>   
+                    </router-link>
+                    |  
+                    <small>
+                        <a
+                            href=""
+                            class="text-danger"
+                            @click.stop.prevent="remover(user.id)"
                         >
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-primary">Editar</button>
-                            </div>   
-                                    
-                                    
-                            <small>
-                                <a
-                                    href=""
-                                    class="text-danger"
-                                    @click.stop.prevent="remover(user.id)"
-                                >
-                                    Delete{{ user.id }}
-                                </a>
-                            </small>    
-                        </router-link>     
-                    </div>
-            </div>  
+                        <button type="button" class="btn btn-danger"> Delete</button>
+                        </a>
+                    </small>  
+                </td>  
+            </tr>         
         </tbody>
     </table>
 </template>
@@ -128,10 +94,15 @@
             };
         }, 
         mounted(){
-            fetch('http://127.0.0.1:8000/api/index').then(response=> response.json())
+        fetch('http://127.0.0.1:8000/api/index').then(response=> response.json())
             .then((res) =>{
                 this.users = res.data;
             });
+        
+        const id = this.$route.params.id;
+          fetch(`http://127.0.0.1:8000/api/show/${id}`)
+          .then(response => response.json())
+          .then(res => this.user = res.data);
         },
         
       methods: 
