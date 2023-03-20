@@ -28,7 +28,7 @@ Route::controller(UserController::class)->group(function () {
     Route::post('store','store'); 
     Route::put('update/{id}','update');  
     Route::delete('destroy/{id}','destroy');
-    Route::post('search','search');
+    Route::get('search/{request}','search');
 });
 
 

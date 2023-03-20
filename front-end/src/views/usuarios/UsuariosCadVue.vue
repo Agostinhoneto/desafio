@@ -5,7 +5,7 @@
     <hr> 
     <div>
         <router-link :to="{ name: 'home'}">
-            <button type="submit" class="btn btn-success">Voltar</button>
+            <button type="submit" class="btn btn-primary">Voltar</button>
         </router-link>
     </div>
         <UserTodoForm
@@ -23,12 +23,12 @@
         </div>
         <br>
         <div class="form-group col-md-6">
-            <label for="exampleInputPassword1">CPF</label>
+            <label for="">CPF</label>
             <input type="text" v-model="cpf" class="form-control" id="cpf" placeholder="CPF">
         </div>
         <br>
         <div class="form-group col-md-6">
-            <label for="exampleInputPassword1">Email</label>
+            <label for="">Email</label>
             <br>
             <input type="email" v-model="this.email" class="form-control" id="email" placeholder="Email">
         </div>
@@ -42,7 +42,21 @@
                 <option value="2">Usuario</option>
             </select>
         </div>
-         
+        <hr>
+        <label><h4>Endereço:</h4></label>
+        <div class="form-group col-md-6">
+            <br>
+            <label for="exampleInputPassword1">Logradouro:</label>
+            <br>
+            <input type="email" v-model="this.email" class="form-control" id="email" placeholder="Logradouro">
+        </div>
+        <br>
+        <div class="form-group col-md-6">
+            <label for="exampleInputPassword1">CEP:</label>
+            <br>
+            <input type="email" v-model="this.email" class="form-control" id="email" placeholder="CEP">
+        </div>
+        <hr>
         <div class="mt-2">
             <button type="submit"
                 class="btn btn-success"
@@ -53,22 +67,8 @@
         <br><br>
         </form>
         <br>
-        <label for=""><h4>Endereço :</h4></label>
-        <div v-for="endereco in enderecos"
-            :key="endereco.id">
-            <label for="">Logradouro</label>
-            <select class="form-select"  aria-label="Default select example">
-                <option selected> selecione</option>
-                <option>{{ endereco.logradouro }}</option>
-            </select>
-            <label for="">CEP</label>
-            <select class="form-select" aria-label="Default select example">
-                <option selected> selecione</option>
-                <option>{{ endereco.cep }}</option>
-            </select>
-        </div> 
-    
-       <table  class="table">
+        <label for=""><h4>Lista de Endereço :</h4></label>
+        <table  class="table">
             <thead>
                 <tr>
                 <th >#</th>
@@ -162,6 +162,28 @@ export default {
                     });
             },
 
+            async loadEndereco(){  
+             await fetch('http://127.0.0.1:8000/api/enderecoIndex').then(response=> response.json())
+                .then((res) =>{
+                    this.enderecos = res.data;
+                });
+            },
+            
+            async show(){
+                
+            const userId = this.$route.params.id;
+            var resp = null;
+            this.id = userId;
+            await fetch(`http://127.0.0.1:8000/api/show/${userId}`)
+            .then(response => response.json())
+            .then(res => resp = {...res.data});
+            this.name = resp.name
+            this.email = resp.email
+            this.cpf = resp.cpf
+          //this.role_id = resp.role_id
+            console.log('response',resp)    
+
+            },
             update(payload){
                 console.log(payload);
                 fetch(`http://localhost:8000/api/update/${payload.id}`,
@@ -213,6 +235,9 @@ export default {
                 
             };
         },  
+
+
+        /*
         async mounted(){
             const userId = this.$route.params.id;
             var resp = null;
@@ -225,14 +250,14 @@ export default {
             this.cpf = resp.cpf
             this.role.name = resp.role_id
             console.log('response',resp)    
+            
         },   
-        /*
-        async mounted(){
-        await fetch('http://127.0.0.1:8000/api/enderecoIndex').then(response=> response.json())
-            .then((res) =>{
-                this.enderecos = res.data;
-            });
-        },
         */
+        async mounted(){
+            if (this.$route.params.id){
+                await this.show();
+            }
+            await this.loadEndereco();
+        }
 };
 </script>

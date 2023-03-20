@@ -88,6 +88,18 @@ class UserController extends Controller
 
     public function search(Request $request)
     {
-        $user = User::where('name','LIKE',"%{$request->search}%" );
-    }
+        $query = User::get();
+        if ($request->has('name')) {
+            $query->where('name', 'LIKE', '%' . $request->name . '%');
+        }
+
+        if ($request->has('email')) {
+            $query->where('email', 'LIKE', '%' . $request->email . '%');
+        }
+
+        if ($request->has('cpf')) {
+            $query->where('cpf', 'LIKE', '%' . $request->cpf . '%');
+        }
+        return $query;
+    }  
 }
