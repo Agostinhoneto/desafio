@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EnderecoController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,14 +23,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::controller(UserController::class)->group(function () {
-    Route::post('login', 'login');
-    Route::post('logout', 'logout');
-    Route::post('refresh', 'refresh');
-   //Route::post('register', 'register');  
-  //Route::get('get_user', 'get_user');
-    Route::post('store','store'); 
-    Route::put('update/{id}','update');  
     Route::get('index','index');
     Route::get('show/{id}','show');
+    Route::post('store','store'); 
+    Route::put('update/{id}','update');  
     Route::delete('destroy/{id}','destroy');
+    Route::post('search','search');
 });
+
+
+Route::controller(EnderecoController::class)->group(function () {
+    Route::get('enderecoIndex','enderecoIndex');
+});
+

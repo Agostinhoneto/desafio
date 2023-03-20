@@ -32,7 +32,8 @@
             <br>
             <input type="email" v-model="this.email" class="form-control" id="email" placeholder="Email">
         </div>
-        <div class="form-group col-md-6">
+        <br>
+        <div class="form-group col-md-2">
             <label for="">Pefil</label>
             <br>
             <select class="form-select" v-model="this.role_id" aria-label="Default select example">
@@ -42,6 +43,19 @@
             </select>
         </div>
         <br>
+            
+        <label for=""><h4>Endereço :</h4></label>
+     
+        <div class="form-group col-md-4">
+            <label for="">Logradouro:</label>
+            <input type="cep" v-model="this.email" class="form-control" id="cep" placeholder="Logradouro">
+            <br>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="">CEP :</label>
+            <br>
+            <input type="cep" v-model="this.email" class="form-control" id="cep" placeholder="CEP">
+        </div>
         <br>
         <div class="mt-2">
             <button type="submit"
@@ -49,13 +63,28 @@
             >
                 SALVAR
             </button>
-            <meu-botao
-            tipo="button"
-            rotulo="remover"
-            @botaoAtivado="remover(userId)"
-            />
         </div>
-    </form> 
+        <br><br>
+        </form> 
+
+        <table  class="table">
+            <thead>
+                <tr>
+                <th >#</th>
+                <th >Logradouro</th>
+                <th >Ceps</th>
+                <th >Ações</th>
+                </tr>
+            </thead>
+            <tbody  v-for="endereco in enderecos"
+            :key="endereco.id">
+                <tr>
+                    <td >{{endereco.id }}</td>
+                    <td >{{endereco.logradouro }}</td>
+                    <td>{{endereco.cep }}</td>
+                </tr>
+            </tbody>        
+        </table>
     </div>     
     <br><hr>     
     <div class="col-md-9">
@@ -70,41 +99,18 @@ export default {
     name: 'UsuariosCadVue',
     
     props: {
-            todo: {
-                type: Object,
-                default: () => ({}),
-            },
             userId: {
                 type: [String, Number],
                 default: null,
             },
            
         },
-        /*
-    computed: {
-        userId() {
-            return this.$route.params.id;
-        },
-    },
-    */
-        /*
-        data() {
+        data(){
             return {
-                id: null,
-                name: '',
-                email: '',
-                cpf: '',
-                logradouro: '',
+                users:[],
             };
-        },
-        */
-        data() {
-        return {
-            user: {},
-            toBeUpdated: {},
-            };
-        },
-        
+        }, 
+         
         watch: {
             todo(vl) {
                 this.id = vl.id;
@@ -122,8 +128,7 @@ export default {
                     name: this.name,
                     email: this.email,
                     cpf: this.cpf,
-                    role_id: this.role_id,
-                             
+                    role_id: this.role_id,            
                 };
 
                 if (this.id) {
@@ -201,9 +206,7 @@ export default {
                 role_id :'',
                 
             };
-        }, 
-        
-        
+        },  
         async mounted(){
             const userId = this.$route.params.id;
             var resp = null;
@@ -215,23 +218,15 @@ export default {
             this.email = resp.email
             this.cpf = resp.cpf
             this.role.name = resp.role_id
-            console.log('response',resp)
-            
-          /*  fetch('http://127.0.0.1:8000/api/index').then(response=> response.json())
-            .then((res) =>{
-                this.users = res.data;
-            });
-           */ 
-        }, 
-       
+            console.log('response',resp)          
+        },
 
-        /*
         mounted(){
-            fetch('http://127.0.0.1:8000/api/index').then(response=> response.json())
+        fetch('http://127.0.0.1:8000/api/enderecoIndex').then(response=> response.json())
             .then((res) =>{
-                this.users = res.data;
-            });
-        }, 
-        */
+                this.enderecos = res.data;
+        });
+        },
+         
 };
 </script>

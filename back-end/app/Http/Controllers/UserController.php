@@ -22,7 +22,6 @@ class UserController extends Controller
 
     public function index()
     {
-       
        $data = User::with('role')->get();
        return response()->json(['data' =>$data]);
     }
@@ -79,5 +78,10 @@ class UserController extends Controller
         $data = User::find($id);
         $data->delete();
         return response()->json(['msg' => 'Dados excluidos com sucesso', 'data' => $data]);    
+    }
+
+    public function search(Request $request)
+    {
+        $user = User::where('name','LIKE',"%{$request->search}%" );
     }
 }
