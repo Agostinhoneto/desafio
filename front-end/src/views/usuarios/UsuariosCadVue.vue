@@ -110,12 +110,13 @@ export default {
             },
            
         },
+        /*
         data(){
             return {
                 users:[],
             };
         }, 
-         
+         */
         watch: {
             todo(vl) {
                 this.id = vl.id;
@@ -223,20 +224,15 @@ export default {
             this.email = resp.email
             this.cpf = resp.cpf
             this.role.name = resp.role_id
-            console.log('response',resp)
-            
-            await fetch('http://127.0.0.1:8000/api/enderecoIndex').then(response=> response.json())
-            .then((res) =>{
-                this.enderecos = res.data;
-            });    
+            console.log('response',resp)    
         },   
-
+        /*
         async mounted(){
         await fetch('http://127.0.0.1:8000/api/enderecoIndex').then(response=> response.json())
             .then((res) =>{
                 this.enderecos = res.data;
             });
         },
-        
+        */
 };
 </script>

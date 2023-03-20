@@ -26,7 +26,6 @@ class User extends Authenticatable
         'cep',          
         'password',
         'role_id',
-        'data_cadastro'
      ];
 
     /**

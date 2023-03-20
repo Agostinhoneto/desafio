@@ -45,7 +45,7 @@ class UserController extends Controller
             'password' =>bcrypt($request->password),
             'cpf' => $request->cpf,
             'role_id' => $request->role_id,
-            'created_at' =>Carbon::now($date), 
+      //      'created_at' =>Carbon::now($date), 
         ]);
         return response()->json(['msg' => 'Dados Salvos com sucesso', 'data' => $data]);
      }

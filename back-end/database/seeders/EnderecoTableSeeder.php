@@ -18,5 +18,10 @@ class EnderecoTableSeeder extends Seeder
             'logradouro' => 'av manoel novais',
             'cep'     => '4880000',
         ]);
+
+        Endereco::create([
+            'logradouro' => 'Praça Monsenhor Berenque',
+            'cep'     => '4880000',
+        ]);
     }
 }
