@@ -29,7 +29,7 @@ class UserController extends Controller
        $data = User::with('role','enderecoUser')->get();
        return response()->json(['data' =>$data]);
     }
-    
+
     public function create()
     {
         //
@@ -45,7 +45,7 @@ class UserController extends Controller
             'role_id' => $request->role_id,
         ]);
         $user = Endereco::create([
-            'logradouro' => $request->logrodouro,
+            'logradouro' => $request->logradouro,
             'cep' => $request->cep,
         ]);
         $user = EnderecoUser::create([

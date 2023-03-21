@@ -120,11 +120,12 @@
                 ],
             };
         },
-        computed:{
+        computed:
+        {
             filterUser(){
                 //alert(this.user);
                 return this.users.filter(
-                    user => user.name.includes(this.search)
+                   user => user.name.includes(this.search)
                 );
             }
         } ,

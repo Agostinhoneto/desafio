@@ -56,6 +56,7 @@
             <br>
             <input type="text" v-model="this.cep" class="form-control" id="email" placeholder="CEP">
         </div>
+            <input type="hidden"  v-model="endereco.id" />
         <hr>
         <div class="mt-2">
             <button type="submit"
@@ -133,8 +134,10 @@ export default {
                     email: this.email,
                     cpf: this.cpf,
                     role_id: this.role_id, 
-                  //  logradouro: this.logradouro, 
-                   // cep: this.cep,        
+                    logradouro: this.logradouro, 
+                    
+                    cep: this.user.id, 
+                    cep: this.user.id,          
                 };
 
                 if (this.id) {
@@ -235,24 +238,6 @@ export default {
                 
             };
         },  
-
-
-        /*
-        async mounted(){
-            const userId = this.$route.params.id;
-            var resp = null;
-            this.id = userId;
-            await fetch(`http://127.0.0.1:8000/api/show/${userId}`)
-            .then(response => response.json())
-            .then(res => resp = {...res.data});
-            this.name = resp.name
-            this.email = resp.email
-            this.cpf = resp.cpf
-            this.role.name = resp.role_id
-            console.log('response',resp)    
-            
-        },   
-        */
         async mounted(){
             if (this.$route.params.id){
                 await this.show();
