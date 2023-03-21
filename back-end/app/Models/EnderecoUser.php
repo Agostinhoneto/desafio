@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class EnderecoUser extends Model
 {
     use HasFactory;
+    protected $table = 'endereco_users';
 
     protected $fillable = [
         'user_id',

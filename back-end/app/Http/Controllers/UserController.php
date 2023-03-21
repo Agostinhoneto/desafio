@@ -26,7 +26,7 @@ class UserController extends Controller
 
     public function index()
     {
-       $data = User::with('role','enderecoUser')->get();
+       $data = User::with('role','enderecoUsers')->get();
        return response()->json(['data' =>$data]);
     }
 
@@ -44,13 +44,9 @@ class UserController extends Controller
             'cpf' => $request->cpf,
             'role_id' => $request->role_id,
         ]);
-        $user = Endereco::create([
+        $user->enderecos()->create([
             'logradouro' => $request->logradouro,
             'cep' => $request->cep,
-        ]);
-        $user = EnderecoUser::create([
-            'user_id' => $request->user_id,
-            'endereco_id' => $request->endereco_id,
         ]);
         return response()->json(['msg' => 'Dados Salvos com sucesso', 'data' => $user]);
      }

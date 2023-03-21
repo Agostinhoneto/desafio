@@ -28,6 +28,6 @@ class CreateEnderecoUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('endereco_user');
+        Schema::dropIfExists('endereco_users');
     }
 }

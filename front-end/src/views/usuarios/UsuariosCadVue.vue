@@ -16,47 +16,46 @@
         />
     <div class="row">
      <form @submit.stop.prevent="submit">
-        <br><br>
-        <div class="form-group col-md-6">
-            <label for="exampleInputEmail1">Nome</label>
-            <input type="text" v-model="this.name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Nome">
-        </div>
-        <br>
-        <div class="form-group col-md-6">
-            <label for="">CPF</label>
-            <input type="text" v-model="cpf" class="form-control" id="cpf" placeholder="CPF">
-        </div>
-        <br>
-        <div class="form-group col-md-6">
-            <label for="">Email</label>
+     <br><br>
+        <div class="row">
+            <div class="form-group col-3">
+                <label for="exampleInputEmail1">Nome</label>
+                <input type="text" v-model="this.name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Nome">
+            </div>
+            <div class="form-group col-3">
+                <label for="">Email</label>
+                <input type="email" v-model="this.email" class="form-control" id="email" placeholder="Email">
+            </div>
+            <div class="form-group col-3">
+                <label for="">CPF</label>
+                <input type="text" v-model="cpf" class="form-control" id="cpf" placeholder="CPF">
+            </div> 
             <br>
-            <input type="email" v-model="this.email" class="form-control" id="email" placeholder="Email">
-        </div>
-        <br>
-        <div class="form-group col-md-2">
-            <label for="">Pefil</label>
-            <br>
-            <select class="form-select" v-model="this.role_id" aria-label="Default select example">
-                <option selected> selecione</option>
-                <option value="1">Admin</option>
-                <option value="2">Usuario</option>
-            </select>
-        </div>
+            <div class="form-group col-3">
+                <label for="">Pefil</label>
+                <br>
+                <select class="form-select" v-model="this.role_id" aria-label="Default select example">
+                    <option selected> selecione</option>
+                    <option value="1">Admin</option>
+                    <option value="2">Usuario</option>
+                </select>
+            </div>
+        </div>    
         <hr>
-        <label><h4>Endereço:</h4></label>
-        <div class="form-group col-md-6">
-            <br>
-            <label for="exampleInputPassword1">Logradouro:</label>
-            <br>
-            <input type="text" v-model="this.logradouro" class="form-control" id="email" placeholder="Logradouro">
-        </div>
-        <br>
-        <div class="form-group col-md-6">
-            <label for="exampleInputPassword1">CEP:</label>
-            <br>
-            <input type="text" v-model="this.cep" class="form-control" id="email" placeholder="CEP">
-        </div>
-            <input type="hidden"  v-model="endereco.id" />
+        <div class="row">
+            <label><h4>Endereço:</h4></label>
+            <div class="form-group col-3">
+                <label for="">Logradouro:</label>
+                <br>
+                <input type="text" v-model="this.logradouro" class="form-control" id="logradouro" placeholder="Logradouro">
+            </div>
+            <div class="form-group col-3">
+                <label for="">CEP:</label>
+                <input type="text" v-model="this.cep" class="form-control" id="cep" placeholder="CEP">
+
+                <br>
+            </div>
+        </div>    
         <hr>
         <div class="mt-2">
             <button type="submit"
@@ -135,15 +134,16 @@ export default {
                     cpf: this.cpf,
                     role_id: this.role_id, 
                     logradouro: this.logradouro, 
-                    
-                    cep: this.user.id, 
-                    cep: this.user.id,          
+                    cep: this.cep, 
+                    user_id: this.user_id,
                 };
 
                 if (this.id) {
                     this.update(payload);
                 } else {
                     this.storeTodo(payload);
+                    console.log(storeTodo);
+                   
                 }
             },
 
