@@ -11,12 +11,12 @@ class Endereco extends Model
 
     //protected $fillable = ['enderecos'];
 
+    public function user(){
+        return $this->belongsTo(User::class);
+    }    
+    
     public function enderecoUser()
     {
-        return $this->belongsTo(Endereco::class);
-    } 
-
-    public function users(){
-        return $this->belongsTo(User::class);
+        return $this->manyTomany(EnderecoUser::class);
     }
 }

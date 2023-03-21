@@ -48,13 +48,13 @@
             <br>
             <label for="exampleInputPassword1">Logradouro:</label>
             <br>
-            <input type="email" v-model="this.email" class="form-control" id="email" placeholder="Logradouro">
+            <input type="text" v-model="this.logradouro" class="form-control" id="email" placeholder="Logradouro">
         </div>
         <br>
         <div class="form-group col-md-6">
             <label for="exampleInputPassword1">CEP:</label>
             <br>
-            <input type="email" v-model="this.email" class="form-control" id="email" placeholder="CEP">
+            <input type="text" v-model="this.cep" class="form-control" id="email" placeholder="CEP">
         </div>
         <hr>
         <div class="mt-2">
@@ -97,7 +97,6 @@
     </div>     
     <br><hr> 
 </div>
-
 </template>
 <script>
 export default {
@@ -123,7 +122,6 @@ export default {
                 this.name = vl.name;
                 this.email = vl.email;
                 this.cpf = vl.cpf;
-                this.logradouro = vl.logradouro;
             },
         },
         methods: {
@@ -134,7 +132,9 @@ export default {
                     name: this.name,
                     email: this.email,
                     cpf: this.cpf,
-                    role_id: this.role_id,            
+                    role_id: this.role_id, 
+                  //  logradouro: this.logradouro, 
+                   // cep: this.cep,        
                 };
 
                 if (this.id) {

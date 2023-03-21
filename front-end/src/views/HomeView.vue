@@ -31,10 +31,13 @@
         <br>
         <button type="submit" class="btn btn-primary">Filtrar</button>
     </form>
-    <br><br>
+    <br>
     <hr>
+    <div class="search-wrapper">
+        <input type="text" v-model="search" placeholder="Pesquisar"/>
+    </div>   
     <table  class="table">
-        <thead>
+        <thead >
             <tr>
             <th >#</th>
             <th >Data de Cadastro</th>
@@ -45,7 +48,7 @@
             <th >Ações</th>
             </tr>
         </thead>
-        <tbody  v-for="user in users"
+        <tbody  v-for="user in filterUser"
             :key="user.id">
             <tr>
                 <td >{{user.id }}</td>
@@ -90,9 +93,20 @@
     export default {
         data(){
             return {
-                users:[],
+                search:"",
+                users:[
+                 //   this.user.name,
+                ],
             };
-        }, 
+        },
+        computed:{
+            filterUser(){
+                //alert(this.user);
+                return this.users.filter(
+                    user => user.name.includes(this.search)
+                );
+            }
+        } ,
         mounted(){
         fetch('http://127.0.0.1:8000/api/index').then(response=> response.json())
             .then((res) =>{

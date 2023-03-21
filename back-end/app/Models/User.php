@@ -51,15 +51,16 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
-
     
     public function endereco()
     {
-        return $this->belongsToMany(Endereco::class);
+        return $this->belongsTo(Endereco::class);
     }
 
     public function enderecoUser()
     {
         return $this->HasMany(EnderecoUser::class);
     }
+
+    
 }

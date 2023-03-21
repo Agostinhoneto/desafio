@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserFormRequest;
 use App\Http\Resources\UserResource;
+use App\Models\EnderecoUser;
 use App\Models\User;
 use App\Services\UserService;
 use Carbon\Carbon;
@@ -24,7 +25,7 @@ class UserController extends Controller
 
     public function index()
     {
-       $data = User::with('role')->get();
+       $data = User::with('role','enderecoUser')->get();
        return response()->json(['data' =>$data]);
     }
 
@@ -38,16 +39,28 @@ class UserController extends Controller
 
     public function store(UserFormRequest $request)
     {
-        $date = Carbon::now()->format('d-m-Y');
-        $data = User::create([
+        $user = User::create([
             'name' =>$request->name,
             'email' =>$request->email,
             'password' =>bcrypt($request->password),
             'cpf' => $request->cpf,
             'role_id' => $request->role_id,
-      //      'created_at' =>Carbon::now($date), 
         ]);
-        return response()->json(['msg' => 'Dados Salvos com sucesso', 'data' => $data]);
+        $user->enderecos->create([
+            'logradouro' => $request->lagrodouro,
+            'cep' => $request->cep,
+        ]);
+        $user->enderecosUser->create([
+            'user_id' => $request->user_id,
+            'endereco_id' => $request->endereco_id,
+        ]);
+
+        //dd($user);
+        //$enderecoUser = new EnderecoUser($request->all());
+        //$enderecoUser->user_id = $user->id;
+        //$endereco->save();
+       // $date = Carbon::now()->format('d-m-Y');
+        return response()->json(['msg' => 'Dados Salvos com sucesso', 'data' => $user]);
      }
  
      
