@@ -78,7 +78,7 @@ class UserController extends Controller
         $data = User::findOrFail($id);
         $data->update($dataRequest);
         return response()->json(['msg' => 'Dados atualizados com sucesso', 'data' => $data]);
-    }
+    }   
 
     public function destroy($id)
     {

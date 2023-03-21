@@ -52,8 +52,6 @@ class User extends Authenticatable
     
     public function enderecos()
     {
-        //'make_product_type', 'make_id', 'product_type_id'
-
         return $this->belongsToMany(Endereco::class,'endereco_users','user_id','endereco_id');
     }
 

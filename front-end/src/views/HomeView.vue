@@ -11,31 +11,28 @@
         <div class="form-group col-md-6">
             <label for="nome">Nome</label>
             <br>
-            <input type="nome" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Nome">
+            <input type="text" class="form-control" id="name" v-model="search" placeholder="Pesquisar por nome"/>
         </div>
         <br>
         <div class="form-group col-md-6">
             <label for="cpf">CPF</label>
-            <input type="text" class="form-control" id="cpf" placeholder="CPF">
+            <input type="text" class="form-control" id="cpf" v-model="searchCPF" placeholder="Pesquisar por CPF"/>
         </div>
         <br>
         <div class="form-group col-md-2">
             <label for="date">Data Inicio</label>
-            <input type="date" class="form-control" id="date" placeholder="Inicio">
+            <input type="date" class="form-control" id="date" >
         </div> 
         <br>
         <div class="form-group col-md-2">
             <label for="date">Data Fim</label>
-            <input type="date" class="form-control" id="date" placeholder="Fim">
+            <input type="date" class="form-control" id="date">
         </div>
         <br>
-        <button type="submit" class="btn btn-primary">Filtrar</button>
     </form>
     <br>
     <hr>
-    <div class="search-wrapper">
-        <input type="text" v-model="search" placeholder="Pesquisar"/>
-    </div>   
+       
     <table  class="table">
         <thead >
             <tr>
@@ -94,6 +91,8 @@
         data(){
             return {
                 search:"",
+                searchCPF:"",
+               // searchCpf:"",
                 users:[
                  //   this.user.name,
                 ],
@@ -103,7 +102,8 @@
             filterUser(){
                 //alert(this.user);
                 return this.users.filter(
-                    user => user.name.includes(this.search)
+                    user => user.name.includes(this.search),
+                    user => user.cpf.includes(this.searchCPF)
                 );
             }
         } ,
