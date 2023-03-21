@@ -11,25 +11,25 @@
         <div class="form-group col-md-6">
             <label for="nome">Nome</label>
             <br>
-            <input type="nome" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Nome">
+            <input type="text" v-model="busca.name"  aria-describedby="emailHelp"   class="form-control" placeholder="Nome">
         </div>
         <br>
         <div class="form-group col-md-6">
             <label for="cpf">CPF</label>
-            <input type="password" class="form-control" id="cpf" placeholder="CPF">
+            <input type="cpf" class="form-control" id="cpf" placeholder="CPF">
         </div>
         <br>
         <div class="form-group col-md-2">
             <label for="date">Data Inicio</label>
-            <input type="password" class="form-control" id="date" placeholder="Inicio">
+            <input type="date" class="form-control" id="date" placeholder="Inicio">
         </div> 
         <br>
         <div class="form-group col-md-2">
             <label for="date">Data Fim</label>
-            <input type="password" class="form-control" id="date" placeholder="Fim">
+            <input type="date" class="form-control" id="date" placeholder="Fim">
         </div>
         <br>
-        <button type="submit" class="btn btn-primary">Filtrar</button>
+        <button type="submit" class="btn btn-primary" @click="pesquisar(this.name)">Filtrar</button>
     </form>
     <br>
     <hr>
@@ -48,11 +48,13 @@
             <th >Ações</th>
             </tr>
         </thead>
-        <tbody  v-for="user in filterUser"
+        <tbody  v-for="user in filterUser "
             :key="user.id">
             <tr>
                 <td >{{user.id }}</td>
-                <td >{{user.created_at }}</td>
+                <td >{{ formatarDataTempo }}
+                    {{user.created_at}}
+                </td>
                 <td >{{user.name }}</td>
                 <td>{{user.email }}</td>
                 <td>{{user.cpf }}</td>
@@ -91,8 +93,27 @@
 </template>
 <script>
     export default {
+        filters: {
+            formatarDataTempo(d){
+                if(!d) return ''
+                d = d.split('T')
+                let data = d[0]
+                let tempo = d[1]
+                data = data.split('-')
+                data = data[2] + '/' + data[1] + '/' + data[0]
+                return data
+                console.log(data)
+                tempo = tempo.split('.')
+                tempo = tempo[0]
+                return data + ' ' + tempo
+            }
+        },
+
         data(){
             return {
+                urlBase:'http://localhost:8000/api/index',
+                busca:{name:''},
+                urlFiltro:'',
                 search:"",
                 users:[
                  //   this.user.name,
@@ -121,6 +142,31 @@
         
       methods: 
         {
+            carregarLista(){
+                let url = this.urlBase + '?' + this.urlFiltro  
+                .then(response=> response.json())
+                .then((res) =>{
+                    this.users = res.data;
+                });
+            },
+
+            pesquisar(){
+                let filtro = ''
+                for (let chave in this.busca){  
+                    if(this.busca[chave]){  
+                        if(filtro != ''){
+                            filtro += ";"
+                        }
+                        filtro += chave + ':like' + this.busca[chave]     
+                    }
+                }
+                if(filtro != ''){
+                    this.urlFiltro = '&filtro='+filtro
+                }
+                console.log(this.carregarLista())
+                this.carregarLista()
+            },
+
             remover(userId) {
                 alert(userId);
                 fetch(`http://127.0.0.1:8000/api/destroy/${userId}`,

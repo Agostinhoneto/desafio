@@ -28,12 +28,8 @@ Route::controller(UserController::class)->group(function () {
     Route::post('store','store'); 
     Route::put('update/{id}','update');  
     Route::delete('destroy/{id}','destroy');
-  //  Route::get('search/{request}','search');
-    Route::get('/search', function (Request $request) {
-        return User::search($request->input('query'))->paginate(10);
-    });
+    Route::get('search','search');
 });
-
 
 Route::controller(EnderecoController::class)->group(function () {
     Route::get('enderecoIndex','enderecoIndex');

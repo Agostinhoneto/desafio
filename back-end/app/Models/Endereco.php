@@ -11,6 +11,10 @@ class Endereco extends Model
 
     //protected $fillable = ['enderecos'];
 
+    protected $fillable = [
+        'logradouro',
+        'cep', 
+     ];
     public function user(){
         return $this->belongsTo(User::class);
     }    

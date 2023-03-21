@@ -9,6 +9,11 @@ class EnderecoUser extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'endereco_id', 
+     ];
+     
     public function users(){
         return $this->ManytoMany(User::class);
     }

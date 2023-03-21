@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserFormRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Endereco;
 use App\Models\EnderecoUser;
 use App\Models\User;
 use App\Services\UserService;
@@ -28,14 +29,11 @@ class UserController extends Controller
        $data = User::with('role','enderecoUser')->get();
        return response()->json(['data' =>$data]);
     }
-
-
+    
     public function create()
     {
         //
     }
-    
-
 
     public function store(UserFormRequest $request)
     {
@@ -46,20 +44,14 @@ class UserController extends Controller
             'cpf' => $request->cpf,
             'role_id' => $request->role_id,
         ]);
-        $user->enderecos->create([
-            'logradouro' => $request->lagrodouro,
+        $user = Endereco::create([
+            'logradouro' => $request->logrodouro,
             'cep' => $request->cep,
         ]);
-        $user->enderecosUser->create([
+        $user = EnderecoUser::create([
             'user_id' => $request->user_id,
             'endereco_id' => $request->endereco_id,
         ]);
-
-        //dd($user);
-        //$enderecoUser = new EnderecoUser($request->all());
-        //$enderecoUser->user_id = $user->id;
-        //$endereco->save();
-       // $date = Carbon::now()->format('d-m-Y');
         return response()->json(['msg' => 'Dados Salvos com sucesso', 'data' => $user]);
      }
  
@@ -101,18 +93,8 @@ class UserController extends Controller
 
     public function search(Request $request)
     {
-        $query = User::get();
-        if ($request->has('name')) {
-            $query->where('name', 'LIKE', '%' . $request->name . '%');
-        }
-
-        if ($request->has('email')) {
-            $query->where('email', 'LIKE', '%' . $request->email . '%');
-        }
-
-        if ($request->has('cpf')) {
-            $query->where('cpf', 'LIKE', '%' . $request->cpf . '%');
-        }
-        return $query;
+        $filterUser = 
+        User::where('name', $request->name ,'cpf', $request->cpf )
+         ->get();
     }  
 }
