@@ -26,18 +26,16 @@
                 </div>
                 <div class="form-group col-3">
                     <label for="">CEP*</label>
-                    <input type="text" v-model="this.cep" class="form-control" id="email" placeholder="Email" required>
+                    <input type="text" v-model="this.cep" class="form-control" id="cep" placeholder="CEP" required>
                 </div>
                 <br>
-                
             </div>    
             <hr>
-            
             <div class="mt-2">
                 <button type="submit"
                     class="btn btn-success"
                 >
-                    ADCIONAR
+                    ADCIONAR ENDEREÇO
                 </button>
             </div>
             <br><br>
@@ -144,7 +142,7 @@
                     alert('Dados Salvos com Sucesso');
 
                 },
-    
+                
                 async loadEndereco(){  
                  await fetch('http://127.0.0.1:8000/api/enderecoIndex').then(response=> response.json())
                     .then((res) =>{
@@ -159,18 +157,12 @@
                 this.id = userId;
                 await fetch(`http://127.0.0.1:8000/api/show/${userId}`)
                 .then(response => response.json())
-                .then(res => resp = {...res.data});
-                // this.name = resp.name
-                // this.email = resp.email
-                //  this.cpf = resp.cpf 
-               // this.cep = resp.cep
-                    
-                console.log('response',resp)    
-    
+                .then(res => resp = {...res.data});            
+                console.log('response',resp)
                 },
                 
                 async remover(enderecoId) {
-                await fetch(`http://127.0.0.1:8000/api/destroy/${enderecoId}`,
+                await fetch(`http://127.0.0.1:8000/api/enderecoDestroy/${enderecoId}`,
                 {
                     method: 'DELETE',
                     headers: {
@@ -188,7 +180,7 @@
                
                 alert('Dados excluidos com Sucesso');
                 },
-                
+
                 resetForm() {
                     this.cep = '';
                     this.logradouro = '';
@@ -203,6 +195,7 @@
                     cep : '',
                 };
             },
+
             async mounted(){
                 if (this.$route.params.id){
                     await this.show();

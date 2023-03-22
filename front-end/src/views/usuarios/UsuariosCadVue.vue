@@ -46,17 +46,29 @@
         <hr>
         <div class="row">
             <label><h4>Endereço:</h4></label>
+
             <div class="form-group col-3">
                 <label for="">Logradouro:</label>
-                <br>
-                <input type="text" v-model="this.logradouro" class="form-control" id="logradouro" placeholder="Logradouro">
-            </div>
-            <div class="form-group col-3">
-                <label for="">CEP:</label>
-                <input type="text" v-model="this.cep" class="form-control" id="cep" placeholder="CEP">
 
-                <br>
-            </div>
+                <select class="form-select" v-model="this.logradouro" aria-label="Default select example" required>
+                        <option>escolher</option>
+                    <option v-for="endereco in enderecos " :key="endereco.id"
+                            v-bind:value="endereco.logradouro">
+                            {{ endereco.logradouro }}
+                    </option>
+                </select>   
+            </div>    
+            <div class="form-group col-3">
+                <label for="">Cep:</label>
+
+                <select class="form-select" v-model="this.cep" aria-label="Default select example" required>
+                        <option>escolher</option>
+                    <option v-for="endereco in enderecos " :key="endereco.id"
+                            v-bind:value="endereco.cep">
+                            {{ endereco.cep }}
+                    </option>
+                </select>   
+            </div>    
         </div>    
         <hr>
         <div class="mt-2">
