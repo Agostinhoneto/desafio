@@ -37,6 +37,7 @@ class UserController extends Controller
 
     public function store(UserFormRequest $request)
     {
+        
         $user = User::create([
             'name' =>$request->name,
             'email' =>$request->email,
@@ -44,6 +45,8 @@ class UserController extends Controller
             'cpf' => $request->cpf,
             'role_id' => $request->role_id,
         ]);
+        //dd($user);
+      
         $user->enderecos()->create([
             'logradouro' => $request->logradouro,
             'cep' => $request->cep,

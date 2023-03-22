@@ -20,7 +20,7 @@ class AdminSeeder extends Seeder
         $adminRole = Role::create(['name' => 'Admin']);
         User::create([
             'name' => 'Admin',
-            'email' => 'admin@admin.com',
+            'email' => 'agostinho@admin.com',
             'cpf' => '123456879',
             'password' => bcrypt('password'),
             'email_verified_at' => now(),
@@ -28,8 +28,8 @@ class AdminSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'User',
-            'email' => 'user@user.com',
+            'name' => 'Agostinho Neto',
+            'email' => 'agostinho@user.com',
             'cpf' => '123456879',
             'password' => bcrypt('password'),
             'email_verified_at' => now(),

@@ -14,27 +14,21 @@
     <h2>Pesquisar Usuários :</h2>
     <br>
     <form>
-        <div class="form-group col-md-6">
+        <div class="form-group col-4">
             <label for="nome">Nome:</label>
             <br>
             <input type="text" class="form-control" id="name" v-model="search" placeholder="Digite o nome"/>
         </div>
-       
-    </form>    
-    <form>
         <br>
-        <div class="form-group col-md-6">
-            <label for="cpf">CPF:</label>
-            <input type="text" class="form-control" id="cpf" v-model="search" placeholder="Digite o CPF"/>
-        </div>
-    </form>
-    <form>
-        <br>
-        <div class="form-group col-md-6">
+        <div class="form-group col-4">
             <label for="cpf">Email:</label>
             <input type="text" class="form-control" id="email" v-model="search" placeholder="Digite o Email"/>
         </div>
-    </form>
+        <br>
+        <div class="form-group col-2">
+            <label for="cpf">CPF:</label>
+            <input type="text" class="form-control" id="cpf" v-model="search" placeholder="Digite o CPF"/>
+        </div>
            
         <br>
         <div class="form-group col-md-2">
@@ -47,7 +41,7 @@
             <input type="date" class="form-control" id="date">
         </div>
         <br>
-  
+    </form>   
     <br>
     <h3>Lista de Usuários</h3>
     <hr>
@@ -69,7 +63,7 @@
             :key="user.id">
             <tr>
                 <td >{{user.id }}</td>
-                <td >{{user.created_at }}</td>
+                <td>{{ moment(user.created_at)}}</td>
                 <td >{{user.name }}</td>
                 <td>{{user.email }}</td>
                 <td>{{user.cpf }}</td>
@@ -106,6 +100,7 @@
         </tbody>
     </table>
 </template>
+
 <script>
     export default {
         data(){
@@ -118,7 +113,14 @@
                 ],
             };
         },
-        computed:{  
+        filters: {
+            moment: function (date) {
+                console.log(date);
+                return moment(date).format('DD/MM/YYYY, h:mm:ss a');
+            }
+        },
+        computed:{ 
+             
             filterUser(){
                 let users = [];
                 users = this.users.filter((user) => {
@@ -128,10 +130,13 @@
                     user.email.indexOf(this.search) > -1 
                         
                     );
-                });
-                
-                console.log(this.users);
+                });   
                 return users;
+            },
+            formatarData(){
+                let data = this.user.created_at
+                this.user.created_at = moment(data).format('DD/MM/YYYY')
+
             }  
         },
         mounted(){
@@ -147,7 +152,17 @@
         },
         
       methods: 
-        {
+        {   
+            moment: function (date) {
+
+                let data = new Date();
+                let dataFormatada = ((data.getDate() )) + "/" + ((data.getMonth() + 1)) + "/" + data.getFullYear(); 
+                console.log(dataFormatada);
+                return dataFormatada;
+                // saída: 8/7/2020                
+                //console.log(date);
+                //return moment(date);
+            },
             remover(userId) {
                 fetch(`http://127.0.0.1:8000/api/destroy/${userId}`,
                     {

@@ -15,13 +15,13 @@ class EnderecoTableSeeder extends Seeder
     public function run()
     {
         Endereco::create([
-            'logradouro' => 'av manoel novais',
-            'cep'     => '4880000',
+            'logradouro' => 'Rua Teste 1',
+            'cep'     => '4000000',
         ]);
 
         Endereco::create([
-            'logradouro' => 'Praça Monsenhor Berenque',
-            'cep'     => '4880000',
+            'logradouro' => 'Rua teste 2',
+            'cep'     => '48888888',
         ]);
     }
 }

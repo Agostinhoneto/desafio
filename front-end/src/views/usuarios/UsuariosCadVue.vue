@@ -21,22 +21,22 @@
      <br><br>
         <div class="row">
             <div class="form-group col-3">
-                <label for="exampleInputEmail1">Nome</label>
-                <input type="text" v-model="this.name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Nome">
+                <label for="exampleInputEmail1">Nome*</label>
+                <input type="text" v-model="this.name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Nome" required>
             </div>
             <div class="form-group col-3">
-                <label for="">Email</label>
-                <input type="email" v-model="this.email" class="form-control" id="email" placeholder="Email">
+                <label for="">Email*</label>
+                <input type="email" v-model="this.email" class="form-control" id="email" placeholder="Email" required>
             </div>
             <div class="form-group col-3">
-                <label for="">CPF</label>
-                <input type="text" v-model="cpf" class="form-control" id="cpf" placeholder="CPF">
+                <label for="">CPF*</label>
+                <input type="text" v-model="cpf" class="form-control" id="cpf" placeholder="CPF" required>
             </div> 
             <br>
             <div class="form-group col-3">
-                <label for="">Pefil</label>
+                <label for="">Pefil*</label>
                 <br>
-                <select class="form-select" v-model="this.role_id" aria-label="Default select example">
+                <select class="form-select" v-model="this.role_id" aria-label="Default select example" required>
                     <option selected> selecione</option>
                     <option value="1">Admin</option>
                     <option value="2">Usuario</option>
@@ -151,8 +151,6 @@ export default {
                    
                 }
             },
-
-
             storeTodo(payload) {
                 fetch(`http://localhost:8000/api/store/`,
                     {
@@ -225,10 +223,10 @@ export default {
                 .then(() => {
                     const todos = this.endereco;
                     const idx = todos.findIndex(o => o.id === enderecoId);
-                    todos.splice(idx, 1);
-                    alert('Endereço Deletado com Sucesso');
-
+                    todos.splice(idx, 1);                    
                 });
+                alert('Dados excluidos com Sucesso');
+
             },
             resetForm() {
                 this.name = '';

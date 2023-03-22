@@ -27,7 +27,9 @@ class UserFormRequest extends FormRequest
     {
         return [
            'name' =>['required','min:3'],
-           'email' =>['required','min:3','email','unique:users']
+           'email' =>['required','min:3','email','unique:users'],
+           'cpf' =>['required','unique:users']
+
         ];
     }
 
@@ -46,6 +48,8 @@ class UserFormRequest extends FormRequest
         return [
            'name.required' => 'O campo Nome é obrigatório',
            'email.required'  => 'O campo Email é obrigatório',
+           'cpf.required' => 'O campo CPF é obrigatório',
+           'cpf.unique'  => 'O campo CPF não pode ser repetido', 
            'email.email'  => 'O campo Email não é valido', 
            'email.unique'  => 'O campo Email não pode ser repetido',          
         ];
