@@ -54,17 +54,9 @@ class UserController extends Controller
      
     public function show($id)
     {
-        $result = ['status' =>200];
-        try{
-            $result['data'] = $this->userService->getById($id);
-        }
-        catch(Exception $e){
-            $result = [
-                'status' =>500,
-                'error' => $e->getMessage()
-            ];
-        }
-        return response()->json($result,$result['status']);   
+        $data = User::with('enderecoUsers')->find($id);
+        return response()->json(['msg' => 'Dados exibidos com sucesso', 'data' => $data]);
+
     }
 
     public function edit($id)
@@ -74,9 +66,16 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+    
         $dataRequest = $request->all();
         $data = User::findOrFail($id);
+        
         $data->update($dataRequest);
+        $data->enderecos()->update([
+            'logradouro' => $request->logradouro,
+            'cep' => $request->cep,
+        ]);
+
         return response()->json(['msg' => 'Dados atualizados com sucesso', 'data' => $data]);
     }   
 

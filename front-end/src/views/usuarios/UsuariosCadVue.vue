@@ -11,6 +11,8 @@
         <UserTodoForm
             :todo="updateUser"
             :user-id="userId"
+            :endereco-id="enderecoId"
+
             @save="onSave"
             @update="onUpdate"
         />
@@ -77,7 +79,9 @@
                 <th >Ações</th>
                 </tr>
             </thead>
-            <tbody  v-for="endereco in enderecos">
+          
+            <tbody  v-for="endereco in enderecos "
+                    :key="endereco.id">
                 <tr>
                     <td >{{endereco.id }}</td>
                     <td >{{endereco.logradouro }}</td>
@@ -86,11 +90,11 @@
                         <a
                             href=""
                             class="text-danger"
-                            @click.stop.prevent="remover(user.id)"
+                            @click.stop.prevent="remover(endereco.id)"
                         >
-                            <button type="button" class="btn btn-danger"> Delete</button>
+                        <button type="button" class="btn btn-danger"> Delete</button>
                         </a>
-                    </small>
+                    </small>  
                 </tr>
             </tbody>        
         </table>
@@ -103,7 +107,7 @@ export default {
     name: 'UsuariosCadVue',
     
     props: {
-            userId: {
+            enderecoId: {
                 type: [String, Number],
                 default: null,
             },
@@ -122,6 +126,8 @@ export default {
                 this.name = vl.name;
                 this.email = vl.email;
                 this.cpf = vl.cpf;
+                this.cep = vl.cep;
+                this.logradouro = vl.logradouro;
             },
         },
         methods: {
@@ -135,7 +141,6 @@ export default {
                     role_id: this.role_id, 
                     logradouro: this.logradouro, 
                     cep: this.cep, 
-                    user_id: this.user_id,
                 };
 
                 if (this.id) {
@@ -162,9 +167,11 @@ export default {
                     .then((res) => {
                         this.$emit('save', res.data);
                         this.resetForm()
+                        alert('Dados Salvos com Sucesso');
                     });
             },
 
+            
             async loadEndereco(){  
              await fetch('http://127.0.0.1:8000/api/enderecoIndex').then(response=> response.json())
                 .then((res) =>{
@@ -183,10 +190,8 @@ export default {
             this.name = resp.name
             this.email = resp.email
             this.cpf = resp.cpf 
-
-            
-
-          //this.role_id = resp.role_id
+            this.cep = resp.cep
+                
             console.log('response',resp)    
 
             },
@@ -205,10 +210,11 @@ export default {
                     .then((res) => {
                         this.$emit('update', res.data);
                         this.resetForm()
+                        alert('Dados Atualizados com Sucesso');
                     });
             }, 
-            remover(userId) {
-                fetch(`http://127.0.0.1:8000/api/destroy/${userId}`,
+            remover(enderecoId) {
+                fetch(`http://127.0.0.1:8000/api/enderecoDestroy/${enderecoId}`,
                 {
                     method: 'DELETE',
                     headers: {
@@ -217,9 +223,11 @@ export default {
                     },
                 })
                 .then(() => {
-                    const todos = this.user;
-                    const idx = todos.findIndex(o => o.id === userId);
+                    const todos = this.endereco;
+                    const idx = todos.findIndex(o => o.id === enderecoId);
                     todos.splice(idx, 1);
+                    alert('Endereço Deletado com Sucesso');
+
                 });
             },
             resetForm() {
@@ -227,6 +235,8 @@ export default {
                 this.email = '';
                 this.cpf = '';
                 this.role_id = '';
+                this.cep = '';
+                this.logradouro = '';
             },
             
         },
@@ -237,7 +247,7 @@ export default {
                 name : '',
                 email : '',
                 cpf :'',
-                role_id :'',
+               // role_id :'',
                 
             };
         },  

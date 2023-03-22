@@ -1,38 +1,57 @@
 
 <template>
-    <br>
-    <h2>Lista de Usuários</h2>
     <router-link :to="{ name: 'cad-usuarios'}">
         <button type="submit" class="btn btn-success">Novo</button>
     </router-link>
+
+    <div
+      class="mt-3"
+      striped
+      hover
+      :users="users"
+    >
+    </div>
+    <h2>Pesquisar Usuários :</h2>
     <br>
     <form>
-        <br><br>
         <div class="form-group col-md-6">
-            <label for="nome">Nome</label>
+            <label for="nome">Nome:</label>
             <br>
-            <input type="text" class="form-control" id="name" v-model="search" placeholder="Pesquisar por nome"/>
+            <input type="text" class="form-control" id="name" v-model="search" placeholder="Digite o nome"/>
         </div>
+       
+    </form>    
+    <form>
         <br>
         <div class="form-group col-md-6">
-            <label for="cpf">CPF</label>
-            <input type="text" class="form-control" id="cpf" v-model="searchCPF" placeholder="Pesquisar por CPF"/>
+            <label for="cpf">CPF:</label>
+            <input type="text" class="form-control" id="cpf" v-model="search" placeholder="Digite o CPF"/>
         </div>
+    </form>
+    <form>
+        <br>
+        <div class="form-group col-md-6">
+            <label for="cpf">Email:</label>
+            <input type="text" class="form-control" id="email" v-model="search" placeholder="Digite o Email"/>
+        </div>
+    </form>
+           
         <br>
         <div class="form-group col-md-2">
-            <label for="date">Data Inicio</label>
+            <label for="date">Data Inicio:</label>
             <input type="date" class="form-control" id="date" >
         </div> 
         <br>
         <div class="form-group col-md-2">
-            <label for="date">Data Fim</label>
+            <label for="date">Data Fim:</label>
             <input type="date" class="form-control" id="date">
         </div>
         <br>
-    </form>
+  
     <br>
+    <h3>Lista de Usuários</h3>
     <hr>
-       
+    
     <table  class="table">
         <thead >
             <tr>
@@ -45,6 +64,7 @@
             <th >Ações</th>
             </tr>
         </thead>
+        
         <tbody  v-for="user in filterUser"
             :key="user.id">
             <tr>
@@ -91,22 +111,29 @@
         data(){
             return {
                 search:"",
-                searchCPF:"",
-               // searchCpf:"",
+                users:"",
+               // Cpf:"user.cpf",
                 users:[
                  //   this.user.name,
                 ],
             };
         },
-        computed:{
+        computed:{  
             filterUser(){
-                //alert(this.user);
-                return this.users.filter(
-                    user => user.name.includes(this.search),
-                    user => user.cpf.includes(this.searchCPF)
-                );
-            }
-        } ,
+                let users = [];
+                users = this.users.filter((user) => {
+                    return (
+                    user.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1 ||
+                    user.cpf.indexOf(this.search) > -1 ||
+                    user.email.indexOf(this.search) > -1 
+                        
+                    );
+                });
+                
+                console.log(this.users);
+                return users;
+            }  
+        },
         mounted(){
         fetch('http://127.0.0.1:8000/api/index').then(response=> response.json())
             .then((res) =>{
@@ -122,7 +149,6 @@
       methods: 
         {
             remover(userId) {
-                alert(userId);
                 fetch(`http://127.0.0.1:8000/api/destroy/${userId}`,
                     {
                         method: 'DELETE',
@@ -133,10 +159,10 @@
                     })
                     .then(() => {
                         const todos = this.user;
-                        const idx = todos.findIndex(o => o.id === userId);
+                        const idx = user.findIndex(o => o.id === userId);
                         todos.splice(idx, 1);
                     });
-                    alert(userId);
+                    alert('Dados excluidos com Sucesso');
             },
         },
     }
