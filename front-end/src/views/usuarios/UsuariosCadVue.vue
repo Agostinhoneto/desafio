@@ -183,6 +183,7 @@ export default {
             this.name = resp.name
             this.email = resp.email
             this.cpf = resp.cpf
+            
           //this.role_id = resp.role_id
             console.log('response',resp)    
 
