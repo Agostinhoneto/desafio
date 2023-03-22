@@ -45,12 +45,17 @@ class UserController extends Controller
             'cpf' => $request->cpf,
             'role_id' => $request->role_id,
         ]);
-        //dd($user);
       
         $user->enderecos()->create([
             'logradouro' => $request->logradouro,
             'cep' => $request->cep,
         ]);
+        $user->enderecoUser()->create([
+            'user_id' => $request->user_id,
+            'endereco_id' => $request->endereco_id,
+        ]);
+           //dd($user);
+     
         return response()->json(['msg' => 'Dados Salvos com sucesso', 'data' => $user]);
      }
  
@@ -75,10 +80,11 @@ class UserController extends Controller
         
         $data->update($dataRequest);
         $data->enderecos()->update([
+            
             'logradouro' => $request->logradouro,
             'cep' => $request->cep,
         ]);
-
+            
         return response()->json(['msg' => 'Dados atualizados com sucesso', 'data' => $data]);
     }   
 

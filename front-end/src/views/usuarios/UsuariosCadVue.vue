@@ -69,35 +69,6 @@
         <br><br>
         </form>
         <br>
-        <label for=""><h4>Lista de Endereço :</h4></label>
-        <table  class="table">
-            <thead>
-                <tr>
-                <th >#</th>
-                <th >Logradouro</th>
-                <th >CEP</th>
-                <th >Ações</th>
-                </tr>
-            </thead>
-          
-            <tbody  v-for="endereco in enderecos "
-                    :key="endereco.id">
-                <tr>
-                    <td >{{endereco.id }}</td>
-                    <td >{{endereco.logradouro }}</td>
-                    <td> {{endereco.cep }}</td>
-                    <small>
-                        <a
-                            href=""
-                            class="text-danger"
-                            @click.stop.prevent="remover(endereco.id)"
-                        >
-                        <button type="button" class="btn btn-danger"> Delete</button>
-                        </a>
-                    </small>  
-                </tr>
-            </tbody>        
-        </table>
     </div>     
     <br><hr> 
 </div>
@@ -245,8 +216,6 @@ export default {
                 name : '',
                 email : '',
                 cpf :'',
-               // role_id :'',
-                
             };
         },  
         async mounted(){

@@ -13,6 +13,15 @@ class EnderecoController extends Controller
         return response()->json(['data' =>$data]);
     }
 
+    public function storeEndereco(Request $request)
+    {
+        $endereco = Endereco::create([
+            "logradouro"=>$request->input("logradouro"),
+            "cep"=>$request->input("cep")
+        ]);
+	    return $endereco;
+    }
+    
     public function enderecoDestroy($id)
     {
         $data = Endereco::find($id);

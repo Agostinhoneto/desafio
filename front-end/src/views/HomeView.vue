@@ -1,9 +1,13 @@
 
 <template>
-    <router-link :to="{ name: 'cad-usuarios'}">
-        <button type="submit" class="btn btn-success">Novo</button>
-    </router-link>
-
+    <br>
+    <h2>Lista de Usuários</h2>
+    <hr> 
+    <div>
+        <router-link :to="{ name: 'cad-usuarios'}">
+            <button type="submit" class="btn btn-success">Novo</button>
+        </router-link>
+    </div>
     <div
       class="mt-3"
       striped
@@ -11,28 +15,16 @@
       :users="users"
     >
     </div>
-    <h2>Pesquisar Usuários :</h2>
     <br>
     <form>
         <div class="form-group col-4">
-            <label for="nome">Nome:</label>
             <br>
+            <label for="nome">Digte : Nome Email ou CPF </label>
             <input type="text" class="form-control" id="name" v-model="search" placeholder="Digite o nome"/>
-        </div>
-        <br>
-        <div class="form-group col-4">
-            <label for="cpf">Email:</label>
-            <input type="text" class="form-control" id="email" v-model="search" placeholder="Digite o Email"/>
-        </div>
-        <br>
-        <div class="form-group col-2">
-            <label for="cpf">CPF:</label>
-            <input type="text" class="form-control" id="cpf" v-model="search" placeholder="Digite o CPF"/>
-        </div>
-           
+        </div>    
         <br>
         <div class="form-group col-md-2">
-            <label for="date">Data Inicio:</label>
+            <label for="date">Data de Cadastro:</label>
             <input type="date" class="form-control" id="date" >
         </div> 
         <br>
@@ -106,6 +98,9 @@
         data(){
             return {
                 search:"",
+                searchEmail:"",
+                // email:"",
+
                 users:"",
                // Cpf:"user.cpf",
                 users:[
@@ -139,13 +134,9 @@
 
             }  
         },
-        mounted(){
-        fetch('http://127.0.0.1:8000/api/index').then(response=> response.json())
-            .then((res) =>{
-                this.users = res.data;
-            });
-        
-        const id = this.$route.params.id;
+       async mounted(){
+            await this.listarTodos();
+          const id = this.$route.params.id;
           fetch(`http://127.0.0.1:8000/api/show/${id}`)
           .then(response => response.json())
           .then(res => this.user = res.data);
@@ -159,25 +150,33 @@
                 let dataFormatada = ((data.getDate() )) + "/" + ((data.getMonth() + 1)) + "/" + data.getFullYear(); 
                 console.log(dataFormatada);
                 return dataFormatada;
-                // saída: 8/7/2020                
-                //console.log(date);
-                //return moment(date);
             },
-            remover(userId) {
-                fetch(`http://127.0.0.1:8000/api/destroy/${userId}`,
-                    {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                        },
-                    })
-                    .then(() => {
-                        const todos = this.user;
-                        const idx = user.findIndex(o => o.id === userId);
-                        todos.splice(idx, 1);
-                    });
-                    alert('Dados excluidos com Sucesso');
+
+           async listarTodos(){
+               await fetch('http://127.0.0.1:8000/api/index').then(response=> response.json())
+                    .then((res) =>{
+                        this.users = res.data;
+                });
+            },
+
+            async remover(userId) {
+                await fetch(`http://127.0.0.1:8000/api/destroy/${userId}`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                })
+                .then(() => {
+                    const todos = this.user;
+                  //  const idx = user.findIndex(o => o.id === userId);
+                   // todos.splice(idx, 1);
+                });
+               
+                await this.listarTodos();
+               
+                alert('Dados excluidos com Sucesso');
             },
         },
     }

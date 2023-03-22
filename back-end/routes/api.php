@@ -33,6 +33,7 @@ Route::controller(UserController::class)->group(function () {
 
 Route::controller(EnderecoController::class)->group(function () {
     Route::get('enderecoIndex','enderecoIndex');
+    Route::post('storeEndereco','storeEndereco'); 
     Route::delete('enderecoDestroy/{id}','enderecoDestroy');
 
 });
