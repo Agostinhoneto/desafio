@@ -46,12 +46,9 @@
         <hr>
         <div class="row">
             <label><h4>Endereço:</h4></label>
-
             <div class="form-group col-3">
                 <label for="">Logradouro:</label>
-
                 <select class="form-select" v-model="this.logradouro" aria-label="Default select example" required>
-                        <option>escolher</option>
                     <option v-for="endereco in enderecos " :key="endereco.id"
                             v-bind:value="endereco.logradouro">
                             {{ endereco.logradouro }}
@@ -60,15 +57,19 @@
             </div>    
             <div class="form-group col-3">
                 <label for="">Cep:</label>
-
                 <select class="form-select" v-model="this.cep" aria-label="Default select example" required>
-                        <option>escolher</option>
                     <option v-for="endereco in enderecos " :key="endereco.id"
                             v-bind:value="endereco.cep">
                             {{ endereco.cep }}
                     </option>
                 </select>   
-            </div>    
+            </div>
+            <div>
+            <br>
+            <router-link :to="{ name: 'user-enderecos'}">
+                <button type="submit" class="btn btn-primary">Novo Endereço</button>
+            </router-link>
+    </div>    
         </div>    
         <hr>
         <div class="mt-2">
