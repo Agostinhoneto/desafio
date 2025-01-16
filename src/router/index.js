@@ -3,8 +3,9 @@ import HomeView from '../views/HomeView.vue'
 import UsuariosCadVue from '../views/usuarios/UsuariosCadVue.vue'
 import UsuariosUpdate from '../views/usuarios/UsuariosUpdate.vue'
 import Dashboard from '../components/Dashboard.vue'
-//import Dashboard from '@/components/Dashboard.vue'; // ou o caminho correto para o seu arquivo Dashboard.vue
 import Enderecos from '../views/Enderecos.vue'
+import ReceitasCadVue from '../views/receitas/ReceitasCadVue.vue'
+import DespesasCadVue from '../views/despesas/DespesasCadVue.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,6 +35,16 @@ const router = createRouter({
       path: '/usuarios/id',
       name: 'user-todo',
       component: () => import('../views/AboutView.vue')
+    },
+    {
+      path: '/receitas',
+      name: 'cad-receitas',
+      component: ReceitasCadVue
+    },
+    {
+      path: '/despesas',
+      name: 'cad-despesas',
+      component: DespesasCadVue
     },
     {
       path: '/enderecos',
