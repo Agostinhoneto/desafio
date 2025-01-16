@@ -1,13 +1,18 @@
 <template>
     <div>
         <h2 class="my-4">Cadastrar Usuários</h2>
-        <div class="mb-3">
-            <router-link :to="{ name: 'home' }">
-                <button type="button" class="btn btn-primary">Voltar</button>
+        <div class="card-tools">
+          <router-link :to="{ name: 'home' }" class="btn btn-secondary btn-sm ml-2">
+            <i class="fas fa-arrow"></i> Voltar
+          </router-link>
+          <router-link :to="{ name: 'home' }" class="btn btn-primary btn-sm ml-2">
+                <i class="fas fa-list"></i> Listar Usuários
             </router-link>
         </div>
 
-        <UserTodoForm :todo="updateUser" :user-id="userId" :endereco-id="enderecoId" @save="onSave" @update="onUpdate" />
+
+        <UserTodoForm :todo="updateUser" :user-id="userId" :endereco-id="enderecoId" @save="onSave"
+            @update="onUpdate" />
 
         <form @submit.prevent="submit">
             <!-- Informações do Usuário -->
@@ -16,17 +21,20 @@
                 <div class="row g-3">
                     <div class="form-group col-md-4">
                         <label for="name" class="form-label">Nome *</label>
-                        <input type="text" v-model="name" class="form-control" id="name" placeholder="Digite o nome" required>
+                        <input type="text" v-model="name" class="form-control" id="name" placeholder="Digite o nome"
+                            required>
                         <div class="invalid-feedback">O nome é obrigatório.</div>
                     </div>
                     <div class="form-group col-md-4">
                         <label for="email" class="form-label">Email *</label>
-                        <input type="email" v-model="email" class="form-control" id="email" placeholder="Digite o email" required>
+                        <input type="email" v-model="email" class="form-control" id="email" placeholder="Digite o email"
+                            required>
                         <div class="invalid-feedback">O email é obrigatório.</div>
                     </div>
                     <div class="form-group col-md-4">
                         <label for="cpf" class="form-label">CPF *</label>
-                        <input type="text" v-model="cpf" class="form-control" id="cpf" placeholder="Digite o CPF" required>
+                        <input type="text" v-model="cpf" class="form-control" id="cpf" placeholder="Digite o CPF"
+                            required>
                         <div class="invalid-feedback">O CPF é obrigatório.</div>
                     </div>
                     <div class="form-group col-md-4">
