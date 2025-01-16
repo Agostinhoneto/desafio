@@ -9,15 +9,11 @@ import Enderecos from '../views/Enderecos.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+   
     {
       path: '/',
       name: 'home',
       component: HomeView
-    },
-    {
-      path: '/dashboard',
-      name: 'dashboard',
-      component: Dashboard
     },
     {
       path: '/usuarios',

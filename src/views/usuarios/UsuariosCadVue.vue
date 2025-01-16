@@ -40,32 +40,24 @@
                     </div>
                 </div>
                 <hr>
-                <div class="row">
-                    <label>
-                        <h4>Endereço:</h4>
-                    </label>
-                    <div class="form-group col-3">
-                        <label for="">Logradouro:</label>
-                        <select class="form-select" v-model="logradouro" aria-label="Default select example" required>
-                            <option v-for="endereco in enderecos" :key="endereco.id" :value="endereco.logradouro">
-                                {{ endereco.logradouro }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group col-3">
-                        <label for="">Cep:</label>
-                        <select class="form-select" v-model="cep" aria-label="Default select example" required>
-                            <option v-for="endereco in enderecos" :key="endereco.id" :value="endereco.cep">
-                                {{ endereco.cep }}
-                            </option>
-                        </select>
-                    </div>
-                    <div>
-                        <br>
-                        <router-link :to="{ name: 'user-enderecos' }">
-                            <button type="submit" class="btn btn-primary">Novo Endereço</button>
-                        </router-link>
-                    </div>
+                <div class="form-group col-3">
+                    <label for="logradouro">Logradouro:</label>
+                    <select class="form-select" v-model="logradouro" required>
+                        <option value="" disabled>Selecione o logradouro</option>
+                        <option v-for="endereco in enderecos" :key="endereco.id" :value="endereco.logradouro">
+                            {{ endereco.logradouro }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group col-3">
+                    <label for="cep">CEP:</label>
+                    <select class="form-select" v-model="cep" required>
+                        <option value="" disabled>Selecione o CEP</option>
+                        <option v-for="endereco in enderecos" :key="endereco.id" :value="endereco.cep">
+                            {{ endereco.cep }}
+                        </option>
+                    </select>
                 </div>
                 <hr>
                 <div class="mt-2">
@@ -90,8 +82,22 @@ export default {
             type: [String, Number],
             default: null,
         },
-
     },
+
+    data() {
+        return {
+            users: [],
+            enderecos: [], // Armazena a lista de endereços
+            id: '',
+            name: '',
+            email: '',
+            cpf: '',
+            cep: '',
+            logradouro: '',
+            role_id: '',
+        };
+    },
+
     watch: {
         todo(vl) {
             this.id = vl.id;
@@ -102,9 +108,39 @@ export default {
             this.logradouro = vl.logradouro;
         },
     },
+
     methods: {
+        async loadEndereco() {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/enderecoIndex');
+                const data = await response.json();
+                this.enderecos = data.data; // Supondo que o formato é { data: [...] }
+            } catch (error) {
+                console.error('Erro ao carregar os endereços:', error);
+                alert('Erro ao carregar os endereços. Tente novamente.');
+            }
+        },
+
+        async show() {
+            const userId = this.$route.params.id;
+            this.id = userId;
+
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/api/show/${userId}`);
+                const data = await response.json();
+
+                this.name = data.data.name;
+                this.email = data.data.email;
+                this.cpf = data.data.cpf;
+                this.cep = data.data.cep;
+                this.logradouro = data.data.logradouro;
+            } catch (error) {
+                console.error('Erro ao carregar os dados do usuário:', error);
+                alert('Erro ao carregar os dados do usuário. Tente novamente.');
+            }
+        },
+
         submit() {
-            console.log('id', this.id);
             const payload = {
                 id: this.id,
                 name: this.name,
@@ -119,87 +155,73 @@ export default {
                 this.update(payload);
             } else {
                 this.storeTodo(payload);
-                console.log(storeTodo);
-
             }
         },
-        storeTodo(payload) {
-            fetch(`http://localhost:8000/api/store/`,
-                {
+
+        async storeTodo(payload) {
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/api/store/`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json',
+                        Accept: 'application/json',
                     },
-                    body: JSON.stringify(payload)
-                })
-                .then(response => response.json())
-                .then((res) => {
-                    this.$emit('save', res.data);
-                    this.resetForm()
-                    alert('Dados Salvos com Sucesso');
+                    body: JSON.stringify(payload),
                 });
+
+                const data = await response.json();
+                this.$emit('save', data.data);
+                this.resetForm();
+                alert('Dados Salvos com Sucesso');
+            } catch (error) {
+                console.error('Erro ao salvar os dados:', error);
+                alert('Erro ao salvar os dados. Tente novamente.');
+            }
         },
 
+        async update(payload) {
+            try {
+                const response = await fetch(
+                    `http://127.0.0.1:8000/api/update/${payload.id}`,
+                    {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Accept: 'application/json',
+                        },
+                        body: JSON.stringify(payload),
+                    }
+                );
 
-        async loadEndereco() {
-            await fetch('http://127.0.0.1:8000/api/enderecoIndex').then(response => response.json())
-                .then((res) => {
-                    this.enderecos = res.data;
-                });
+                const data = await response.json();
+                this.$emit('update', data.data);
+                this.resetForm();
+                alert('Dados Atualizados com Sucesso');
+            } catch (error) {
+                console.error('Erro ao atualizar os dados:', error);
+                alert('Erro ao atualizar os dados. Tente novamente.');
+            }
         },
 
-        async show() {
-
-            const userId = this.$route.params.id;
-            var resp = null;
-            this.id = userId;
-            await fetch(`http://127.0.0.1:8000/api/show/${userId}`)
-                .then(response => response.json())
-                .then(res => resp = { ...res.data });
-            this.name = resp.name
-            this.email = resp.email
-            this.cpf = resp.cpf
-            this.cep = resp.cep
-
-            console.log('response', resp)
-
-        },
-        update(payload) {
-            console.log(payload);
-            fetch(`http://localhost:8000/api/update/${payload.id}`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                    },
-                    body: JSON.stringify(payload)
-                })
-                .then(response => response.json())
-                .then((res) => {
-                    this.$emit('update', res.data);
-                    this.resetForm()
-                    alert('Dados Atualizados com Sucesso');
-                });
-        },
         remover(enderecoId) {
-            fetch(`http://127.0.0.1:8000/api/enderecoDestroy/${enderecoId}`,
-                {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                    },
-                })
+            fetch(`http://127.0.0.1:8000/api/enderecoDestroy/${enderecoId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+            })
                 .then(() => {
-                    const todos = this.endereco;
-                    const idx = todos.findIndex(o => o.id === enderecoId);
-                    todos.splice(idx, 1);
+                    const idx = this.enderecos.findIndex((o) => o.id === enderecoId);
+                    if (idx !== -1) this.enderecos.splice(idx, 1);
+                    alert('Dados excluídos com sucesso');
+                })
+                .catch((error) => {
+                    console.error('Erro ao excluir o endereço:', error);
+                    alert('Erro ao excluir o endereço.');
                 });
-            alert('Dados excluidos com Sucesso');
-
         },
+
         resetForm() {
             this.name = '';
             this.email = '';
@@ -208,22 +230,13 @@ export default {
             this.cep = '';
             this.logradouro = '';
         },
+    },
 
-    },
-    data() {
-        return {
-            users: [],
-            id: '',
-            name: '',
-            email: '',
-            cpf: '',
-        };
-    },
     async mounted() {
         if (this.$route.params.id) {
             await this.show();
         }
         await this.loadEndereco();
-    }
+    },
 };
 </script>
