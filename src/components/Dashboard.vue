@@ -5,8 +5,7 @@
     <div class="preloader flex-column justify-content-center align-items-center">
       <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
     </div>
-
-    <!-- Navbar -->
+   <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
       <!-- Left navbar links -->
       <ul class="navbar-nav">
@@ -154,8 +153,7 @@
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
-                <form method="POST" action="{{ route('logout') }}">
-                  @csrf
+                <form method="POST" action="#">
                   <button type="submit" class="btn btn-danger">Sair</button>
                 </form>
               </ol>
@@ -205,17 +203,14 @@
               <!-- small box -->
               <div class="small-box bg-warning">
                 <div class="inner">
-                  @if ($totalUsuarios)
-                  <h3>{{$totalUsuarios}}</h3>
-                  @else
+                  <h3></h3>
                   <p>Não há Usuários registradas.</p>
-                  @endif
                   <p>Usuários</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-person-add"></i>
                 </div>
-                <a href="{{route('users.index')}}" class="small-box-footer">Ver mais <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="#" class="small-box-footer">Ver mais <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <!-- ./col -->
@@ -223,17 +218,14 @@
               <!-- small box -->
               <div class="small-box bg-success">
                 <div class="inner">
-                  @if ($totalMetas)
-                  <h3>{{$totalMetas}}<sup style="font-size: 20px">%</sup></h3>
-                  @else
+                  <h3><sup style="font-size: 20px">%</sup></h3>
                   <p>Não há Finanças registradas.</p>
-                  @endif
                   <p>Minhas Finanças</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-stats-bars"></i>
                 </div>
-                <a href="{{route('financas.index')}}" class="small-box-footer">Ver mais <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="" class="small-box-footer">Ver mais <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
 
@@ -275,12 +267,10 @@
                 </div><!-- /.card-body -->
               </div>
               <!-- /.card -->
-
             </section>
             <!-- /.Left col -->
             <!-- right col (We are only adding the ID to make the widgets sortable)-->
             <section class="col-lg-5 connectedSortable">
-
               <!-- Map card -->
               <div class="card bg-gradient-primary">
                 <div class="card-header border-0">
@@ -412,29 +402,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.dashboard {
-  padding: 20px;
-}
-
-.cards {
-  display: flex;
-  justify-content: space-between;
-}
-
-.card {
-  background-color: #f4f4f4;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  flex: 1;
-  margin: 10px;
-}
-
-.charts {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 40px;
-}
-</style>
