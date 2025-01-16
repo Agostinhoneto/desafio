@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
     "private": true,
     "scripts": {
         "dev": "npm run development",
@@ -15,4 +16,29 @@
         "lodash": "^4.17.19",
         "postcss": "^8.1.14"
     }
+=======
+  "name": "subjects",
+  "version": "0.0.0",
+  "scripts": {
+    "serve": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 5050"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "admin-lte": "^4.0.0-beta3",
+    "bootstrap": "^5.3.3",
+    "chart.js": "^4.4.7",
+    "json-server": "^0.17.0",
+    "moment": "^2.29.4",
+    "vue": "^3.2.33",
+    "vue-chartjs": "^5.3.2",
+    "vue-router": "^4.0.14"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.3.1",
+    "vite": "^2.9.18"
+  }
+>>>>>>> 4cb1021693212e4581e31f077a5d6002d8041ae1
 }
