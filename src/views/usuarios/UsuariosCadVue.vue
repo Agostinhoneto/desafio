@@ -1,78 +1,81 @@
 <template>
-    <br>
     <div>
-        <h2>Cadastrar Usuários</h2>
-        <hr>
-        <div>
+        <h2 class="my-4">Cadastrar Usuários</h2>
+        <div class="mb-3">
             <router-link :to="{ name: 'home' }">
-                <button type="submit" class="btn btn-primary">Voltar</button>
+                <button type="button" class="btn btn-primary">Voltar</button>
             </router-link>
         </div>
-        <UserTodoForm :todo="updateUser" :user-id="userId" :endereco-id="enderecoId" @save="onSave"
-            @update="onUpdate" />
-        <div class="row">
-            <form @submit.stop.prevent="submit">
-                <br><br>
-                <div class="row">
-                    <div class="form-group col-3">
-                        <label for="exampleInputEmail1">Nome*</label>
-                        <input type="text" v-model="this.name" class="form-control" id="name"
-                            aria-describedby="emailHelp" placeholder="Nome" required>
-                    </div>
-                    <div class="form-group col-3">
-                        <label for="">Email*</label>
-                        <input type="email" v-model="this.email" class="form-control" id="email" placeholder="Email"
-                            required>
-                    </div>
-                    <div class="form-group col-3">
-                        <label for="">CPF*</label>
-                        <input type="text" v-model="cpf" class="form-control" id="cpf" placeholder="CPF" required>
-                    </div>
-                    <br>
-                    <div class="form-group col-3">
-                        <label for="">Pefil*</label>
-                        <br>
-                        <select class="form-select" v-model="this.role_id" aria-label="Default select example" required>
-                            <option selected> selecione</option>
-                            <option value="1">Admin</option>
-                            <option value="2">Usuario</option>
-                        </select>
-                    </div>
-                </div>
-                <hr>
-                <div class="form-group col-3">
-                    <label for="logradouro">Logradouro:</label>
-                    <select class="form-select" v-model="logradouro" required>
-                        <option value="" disabled>Selecione o logradouro</option>
-                        <option v-for="endereco in enderecos" :key="endereco.id" :value="endereco.logradouro">
-                            {{ endereco.logradouro }}
-                        </option>
-                    </select>
-                </div>
 
-                <div class="form-group col-3">
-                    <label for="cep">CEP:</label>
-                    <select class="form-select" v-model="cep" required>
-                        <option value="" disabled>Selecione o CEP</option>
-                        <option v-for="endereco in enderecos" :key="endereco.id" :value="endereco.cep">
-                            {{ endereco.cep }}
-                        </option>
-                    </select>
+        <UserTodoForm :todo="updateUser" :user-id="userId" :endereco-id="enderecoId" @save="onSave" @update="onUpdate" />
+
+        <form @submit.prevent="submit">
+            <!-- Informações do Usuário -->
+            <fieldset class="border p-3 mb-4">
+                <legend class="w-auto px-2">Informações do Usuário</legend>
+                <div class="row g-3">
+                    <div class="form-group col-md-4">
+                        <label for="name" class="form-label">Nome *</label>
+                        <input type="text" v-model="name" class="form-control" id="name" placeholder="Digite o nome" required>
+                        <div class="invalid-feedback">O nome é obrigatório.</div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="email" class="form-label">Email *</label>
+                        <input type="email" v-model="email" class="form-control" id="email" placeholder="Digite o email" required>
+                        <div class="invalid-feedback">O email é obrigatório.</div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="cpf" class="form-label">CPF *</label>
+                        <input type="text" v-model="cpf" class="form-control" id="cpf" placeholder="Digite o CPF" required>
+                        <div class="invalid-feedback">O CPF é obrigatório.</div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="role" class="form-label">Perfil *</label>
+                        <select class="form-select" v-model="role_id" id="role" required>
+                            <option value="" disabled>Selecione</option>
+                            <option value="1">Admin</option>
+                            <option value="2">Usuário</option>
+                        </select>
+                        <div class="invalid-feedback">O perfil é obrigatório.</div>
+                    </div>
                 </div>
-                <hr>
-                <div class="mt-2">
-                    <button type="submit" class="btn btn-success">
-                        ADCIONAR
-                    </button>
+            </fieldset>
+
+            <!-- Endereço -->
+            <fieldset class="border p-3 mb-4">
+                <legend class="w-auto px-2">Endereço</legend>
+                <div class="row g-3">
+                    <div class="form-group col-md-6">
+                        <label for="logradouro" class="form-label">Logradouro *</label>
+                        <select class="form-select" v-model="logradouro" id="logradouro" required>
+                            <option value="" disabled>Selecione o logradouro</option>
+                            <option v-for="endereco in enderecos" :key="endereco.id" :value="endereco.logradouro">
+                                {{ endereco.logradouro }}
+                            </option>
+                        </select>
+                        <div class="invalid-feedback">O logradouro é obrigatório.</div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="cep" class="form-label">CEP *</label>
+                        <select class="form-select" v-model="cep" id="cep" required>
+                            <option value="" disabled>Selecione o CEP</option>
+                            <option v-for="endereco in enderecos" :key="endereco.id" :value="endereco.cep">
+                                {{ endereco.cep }}
+                            </option>
+                        </select>
+                        <div class="invalid-feedback">O CEP é obrigatório.</div>
+                    </div>
                 </div>
-                <br><br>
-            </form>
-            <br>
-        </div>
-        <br>
-        <hr>
+            </fieldset>
+
+            <!-- Botão de envio -->
+            <div class="text-end">
+                <button type="submit" class="btn btn-success">Adicionar</button>
+            </div>
+        </form>
     </div>
 </template>
+
 <script>
 export default {
     name: 'UsuariosCadVue',

@@ -13,10 +13,10 @@
         </div>
         <!-- /.content-header -->
         <div>
-        <div class="mt-3" striped hover :users="users"></div>
-        <br />
-        <!-- Filtro -->
-    </div>
+            <div class="mt-3" striped hover :users="users"></div>
+            <br />
+            <!-- Filtro -->
+        </div>
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
@@ -25,12 +25,9 @@
                     <div class="card-header">
                         <h3 class="card-title">Gerenciamento de Usuários</h3>
                         <div class="card-tools">
-                            <a href="#" class="btn btn-success btn-sm">
-                                <router-link :to="{ name: 'cad-usuarios' }">
-                                    <i class="fas fa-user-plus"></i> Adicionar Usuário
-
-                                </router-link>    
-                            </a>
+                            <router-link :to="{ name: 'cad-usuarios' }" class="btn btn-success btn-sm">
+                                <i class="fas fa-user-plus"></i> Adicionar Usuário
+                            </router-link>
                         </div>
                     </div>
                     <!-- /.card-header -->
@@ -80,7 +77,7 @@
             </div>
             <!-- /.card -->
         </section>
-    </div>         
+    </div>
 </template>
 
 <script>
