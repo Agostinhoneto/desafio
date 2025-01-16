@@ -1,4 +1,5 @@
 <template>
+  
   <div class="wrapper">
 
     <!-- Preloader -->
@@ -364,41 +365,3 @@
       <!-- /.content -->
     </div>
 </template>
-
-<script>
-import LineChart from './LineChart.vue';
-import BarChart from './BarChart.vue';
-
-export default {
-  components: {
-    LineChart,
-    BarChart,
-  },
-  data() {
-    return {
-      totalUsers: 1500,
-      newUsers: 100,
-      userGrowthData: {
-        labels: ['January', 'February', 'March', 'April', 'May'],
-        datasets: [
-          {
-            label: 'User Growth',
-            backgroundColor: '#f87979',
-            data: [40, 20, 12, 39, 10, 40],
-          },
-        ],
-      },
-      userActivityData: {
-        labels: ['Login', 'Signup', 'Purchase', 'Logout', 'View'],
-        datasets: [
-          {
-            label: 'User Activity',
-            backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16', '#C0C0C0'],
-            data: [100, 50, 25, 75, 90],
-          },
-        ],
-      },
-    };
-  },
-};
-</script>

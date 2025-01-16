@@ -89,3 +89,139 @@ body {
 div {
   margin-bottom: 15px;
 }
+
+.nav-link.custom-active {
+  background-color: #cc0000;
+  /* Fundo vermelho escuro */
+  color: #ffffff;
+  /* Texto branco */
+}
+
+.nav-link.custom-active-orange {
+  background-color: #e0a800;
+  /* Fundo laranja claro */
+  color: #000000;
+  /* Texto branco */
+}
+
+.nav-link.custom-active:hover {
+  background-color: #ff4d4d;
+  /* Fundo vermelho claro ao passar o mouse */
+  color: #ffffff;
+  /* Texto branco */
+}
+
+.nav-link.custom-active-green {
+  background-color: #28a745;
+  /* Verde padrão */
+  color: #ffffff;
+  /* Texto branco */
+}
+
+.nav-link.custom-active:hover {
+  background-color: #218838;
+  /* Verde mais escuro no hover */
+  color: #ffffff;
+}
+
+.nav-link.custom-active-gray {
+  background-color: #6C757D;
+  /* Verde padrão */
+  color: #ffffff;
+  /* Texto branco */
+}
+
+.nav-link.custom-active:hover {
+  background-color: #218838;
+  /* Verde mais escuro no hover */
+  color: #ffffff;
+}
+
+.nav-link.custom-active-blue {
+  background-color: #007BFF;
+  /* Azul padrão */
+  color: #ffffff;
+  /* Texto branco */
+}
+
+.nav-link.custom-active-blue:hover {
+  background-color: #0056b3;
+  /* Azul mais escuro no hover */
+  color: #ffffff;
+  /* Texto branco */
+}
+
+.nav-link.custom-active-gra {
+  background-color: rgb(96, 99, 102);
+  /* Azul padrão */
+  color: #ffffff;
+  /* Texto branco */
+}
+
+.nav-link.custom-active-gra:hover {
+  background-color: rgb(82, 85, 88);
+  /* Azul mais escuro no hover */
+  color: #ffffff;
+  /* Texto branco */
+}
+
+.nav-link.custom-active-lembrete {
+  background-color: rgb(238, 122, 142);
+  /* Azul padrão */
+  color: #ffffff;
+  /* Texto branco */
+}
+
+.nav-link.custom-active-lembrete:hover {
+  background-color: rgb(4, 65, 27);
+  /* Azul mais escuro no hover */
+  color: #ffffff;
+  /* Texto branco */
+}
+
+.nav-link.custom-active-calendar {
+  background-color: rgb(4, 56, 26);
+  /* Azul padrão */
+  color: #ffffff;
+  /* Texto branco */
+}
+
+.nav-link.custom-active-lembrete:hover {
+  background-color: rgb(34, 218, 65);
+  /* Azul mais escuro no hover */
+  color: #ffffff;
+  /* Texto branco */
+}
+
+.nav-link.custom-active-fin {
+  color: #000;
+  /* Texto preto para contraste */
+  background-color: #F5F5F5;
+  /* Cinza claro */
+  border-radius: 5px;
+  padding: 8px 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.nav-link.custom-active-fin:hover {
+  background-color: #FFE8A1;
+  /* Amarelo um pouco mais intenso no hover */
+}
+
+
+.nav-link.custom-active-rel {
+  color: #fff;
+  /* Texto branco para contraste */
+  background-color: #6F42C1;
+  /* Roxo elegante */
+  border-radius: 5px;
+  padding: 8px 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.nav-link.custom-active-fin:hover {
+  background-color: #59389A;
+  /* Roxo mais escuro no hover */
+}
