@@ -162,6 +162,6 @@
   </script>
   
   <style>
-  /* Adicione seu estilo personalizado aqui, se necessário */
+    @import "../assets/app.css"
   </style>
   
