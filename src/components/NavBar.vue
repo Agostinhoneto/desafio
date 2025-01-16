@@ -11,10 +11,16 @@
                 <router-link to="/" class="nav-link">Home</router-link>
             </li>
             <li class="nav-item">
+                <router-link to="/dashboard" class="nav-link">Dashboard</router-link>
+            </li>
+            <li class="nav-item">
                 <router-link to="/usuarios" class="nav-link">Cadastro de Usuários</router-link>
             </li>
             <li class="nav-item">
                 <router-link to="/enderecos" class="nav-link">Cadastro de Endereços</router-link>
+            </li>
+            <li class="nav-item">
+                <router-link to="/dashboard" class="nav-link">Dashboard</router-link>
             </li>
         </ul>
         </div>

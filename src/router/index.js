@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import UsuariosCadVue from '../views/usuarios/UsuariosCadVue.vue'
 import UsuariosUpdate from '../views/usuarios/UsuariosUpdate.vue'
+import Dashboard from '../components/Dashboard.vue'
+
 import Enderecos from '../views/Enderecos.vue'
 
 const router = createRouter({
@@ -11,6 +13,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: Dashboard
     },
     {
       path: '/usuarios',

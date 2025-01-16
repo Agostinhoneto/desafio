@@ -8,9 +8,11 @@
     "preview": "vite preview --port 5050"
   },
   "dependencies": {
+    "chart.js": "^4.4.7",
     "json-server": "^0.17.0",
     "moment": "^2.29.4",
     "vue": "^3.2.33",
+    "vue-chartjs": "^5.3.2",
     "vue-router": "^4.0.14"
   },
   "devDependencies": {
