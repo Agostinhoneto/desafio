@@ -1,77 +1,86 @@
 <template>
-    <div>
-        <br />
-        <h2>Lista de Usuários</h2>
-        <hr />
-        <div>
-            <router-link :to="{ name: 'cad-usuarios' }">
-                <button type="submit" class="btn btn-success">Novo</button>
-            </router-link>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Lista de Usuários</h1>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
         </div>
+        <!-- /.content-header -->
+        <div>
         <div class="mt-3" striped hover :users="users"></div>
         <br />
-
         <!-- Filtro -->
-        <form>
-            <div class="form-group col-4">
-                <label for="nome">Digite: Nome, Email ou CPF</label>
-                <input type="text" class="form-control" id="name" v-model="search" placeholder="Digite o nome" />
-            </div>
-            <br />
-            <div class="form-group col-md-2">
-                <label for="startDate">Data de Cadastro:</label>
-                <input type="date" class="form-control" id="startDate" v-model="startDate" />
-            </div>
-            <br />
-            <div class="form-group col-md-2">
-                <label for="endDate">Data Fim:</label>
-                <input type="date" class="form-control" id="endDate" v-model="endDate" />
-            </div>
-            <br />
-        </form>
-        <br />
-
-        <!-- Tabela -->
-        <h3>Lista de Usuários</h3>
-        <hr />
-        <div v-if="loading">Carregando...</div>
-        <table v-else class="table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Data de Cadastro</th>
-                    <th>Nome</th>
-                    <th>Email</th>
-                    <th>CPF</th>
-                    <th>Perfil</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="user in filterUser" :key="user.id">
-                    <td>{{ user.id }}</td>
-                    <td>{{ formatDate(user.created_at) }}</td>
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.cpf }}</td>
-                    <td>{{ user.role.name }}</td>
-                    <td>
-                        <router-link :to="{ name: 'user-todo', params: { id: user.id } }">
-                            <button type="button" class="btn btn-light">Detalhar</button>
-                        </router-link>
-                        |
-                        <router-link :to="{ name: 'cad-usuarios', params: { id: user.id } }">
-                            <button type="button" class="btn btn-primary">Editar</button>
-                        </router-link>
-                        |
-                        <button type="button" class="btn btn-danger" @click.stop.prevent="remover(user.id)">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
     </div>
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <!-- Table of Users -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Gerenciamento de Usuários</h3>
+                        <div class="card-tools">
+                            <a href="#" class="btn btn-success btn-sm">
+                                <router-link :to="{ name: 'cad-usuarios' }">
+                                    <i class="fas fa-user-plus"></i> Adicionar Usuário
+
+                                </router-link>    
+                            </a>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body p-0">
+                        <hr />
+                        <div v-if="loading">Carregando...</div>
+                        <table v-else class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Data de Cadastro</th>
+                                    <th>Nome</th>
+                                    <th>Email</th>
+                                    <th>CPF</th>
+                                    <th>Perfil</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="user in filterUser" :key="user.id">
+                                    <td>{{ user.id }}</td>
+                                    <td>{{ formatDate(user.created_at) }}</td>
+                                    <td>{{ user.name }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.cpf }}</td>
+                                    <td>{{ user.role.name }}</td>
+                                    <td>
+                                        <router-link :to="{ name: 'user-todo', params: { id: user.id } }">
+                                            <button type="button" class="btn btn-light">Detalhar</button>
+                                        </router-link>
+                                        |
+                                        <router-link :to="{ name: 'cad-usuarios', params: { id: user.id } }">
+                                            <button type="button" class="btn btn-primary">Editar</button>
+                                        </router-link>
+                                        |
+                                        <button type="button" class="btn btn-danger"
+                                            @click.stop.prevent="remover(user.id)">
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </section>
+    </div>         
 </template>
 
 <script>
