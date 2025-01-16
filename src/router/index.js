@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import UsuariosCadVue from '../views/usuarios/UsuariosCadVue.vue'
 import UsuariosUpdate from '../views/usuarios/UsuariosUpdate.vue'
 import Dashboard from '../components/Dashboard.vue'
+//import Dashboard from '@/components/Dashboard.vue'; // ou o caminho correto para o seu arquivo Dashboard.vue
 
 import Enderecos from '../views/Enderecos.vue'
 
@@ -14,6 +15,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView
+    },
+    {
+      path: '/dashboard',
+      name: 'Dashboard',
+      component: Dashboard,
     },
     {
       path: '/usuarios',
