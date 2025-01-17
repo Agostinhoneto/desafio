@@ -1,3 +1,20 @@
+<<<<<<< HEAD
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+.env
+.env.backup
+.phpunit.result.cache
+docker-compose.override.yml
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+/.idea
+/.vscode
+=======
 # Logs
 logs
 *.log
@@ -26,3 +43,4 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+>>>>>>> 4cb1021693212e4581e31f077a5d6002d8041ae1

@@ -1,4 +1,22 @@
 {
+<<<<<<< HEAD
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production"
+    },
+    "devDependencies": {
+        "axios": "^0.21",
+        "laravel-mix": "^6.0.6",
+        "lodash": "^4.17.19",
+        "postcss": "^8.1.14"
+    }
+=======
   "name": "subjects",
   "version": "0.0.0",
   "scripts": {
@@ -22,4 +40,5 @@
     "@vitejs/plugin-vue": "^2.3.1",
     "vite": "^2.9.18"
   }
+>>>>>>> 4cb1021693212e4581e31f077a5d6002d8041ae1
 }
