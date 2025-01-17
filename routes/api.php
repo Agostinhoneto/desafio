@@ -39,37 +39,17 @@ Route::controller(EnderecoController::class)->group(function () {
 
 });
 
-/*
-Route::get('/users/login', [UserController::class, 'login'])->name('users.login');
-//Route::middleware('api')->group(function () {
-    //Users.
-    Route::post('/users/register', [UserController::class, 'register'])->name('users.register');
-    Route::get('/users/index', [UserController::class, 'index'])->name('users.index');
-    Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
-    Route::get('/users/show/{id}', [UserController::class, 'show'])->name('users.show');
-    Route::put('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/destroy/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::controller(DespesasController::class)->group(function () {
+    Route::get('index','despesasIndex');
+    Route::post('storeEndereco','storeEndereco'); 
+    Route::delete('enderecoDestroy/{id}','enderecoDestroy');
 
-    //Receitas.
-    Route::get('/receitas/index', [ReceitasController::class, 'index']);
-    Route::post('/receitas/store', [ReceitasController::class, 'store']);
-    Route::get('/receitas/show/{id}', [ReceitasController::class, 'show'])->name('receitas.show');
-    Route::put('/receitas/update/{id}', [ReceitasController::class, 'update'])->name('receitas.update');
-    Route::delete('/receitas/destroy/{id}', [ReceitasController::class, 'destroy'])->name('receitas.destroy');
+});
 
-    // Despesas .
-    Route::get('/despesas/index', [DespesasController::class, 'index']);
-    Route::get('/despesas/store', [DespesasController::class, 'store']);
-    Route::get('/despesas/show/{id}', [DespesasController::class, 'show'])->name('despesas.show');
-    Route::put('/despesas/update/{id}', [DespesasController::class, 'update'])->name('despesas.update');
-    Route::delete('/despesas/destroy/{id}', [DespesasController::class, 'destroy'])->name('despesas.destroy');
-   
-   
-    Route::controller(EnderecoController::class)->group(function () {
-        Route::get('enderecoIndex','enderecoIndex');
-        Route::post('storeEndereco','storeEndereco'); 
-        Route::delete('enderecoDestroy/{id}','enderecoDestroy');
-    
-    });
-//});
-*/
+Route::controller(ReceitasController::class)->group(function () {
+    Route::get('index','receitasIndex');
+    Route::post('storeEndereco','storeEndereco'); 
+    Route::delete('enderecoDestroy/{id}','enderecoDestroy');
+
+});
+
