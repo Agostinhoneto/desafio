@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="content-wrapper">
         <h2 class="my-4">Cadastrar Receitas</h2>
         <div class="card-tools">
           <router-link :to="{ name: 'home' }" class="btn btn-secondary btn-sm ml-2">

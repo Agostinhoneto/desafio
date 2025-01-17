@@ -1,12 +1,12 @@
 <template>
-    <div>
+    <div class="content-wrapper">
         <h2 class="my-4">Cadastrar Despesas</h2>
         <div class="card-tools">
           <router-link :to="{ name: 'home' }" class="btn btn-secondary btn-sm ml-2">
             <i class="fas fa-arrow"></i> Voltar
           </router-link>
           <router-link :to="{ name: 'home' }" class="btn btn-primary btn-sm ml-2">
-                <i class="fas fa-list"></i> Listar Usuários
+                <i class="fas fa-list"></i> Listar Despesas
             </router-link>
         </div>
 
