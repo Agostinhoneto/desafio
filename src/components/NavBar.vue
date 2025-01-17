@@ -14,16 +14,16 @@
                     <router-link to="/dashboard" class="nav-link" aria-label="Ir para o dashboard">Dashboard</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link to="/usuarios" class="nav-link" aria-label="Cadastrar usuários">Cadastro de Usuários</router-link>
+                    <router-link to="/usuarios" class="nav-link" aria-label="Cadastrar usuários">Usuários</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link to="/receitas" class="nav-link" aria-label="Cadastrar receitas">Cadastro de Receitas</router-link>
+                    <router-link to="/receitas" class="nav-link" aria-label="Cadastrar receitas">Receitas</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link to="/despesas" class="nav-link" aria-label="Cadastrar despesas">Cadastro de Despesas</router-link>
+                    <router-link to="/despesas" class="nav-link" aria-label="Cadastrar despesas">Despesas</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link to="/enderecos" class="nav-link" aria-label="Cadastrar endereços">Cadastro de Endereços</router-link>
+                    <router-link to="/enderecos" class="nav-link" aria-label="Cadastrar endereços">Endereços</router-link>
                 </li>
             </ul>
         </div>
