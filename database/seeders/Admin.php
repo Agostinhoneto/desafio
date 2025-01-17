@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class Admin extends Seeder
@@ -18,7 +19,8 @@ class Admin extends Seeder
             'name' => 'Admin',
             'email' => 'admin@admin.com',
             'email_verified_at' => now(),
-            'password' => bcrypt('password'),
+            'password' => bcrypt('password'), //password
+          //  'is_admin' => 1
         ]);
     }
 }
