@@ -1,5 +1,7 @@
 <template>
-    <div>
+     <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
         <h2 class="my-4">Cadastrar Usuários</h2>
         <div class="card-tools">
           <router-link :to="{ name: 'home' }" class="btn btn-secondary btn-sm ml-2">
@@ -82,6 +84,7 @@
             </div>
         </form>
     </div>
+     </div>
 </template>
 
 <script>
