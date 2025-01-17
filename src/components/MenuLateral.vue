@@ -7,20 +7,20 @@
             </div>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <router-link to="/" class="nav-link text-white" aria-label="Ir para a página inicial">
+                    <router-link to="/dashboard" class="nav-link text-white" aria-label="Ir para a página inicial">
                         <i class="fas fa-home"></i>
                         <span class="ml-2">Dashboard</span>
                     </router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link to="/dashboard" class="nav-link text-white" aria-label="Ir para a página inicial">
+                    <router-link to="/receitas" class="nav-link text-white" aria-label="Ir para a página Receitas">
                         <i class="fas fa-wallet"></i> <span class="ml-2">Receitas</span>
                     </router-link>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link text-white">
+                    <router-link to="/despesas" class="nav-link text-white" aria-label="Ir para a página Despesas">
                         <i class="fas fa-wallet"></i> <span class="ml-2">Despesas</span>
-                    </a>
+                    </router-link>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link text-white">
@@ -33,9 +33,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link text-white">
+                    <router-link to="/" class="nav-link text-white" aria-label="Ir para a página Receitas">
                         <i class="fas fa-user"></i> <span class="ml-2">Usuários</span>
-                    </a>
+                    </router-link>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link text-white">
@@ -44,16 +44,6 @@
                 </li>
             </ul>
         </aside>
-
-        <!-- Main Content -->
-        <div class="content-wrapper">
-            <header class="p-3 bg-light border-bottom">
-                <h5>Página Principal</h5>
-            </header>
-            <main class="p-4">
-                <p>Conteúdo principal aqui.</p>
-            </main>
-        </div>
     </div>
 </template>
 

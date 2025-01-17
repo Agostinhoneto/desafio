@@ -6,7 +6,7 @@
             <i class="fas fa-arrow"></i> Voltar
           </router-link>
           <router-link :to="{ name: 'home' }" class="btn btn-primary btn-sm ml-2">
-                <i class="fas fa-list"></i> Listar Usuários
+                <i class="fas fa-list"></i> Listar Receitas
             </router-link>
         </div>
 
