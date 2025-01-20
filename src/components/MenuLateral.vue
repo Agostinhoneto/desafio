@@ -33,7 +33,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <router-link to="/" class="nav-link text-white" aria-label="Ir para a página Receitas">
+                    <router-link to="/lista-usuarios" class="nav-link text-white" aria-label="Ir para a página Receitas">
                         <i class="fas fa-user"></i> <span class="ml-2">Usuários</span>
                     </router-link>
                 </li>

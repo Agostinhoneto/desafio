@@ -26,14 +26,10 @@
                     <button class="btn btn-outline-secondary" type="button" @click="filterUsers">Buscar</button>
                 </div>
             </div>
-
-            <!-- Table of Users -->
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Gerenciamento de Usuários</h3>
                 </div>
-                <!-- /.card-header -->
-
                 <div class="card-body p-0">
                     <div v-if="loading" class="text-center my-3">Carregando...</div>
                     <table v-else class="table table-striped table-hover table-responsive">
@@ -75,9 +71,6 @@
 
                     </table>
                 </div>
-                <!-- /.card-body -->
-
-                <!-- Paginação -->
                 <div class="card-footer d-flex justify-content-between align-items-center">
                     <span>Total de usuários: {{ users.length }}</span>
                     <ul class="pagination pagination-sm m-0">
@@ -94,8 +87,6 @@
                     </ul>
                 </div>
             </div>
-            <!-- /.card -->
-            <!-- Modal de Confirmação -->
             <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">

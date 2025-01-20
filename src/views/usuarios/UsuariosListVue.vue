@@ -1,108 +1,182 @@
 <template>
-<br>
-<div>
-    <h2>Cadastrar Usuários</h2>
-    <hr> 
-    <div class="row">
-        <form>
-        <br><br>
-        <div class="form-group col-md-6">
-            <label for="exampleInputEmail1">Nome</label>
-            <input type="nome" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Nome">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Lista de Usuário</h1>
+                    </div>
+                </div>
+            </div>
         </div>
-        <br>
-        <div class="form-group col-md-6">
-            <label for="exampleInputPassword1">CPF</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="CPF">
+        <!-- /.content-header -->
+
+        <div class="container-fluid">
+            <!-- Botões e Filtros -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <router-link :to="{ name: 'cad-usuarios' }" class="btn btn-success btn-sm">
+                        <i class="fas fa-user-plus"></i> Adicionar Usuário
+                    </router-link>
+                </div>
+                <div class="input-group" style="width: 300px;">
+                    <input type="text" class="form-control" placeholder="Buscar usuário..." v-model="searchQuery">
+                    <button class="btn btn-outline-secondary" type="button" @click="filterUsers">Buscar</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Gerenciamento de Usuários</h3>
+                </div>
+                <div class="card-body p-0">
+                    <div v-if="loading" class="text-center my-3">Carregando...</div>
+                    <table v-else class="table table-striped table-hover table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>CPF</th>
+                                <th>Perfil</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="user in filterUser" :key="user.id">
+                                <td>{{ user.id }}</td>
+                                <td>{{ formatDate(user.created_at) }}</td>
+                                <td>{{ user.name || 'Nome não disponível' }}</td>
+                                <td>{{ user.email || 'Email não disponível' }}</td>
+                                <td>{{ user.cpf || 'CPF não disponível' }}</td>
+                                <td>{{ user.role ? user.role.name : 'Perfil não disponível' }}</td>
+                                <td>
+                                    <router-link :to="{ name: 'user-todo', params: { id: user.id } }">
+                                        <button type="button" class="btn btn-light btn-sm">Detalhar</button>
+                                    </router-link>
+                                    <router-link :to="{ name: 'cad-usuarios', params: { id: user.id } }">
+                                        <button type="button" class="btn btn-primary btn-sm">Editar</button>
+                                    </router-link>
+                                    <router-link :to="{ name: 'cad-usuarios', params: { id: user.id } }">
+                                        <button type="button" class="btn btn-warning btn-sm">Desativar</button>
+                                    </router-link>
+                                    <router-link :to="{ name: 'cad-usuarios', params: { id: user.id } }">
+                                        <button type="button" class="btn btn-info btn-sm">Reativar</button>
+                                    </router-link>
+                                    <button type="button" class="btn btn-danger btn-sm"
+                                        @click="confirmDelete(user.id)">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <span>Total de usuários: {{ users.length }}</span>
+                    <ul class="pagination pagination-sm m-0">
+                        <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                            <a class="page-link" href="#" @click="changePage(currentPage - 1)">«</a>
+                        </li>
+                        <li class="page-item" v-for="page in totalPages" :key="page"
+                            :class="{ active: currentPage === page }">
+                            <a class="page-link" href="#" @click="changePage(page)">{{ page }}</a>
+                        </li>
+                        <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                            <a class="page-link" href="#" @click="changePage(currentPage + 1)">»</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmação de Deleção</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Tem certeza de que deseja deletar este usuário?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-danger" @click="deleteUser">Deletar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <br>
-        <div class="form-group col-md-6">
-            <label for="exampleInputPassword1">Email</label>
-            <br>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Email">
-        </div>
-        <br>
-        <div class="form-group col-md-6">
-            <label for="exampleInputPassword1">Perfil</label>
-            <br>
-            <select type="" v-model="role_id"  id="role_id" class="form-select" aria-label="Default select example">
-                <option value="1">Admin</option>
-                <option value="2">Usuário</option>
-            </select>
-        </div>
-        <br>
-        <div class="form-group col-md-6">
-            <label for="exampleInputPassword1">Logradouro</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Logradouro">
-        </div>
-        <br>
-        <div class="form-group col-md-2">
-            <label for="exampleInputPassword1">Cep</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Cep">
-        </div> 
-        <br>
-        <button type="submit" class="btn btn-primary">Adcionar</button>
-    </form>
-    </div>     
-    <br><hr>     
-    <div class="col-md-9">
-        <table class="table">
-            <tbody>
-                <tr>
-                    <td>
-                        <div v-for="user in users" :key="user.id">    
-                            <hr>
-                            <div>Usuarios:</div>
-                            <hr>
-                            <div class="card-body">
-                                <td>{{ user.name }}</td>
-                            </div>
-                            
-                            <div class="card-body">
-                                <td>{{ user.email }}</td>
-                            </div>
-                            <div class="card-body">
-                                <td>{{ user.Logradouro }}</td>
-                            </div>
-                            <div class="card-body">
-                                <td>{{ user.role.name }}</td>
-                            </div>
-                        </div>      
-                    </td>       
-                </tr>   
-            </tbody>
-        </table> 
     </div>
-</div>
-<div>
-    <div v-for="user in users" :key="user.id"
-        class="card m-3">
-        <div class="card-body">
-            <router-link
-                :to="{ name: 'user-todo', params: { id: user.id }}">
-                <th>{{ user.name }}</th>
-                <th>{{ user.id }}</th>
-            </router-link>
-        </div>
-    </div>
-</div>
 </template>
+
 <script>
-    export default {
-        data(){
-            return {
-                users:[],
-            };
-        }, 
-        mounted(){
-            fetch('http://127.0.0.1:8000/api/index').then(response=> response.json())
-            .then((res) =>{
-                this.users = res.data;
+import moment from "moment";
+
+export default {
+    data() {
+        return {
+            search: "",
+            users: [],
+            startDate: "",
+            endDate: "",
+            loading: false,
+        };
+    },
+    computed: {
+        filterUser() {
+            return this.users.filter((user) => {
+                const searchText = this.search.toLowerCase();
+                const userCreatedAt = moment(user.created_at).format("YYYY-MM-DD");
+                const isWithinDateRange =
+                    this.startDate && this.endDate
+                        ? userCreatedAt >= this.startDate && userCreatedAt <= this.endDate
+                        : true;
+
+                return (
+                    isWithinDateRange &&
+                    (user.name.toLowerCase().includes(searchText) ||
+                        user.cpf.includes(this.search) ||
+                        user.email.toLowerCase().includes(searchText))
+                );
             });
         },
-    }
+    },
+    methods: {
+        formatDate(date) {
+            return moment(date).format("DD/MM/YYYY, HH:mm:ss");
+        },
+        async listarTodos() {
+            this.loading = true;
+            try {
+                const response = await fetch("http://127.0.0.1:8000/api/index");
+                const res = await response.json();
+                this.users = res.data;
+            } catch (error) {
+                console.error("Erro ao carregar usuários:", error);
+            } finally {
+                this.loading = false;
+            }
+        },
+        async remover(userId) {
+            if (!confirm("Deseja realmente excluir este usuário?")) return;
+
+            try {
+                await fetch(`http://127.0.0.1:8000/api/destroy/${userId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                });
+                alert("Usuário excluído com sucesso!");
+                await this.listarTodos();
+            } catch (error) {
+                console.error("Erro ao excluir usuário:", error);
+            }
+        },
+    },
+    async mounted() {
+        await this.listarTodos();
+    },
+};
 </script>
-   
-
-
-
