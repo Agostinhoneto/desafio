@@ -81,22 +81,30 @@ export default {
                         remember: this.remember,
                     }),
                 });
-                const data = await response.json();
-                console.log(data);
+
+                if (response.ok) {
+                    const data = await response.json();
+
+                    // Simples verificação de token ou sucesso
+                    if (data.token) {
+                        console.log("Login bem-sucedido:", data);
+
+                        // Redirecionar para o Dashboard
+                        this.$router.push("/dashboard");
+                    } else {
+                        console.error("Falha no login:", data.message || "Erro desconhecido");
+                        alert(data.message || "Erro ao logar.");
+                    }
+                } else {
+                    const errorData = await response.json();
+                    console.error("Erro na resposta:", errorData);
+                    alert(errorData.message || "Erro ao logar.");
+                }
             } catch (error) {
-                console.error("Error:", error);
+                console.error("Erro de requisição:", error);
+                alert("Erro ao tentar realizar o login. Verifique sua conexão.");
             }
         },
     },
 };
 </script>
-
-<style scoped>
-.hold-transition.login-page {
-    height: 100vh;
-    background: #f4f6f9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-</style>

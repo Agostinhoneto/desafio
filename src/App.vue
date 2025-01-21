@@ -1,17 +1,34 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import NavBar from './components/NavBar.vue';
-import Dashboard from './components/Dashboard.vue';
-import MenuLateral  from './components/MenuLateral.vue';
+import { RouterView, useRoute } from 'vue-router';
+import { computed } from 'vue'; // Certifique-se de importar computed
+import MenuLateral from './components/MenuLateral.vue';
 
+// Obter a rota atual
+const route = useRoute();
+
+// Verificar se o menu lateral deve ser exibido
+const showMenuLateral = computed(() => route.meta.MenuLateral !== 'empty');
 </script>
 
 <template>
-  <div class="container">
-    <RouterView />
+  <div class="app-container">
+    <!-- Exibir o menu lateral somente se permitido pela rota -->
+    <MenuLateral v-if="showMenuLateral" />
+    <div class="content-container">
+      <RouterView />
+    </div>
   </div>
-  <MenuLateral />
 </template>
 
 <style>
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+.content-container {
+  flex: 1;
+  overflow: auto;
+  padding: 20px;
+}
 </style>
