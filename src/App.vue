@@ -1,12 +1,10 @@
 <script setup>
 import { RouterView, useRoute } from 'vue-router';
-import { computed } from 'vue'; // Certifique-se de importar computed
+import { computed } from 'vue'; 
 import MenuLateral from './components/MenuLateral.vue';
 
-// Obter a rota atual
 const route = useRoute();
 
-// Verificar se o menu lateral deve ser exibido
 const showMenuLateral = computed(() => route.meta.MenuLateral !== 'empty');
 </script>
 

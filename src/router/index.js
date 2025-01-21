@@ -18,25 +18,25 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
-    meta: { MenuLateral: 'default' }, // Exibir o menu lateral
+    meta: { MenuLateral: 'default' }, 
   },
   {
     path: '/lista-usuarios',
     name: 'lista',
     component: UsuariosListVue,
-    meta: { MenuLateral: 'default' }, // Exibir o menu lateral
+    meta: { MenuLateral: 'default' }, 
   },
   {
     path: '/usuarios',
     name: 'cad-usuarios',
     component: UsuariosCadVue,
-    meta: { MenuLateral: 'default' }, // Exibir o menu lateral
+    meta: { MenuLateral: 'default' }, 
   },
   {
     path: '/usuarios-update',
     name: 'update-usuarios',
     component: UsuariosUpdate,
-    meta: { MenuLateral: 'default' }, // Exibir o menu lateral
+    meta: { MenuLateral: 'default' }, 
   },
   {
     path: '/usuarios/id',
@@ -47,19 +47,19 @@ const routes = [
     path: '/receitas',
     name: 'cad-receitas',
     component: ReceitasCadVue,
-    meta: { MenuLateral: 'default' }, // Exibir o menu lateral
+    meta: { MenuLateral: 'default' }, 
   },
   {
     path: '/despesas',
     name: 'cad-despesas',
     component: DespesasCadVue,
-    meta: { MenuLateral: 'default' }, // Exibir o menu lateral
+    meta: { MenuLateral: 'default' }, 
   },
   {
     path: '/enderecos',
     name: 'user-enderecos',
     component: () => import('../views/Enderecos.vue'),
-    meta: { MenuLateral: 'default' }, // Exibir o menu lateral
+    meta: { MenuLateral: 'default' }, 
   }
 ];
 
