@@ -18,14 +18,14 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         $this->call(CategoriasSeeder::class);
         $this->call(Admin::class);
-        $this->call(EnderecoTableSeeder::class);        
-        $this->call(EnderecoUser::class);
         $this->call(DespesasTableSeeder::class);
         $this->call(ReceitasTableSeeder::class);
         $this->call(RolesTableSeeder::class);
         $this->call(RolesUsersTableSeeder::class);
         $this->call(PermissionsTableSeeder::class);
         $this->call(CategoriasMetas::class);
+        $this->call(EnderecoTableSeeder::class);        
+        $this->call(EnderecoUser::class);
 
     }
 }

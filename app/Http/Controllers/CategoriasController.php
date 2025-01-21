@@ -7,17 +7,10 @@ use Illuminate\Http\Request;
 
 class CategoriasController extends Controller
 {
-    public function index(Request $request)
+    public function indexCategorias(Request $request)
     {
-        try {
-            $categorias = Categorias::query()->orderBy('descricao')->get();
-            $mensagem = $request->session()->get('mensagem');
-
-            return view('categorias.index', compact('categorias', 'mensagem'));
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Erro ao carregar categorias: ' . $e->getMessage());
-            return back()->withErrors('Erro ao carregar as categorias. Tente novamente mais tarde.');
-        }
+        $data = Categorias::all();
+        return response()->json(['data' =>$data]);
     }
 
     public function show($id)

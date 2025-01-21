@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\DespesasController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EnderecoController;
 use App\Http\Controllers\ReceitasController;
+use App\Models\Categorias;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,33 +25,43 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+Route::post('/login', [UserController::class, 'login']);
+Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
+
 Route::controller(UserController::class)->group(function () {
-    Route::get('index','index');
-    Route::get('show/{id}','show');
-    Route::post('store','store'); 
-    Route::put('update/{id}','update');  
-    Route::delete('destroy/{id}','destroy');
-    Route::get('search','search');
-});
-
-Route::controller(EnderecoController::class)->group(function () {
-    Route::get('enderecoIndex','enderecoIndex');
-    Route::post('storeEndereco','storeEndereco'); 
-    Route::delete('enderecoDestroy/{id}','enderecoDestroy');
-
-});
-
-Route::controller(DespesasController::class)->group(function () {
-    Route::get('index','despesasIndex');
-    Route::post('storeEndereco','storeEndereco'); 
-    Route::delete('enderecoDestroy/{id}','enderecoDestroy');
-
+    Route::get('index', 'index');
+    Route::get('show/{id}', 'show');
+    Route::post('store', 'store');
+    Route::put('update/{id}', 'update');
+    Route::delete('destroy/{id}', 'destroy');
+    Route::get('search', 'search');
 });
 
 Route::controller(ReceitasController::class)->group(function () {
-    Route::get('index','receitasIndex');
-    Route::post('storeEndereco','storeEndereco'); 
-    Route::delete('enderecoDestroy/{id}','enderecoDestroy');
-
+    Route::get('indexReceitas', 'indexReceitas');
+    Route::post('storeReceitas', 'storeReceitas');
+    Route::delete('ReceitasDestroy/{id}', 'ReceitasDestroy');
 });
+
+Route::controller(DespesasController::class)->group(function () {
+    Route::get('indexDespesas', 'indexDespesas');
+    Route::post('storeDespesas', 'storeDespesas');
+    Route::delete('DespesasDestroy/{id}', 'DespesasDestroy');
+});
+
+Route::controller(CategoriasController::class)->group(function () {
+    Route::get('indexCategorias', 'indexCategorias');
+    Route::post('storeCategorias', 'storeCategorias');
+    Route::delete('CategoriasDestroy/{id}', 'CategoriasDestroy');
+});
+
+Route::controller(EnderecoController::class)->group(function () {
+    Route::get('enderecoIndex', 'enderecoIndex');
+    Route::post('storeEndereco', 'storeEndereco');
+    Route::delete('enderecoDestroy/{id}', 'enderecoDestroy');
+});
+
+
+
 

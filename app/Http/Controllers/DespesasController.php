@@ -16,22 +16,10 @@ use Illuminate\Support\Facades\Mail;
 class DespesasController extends Controller
 {
 
-    public function index(Request $request)
+    public function indexDespesas(Request $request)
     {
-        try {
-            if (!Auth::check()) {
-                return abort(403, 'Acesso não autorizado.');
-            }
-
-            $categorias = Categorias::query()->orderBy('descricao')->get();
-            $total = Despesas::sum('valor');
-            $despesas = Despesas::query()->with('categoria')->orderBy('descricao')->paginate(10);
-            $mensagem = $request->session()->get('mensagem');
-            return view('despesas.index', compact('despesas', 'mensagem', 'total', 'categorias'));
-        } catch (\Exception $e) {
-
-            return redirect()->back()->withErrors('Erro ao carregar as despesas: ' . $e->getMessage());
-        }
+        $data = Despesas::with('categoria')->get();
+        return response()->json(['data' =>$data]);
     }
 
     public function create()

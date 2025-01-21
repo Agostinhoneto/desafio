@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use DateTimeImmutable;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {    
@@ -28,11 +29,6 @@ class UserController extends Controller
     {
        $data = User::with('role','enderecoUsers')->get();
        return response()->json(['data' =>$data]);
-    }
-
-    public function create()
-    {
-        //
     }
 
     public function store(UserFormRequest $request)
@@ -101,4 +97,41 @@ class UserController extends Controller
         User::where('name', $request->name ,'cpf', $request->cpf )
          ->get();
     }  
+
+    public function login(Request $request)
+    {
+        $validatedData = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+        ]);
+
+        if (Auth::attempt(['email' => $validatedData['email'], 'password' => $validatedData['password']])) {
+            $user = Auth::user();
+
+            // Gera um token de autenticação para o usuário
+            $token = $user->createToken('authToken')->plainTextToken;
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Login successful.',
+                'user' => $user,
+                'token' => $token,
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Invalid email or password.',
+        ], 401);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Logged out successfully.',
+        ], 200);
+    }
 }
+

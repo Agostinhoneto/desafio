@@ -11,28 +11,11 @@ use Illuminate\Support\Facades\DB;
 
 class ReceitasController extends Controller
 {
-    /**
-     * Display a listing of receitas.
-     *
-     * @param Request $request
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
-     */
-    public function index(Request $request)
+
+   public function indexReceitas(Request $request)
     {
-        try {
-            if (!Auth::check()) {
-                return abort(403, 'Acesso não autorizado.');
-            }
-
-            $receitas = Receitas::with('categoria')->get();
-            $total = $receitas->sum('valor');
-            $categorias = Categorias::orderBy('descricao')->get();
-            $mensagem = $request->session()->get('mensagem');
-
-            return view('receitas.index', compact('receitas', 'mensagem', 'categorias', 'total'));
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors('Erro ao carregar as receitas: ' . $e->getMessage());
-        }
+        $data = Receitas::with('categoria')->get();
+        return response()->json(['data' =>$data]);
     }
 
     /**
@@ -56,7 +39,7 @@ class ReceitasController extends Controller
      * @param StoreReceitasRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreReceitasRequest $request)
+    public function store(Request $request)
     {
         try {
             $data = $request->only(['descricao', 'valor', 'data_recebimento', 'categoria_id']);
