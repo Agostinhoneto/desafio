@@ -84,12 +84,12 @@ export default {
 
                 if (response.ok) {
                     const data = await response.json();
-
-                    // Simples verificação de token ou sucesso
                     if (data.token) {
                         console.log("Login bem-sucedido:", data);
+                        // Armazene o token para autenticações futuras
+                        localStorage.setItem("authToken", data.token);
 
-                        // Redirecionar para o Dashboard
+                        // Redirecione para o dashboard
                         this.$router.push("/dashboard");
                     } else {
                         console.error("Falha no login:", data.message || "Erro desconhecido");
@@ -104,7 +104,7 @@ export default {
                 console.error("Erro de requisição:", error);
                 alert("Erro ao tentar realizar o login. Verifique sua conexão.");
             }
-        },
+        }
     },
 };
 </script>

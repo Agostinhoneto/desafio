@@ -101,7 +101,7 @@ export default {
     methods: {
         async loadCategorias() {
             try {
-                const response = await fetch("http://127.0.0.1:8000/api/categorias");
+                const response = await fetch("http://127.0.0.1:8000/api/indexCategorias");
                 const data = await response.json();
                 this.categorias = data.data; // Supondo que o formato é { data: [...] }
             } catch (error) {
@@ -112,7 +112,7 @@ export default {
 
         async loadDespesas() {
             try {
-                const response = await fetch("http://127.0.0.1:8000/api/despesas");
+                const response = await fetch("http://127.0.0.1:8000/api/indexDespesas");
                 const data = await response.json();
                 this.despesas = data.data; // Supondo que o formato é { data: [...] }
             } catch (error) {
@@ -126,7 +126,7 @@ export default {
             this.id = receitaId;
 
             try {
-                const response = await fetch(`http://127.0.0.1:8000/api/receitas/${receitaId}`);
+                const response = await fetch(`http://127.0.0.1:8000/api/indexReceitas/${receitaId}`);
                 const data = await response.json();
 
                 this.categoria_id = data.data.categoria_id;
@@ -161,7 +161,7 @@ export default {
 
         async storeReceita(payload) {
             try {
-                const response = await fetch("http://127.0.0.1:8000/api/receitas", {
+                const response = await fetch("http://127.0.0.1:8000/api/indexReceitas", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -181,7 +181,7 @@ export default {
 
         async updateReceita(payload) {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/api/receitas/${payload.id}`, {
+                const response = await fetch(`http://127.0.0.1:8000/api/indexReceitas/${payload.id}`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
