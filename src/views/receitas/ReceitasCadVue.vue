@@ -20,7 +20,7 @@
                         <select class="form-select" v-model="categoria_id" id="categoria_id" required>
                             <option value="" disabled>Selecione a categoria</option>
                             <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
-                                {{ categoria.nome }}
+                                {{ categoria.descricao }}
                             </option>
                         </select>
                         <div class="invalid-feedback">A categoria é obrigatória.</div>
@@ -54,19 +54,10 @@
                         <label for="status" class="form-label">Status *</label>
                         <select class="form-select" v-model="status" id="status" required>
                             <option value="" disabled>Selecione o status</option>
-                            <option value="pendente">Pendente</option>
-                            <option value="recebido">Recebido</option>
+                            <option value="0">Pendente</option>
+                            <option value="1">Recebido</option>
                         </select>
                         <div class="invalid-feedback">O status é obrigatório.</div>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="despesa_id" class="form-label">Despesa Vinculada</label>
-                        <select class="form-select" v-model="despesa_id" id="despesa_id">
-                            <option value="" disabled>Selecione uma despesa</option>
-                            <option v-for="despesa in despesas" :key="despesa.id" :value="despesa.id">
-                                {{ despesa.descricao }}
-                            </option>
-                        </select>
                     </div>
                 </div>
             </fieldset>
@@ -149,7 +140,6 @@ export default {
                 valor: this.valor,
                 data_recebimento: this.data_recebimento,
                 status: this.status,
-                despesa_id: this.despesa_id,
             };
 
             if (this.id) {
@@ -161,7 +151,7 @@ export default {
 
         async storeReceita(payload) {
             try {
-                const response = await fetch("http://127.0.0.1:8000/api/indexReceitas", {
+                const response = await fetch("http://127.0.0.1:8000/api/storeReceitas", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -205,7 +195,6 @@ export default {
             this.valor = "";
             this.data_recebimento = "";
             this.status = "";
-            this.despesa_id = "";
         },
     },
 

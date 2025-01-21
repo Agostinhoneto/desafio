@@ -19,7 +19,7 @@
                         <select class="form-select" v-model="categoria_id" id="categoria_id" required>
                             <option value="" disabled>Selecione a categoria</option>
                             <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
-                                {{ categoria.nome }}
+                                {{ categoria.descricao }}
                             </option>
                         </select>
                         <div class="invalid-feedback">A categoria é obrigatória.</div>
@@ -58,19 +58,8 @@
                         </select>
                         <div class="invalid-feedback">O status é obrigatório.</div>
                     </div>
-                    <div class="form-group col-md-4">
-                        <label for="receita_id" class="form-label">Receitas Vinculada</label>
-                        <select class="form-select" v-model="receita_id" id="despesa_id">
-                            <option value="" disabled>Selecione uma receitas</option>
-                            <option v-for="receita in receitas" :key="receita.id" :value="receita.id">
-                                {{ receita.descricao }}
-                            </option>
-                        </select>
-                    </div>
                 </div>
             </fieldset>
-
-            <!-- Botão de envio -->
             <div class="text-end">
                 <button type="submit" class="btn btn-success">Salvar Despesa</button>
             </div>
