@@ -6,6 +6,7 @@ import UsuariosCadVue from '../views/usuarios/UsuariosCadVue.vue';
 import UsuariosUpdate from '../views/usuarios/UsuariosUpdate.vue';
 import ReceitasCadVue from '../views/receitas/ReceitasCadVue.vue';
 import DespesasCadVue from '../views/despesas/DespesasCadVue.vue';
+import FinancasVue from '../views/financas/FinancasVue.vue';
 
 const routes = [
   {
@@ -60,7 +61,13 @@ const routes = [
     name: 'user-enderecos',
     component: () => import('../views/Enderecos.vue'),
     meta: { MenuLateral: 'default' }, 
-  }
+  },
+  {
+    path: '/financas',
+    name: 'list-financas',
+    component: FinancasVue,
+    meta: { MenuLateral: 'default' }, 
+  },
 ];
 
 const router = createRouter({

@@ -23,9 +23,9 @@
                     </router-link>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link text-white">
+                    <router-link to="/financas" class="nav-link text-white" aria-label="Ir para a página Finanças">
                         <i class="fas fa-wallet"></i> <span class="ml-2">Minhas Finanças</span>
-                    </a>
+                    </router-link>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link text-white">
@@ -33,7 +33,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <router-link to="/lista-usuarios" class="nav-link text-white" aria-label="Ir para a página Receitas">
+                    <router-link to="/lista-usuarios" class="nav-link text-white" aria-label="Ir para a página Usuários">
                         <i class="fas fa-user"></i> <span class="ml-2">Usuários</span>
                     </router-link>
                 </li>
