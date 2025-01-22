@@ -43,6 +43,7 @@
                             <tr v-for="user in filterUser" :key="user.id">
                                 <td>{{ user.id }}</td>
                                 <td>{{ formatDate(user.created_at) }}</td>
+                                <td>{{ despesa.usuario?.nome || 'Usuário não disponível' }}</td>
                                 <td>{{ user.name || 'Nome não disponível' }}</td>
                                 <td>{{ user.email || 'Email não disponível' }}</td>
                                 <td>{{ user.cpf || 'CPF não disponível' }}</td>

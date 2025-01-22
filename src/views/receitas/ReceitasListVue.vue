@@ -30,38 +30,34 @@
                     <table v-else class="table table-striped table-hover table-responsive">
                         <thead>
                             <tr>
-                                <th>Usuário</th>
-                                <th>Categoria</th>
                                 <th>Descrição</th>
+                                <th>Categoria</th>
                                 <th>Valor</th>
                                 <th>Data de Pagamento</th>
-                                <th>Status</th>                               
+                                <th>Status</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="receita in filterReceita" :key="receita.id">
-                                <td>{{ receita.id }}</td>
-                                <td>{{ receita.descricao || 'descricao não disponível' }}</td>
-                                <td>{{ receita.valor || 'Email não disponível' }}</td>
-                                <td>{{ receita.status || 'CPF não disponível' }}</td>
-                                <td>{{ formatDate(receita.data_recebimento) }}</td>
+                                <td>{{ receita.descricao || 'Categoria não disponível' }}</td>
+                                <td>{{ receita.categoria.descricao || 'Categoria não disponível' }}</td>
+                                <td>{{ receita.valor ? `R$ ${parseFloat(receita.valor).toFixed(2)}` : 'Valor não disponível' }}</td>
+                                <td>{{ receita.data_recebimento ? formatDate(receita.data_recebimento) : 'Data não disponível' }}</td>
+                                <td>{{ receita.status || 'Status não disponível' }}</td>
                                 <td>
                                     <router-link :to="{ name: 'cad-receitas', params: { id: receita.id } }">
                                         <button type="button" class="btn btn-primary btn-sm">Editar</button>
                                     </router-link>
-                                    <router-link :to="{ name: 'cad-receitas', params: { id: receita.id } }">
-                                        <button type="button" class="btn btn-warning btn-sm">Desativar</button>
-                                    </router-link>
-                                    <router-link :to="{ name: 'cad-receitas', params: { id: receita.id } }">
-                                        <button type="button" class="btn btn-info btn-sm">Reativar</button>
-                                    </router-link>
+                                    <button type="button" class="btn btn-warning btn-sm"
+                                        @click="alterarStatus(receita.id, 'desativar')">Desativar</button>
+                                    <button type="button" class="btn btn-info btn-sm"
+                                        @click="alterarStatus(receita.id, 'reativar')">Reativar</button>
                                     <button type="button" class="btn btn-danger btn-sm"
-                                        @click="confirmDelete(user.id)">Delete</button>
+                                        @click="confirmDelete(receita.id)">Excluir</button>
                                 </td>
                             </tr>
                         </tbody>
-
                     </table>
                 </div>
                 <div class="card-footer d-flex justify-content-between align-items-center">
@@ -136,7 +132,29 @@ export default {
     },
     methods: {
         formatDate(date) {
-            return moment(date).format("DD/MM/YYYY, HH:mm:ss");
+            if (!date) return 'Data não disponível';
+            return new Date(date).toLocaleDateString('pt-BR');
+        },
+        formatCurrency(value) {
+            if (!value) return 'Valor não disponível';
+            const numberValue = parseFloat(value);
+            if (isNaN(numberValue)) return 'Valor inválido';
+            return `R$ ${numberValue.toFixed(2)}`;
+        },
+        confirmDelete(id) {
+            if (confirm('Tem certeza que deseja excluir esta receita?')) {
+                // Lógica para deletar a receita
+                console.log(`Excluindo receita com ID: ${id}`);
+            }
+        },
+        alterarStatus(id, status) {
+            if (status === 'desativar') {
+                // Lógica para desativar a receita
+                console.log(`Desativando receita com ID: ${id}`);
+            } else if (status === 'reativar') {
+                // Lógica para reativar a receita
+                console.log(`Reativando receita com ID: ${id}`);
+            }
         },
         async listarTodos() {
             this.loading = true;
