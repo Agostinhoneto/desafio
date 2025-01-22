@@ -22,31 +22,13 @@ class DespesasController extends Controller
         return response()->json(['data' =>$data]);
     }
 
-    public function create()
+        
+    public function storeDespesas(Request $request)
     {
-        return view('despesas.create');
-    }
-
-    public function store(Request $request)
-    {
-        try {
-            $despesas = new Despesas();
-            $despesas->descricao = $request->input('descricao');
-            $despesas->valor = $request->input('valor');
-            $despesas->data_pagamento = $request->input('data_pagamento');
-            $despesas->categoria_id = $request->input('categoria_id');
-            $despesas->status = $request->input('status', 1);
-            $despesas->user_id = auth()->id();
-            $despesas->save();
-    
-            Mail::to('agostneto6@gmail.com')->send(new MailMailDespesas($despesas));
-    
-            return redirect()->route('despesas.index')->with('sucesso', 'Despesa cadastrada com sucesso');
-
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors('Erro ao salvar a despesa: ' . $e->getMessage());
-        }
-
+        $data = $request->only(['descricao', 'valor', 'data_pagamento', 'categoria_id','user_id']);
+        $data['status'] = $request->input('status', 1);
+        Despesas::create($data);
+        return response()->json(['data' =>$data]);
     }
 
     public function edit(Request $request, Despesas $despesas, $id)

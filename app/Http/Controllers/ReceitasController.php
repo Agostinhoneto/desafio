@@ -44,7 +44,7 @@ class ReceitasController extends Controller
         $data = $request->only(['descricao', 'valor', 'data_recebimento', 'categoria_id']);
         $data['status'] = $request->input('status', 1);
         Receitas::create($data);
-        return redirect()->route('receitas.index')->with('success', 'Receita cadastrada com sucesso!');
+        return response()->json(['data' =>$data]);
     }
 
     /**
