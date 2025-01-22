@@ -63,7 +63,6 @@ const routes = [
     component: ReceitasListVue,
     meta: { MenuLateral: 'default' }, 
   },
-
   {
     path: '/despesas',
     name: 'cad-despesas',

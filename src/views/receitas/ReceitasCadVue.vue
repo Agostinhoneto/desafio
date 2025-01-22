@@ -2,16 +2,15 @@
     <div class="content-wrapper">
         <h2 class="my-4">Cadastrar Receitas</h2>
         <div class="card-tools">
-            <router-link :to="{ name: 'lista' }" class="btn btn-secondary btn-sm ml-2">
+            <router-link :to="{ name: 'lista-receitas' }" class="btn btn-secondary btn-sm ml-2">
                 <i class="fas fa-arrow"></i> Voltar
             </router-link>
-            <router-link :to="{ name: 'lista' }" class="btn btn-primary btn-sm ml-2">
+            <router-link :to="{ name: 'lista-receitas' }" class="btn btn-primary btn-sm ml-2">
                 <i class="fas fa-list"></i> Listar Receitas
             </router-link>
         </div>
 
         <form @submit.prevent="submit">
-            <!-- Informações da Receita -->
             <fieldset class="border p-3 mb-4">
                 <legend class="w-auto px-2">Informações da Receita</legend>
                 <div class="row g-3">
@@ -40,7 +39,6 @@
                 </div>
             </fieldset>
 
-            <!-- Informações adicionais -->
             <fieldset class="border p-3 mb-4">
                 <legend class="w-auto px-2">Detalhes da Receita</legend>
                 <div class="row g-3">
@@ -61,8 +59,6 @@
                     </div>
                 </div>
             </fieldset>
-
-            <!-- Botão de envio -->
             <div class="text-end">
                 <button type="submit" class="btn btn-success">Salvar Receita</button>
             </div>
@@ -77,8 +73,8 @@ export default {
     data() {
         return {
             receitas: [],
-            categorias: [], // Lista de categorias
-            despesas: [], // Lista de despesas vinculadas
+            categorias: [], 
+            despesas: [], 
             id: "",
             categoria_id: "",
             descricao: "",
@@ -94,7 +90,7 @@ export default {
             try {
                 const response = await fetch("http://127.0.0.1:8000/api/indexCategorias");
                 const data = await response.json();
-                this.categorias = data.data; // Supondo que o formato é { data: [...] }
+                this.categorias = data.data; 
             } catch (error) {
                 console.error("Erro ao carregar categorias:", error);
                 alert("Erro ao carregar categorias. Tente novamente.");
@@ -105,7 +101,7 @@ export default {
             try {
                 const response = await fetch("http://127.0.0.1:8000/api/indexDespesas");
                 const data = await response.json();
-                this.despesas = data.data; // Supondo que o formato é { data: [...] }
+                this.despesas = data.data; 
             } catch (error) {
                 console.error("Erro ao carregar despesas:", error);
                 alert("Erro ao carregar despesas. Tente novamente.");
