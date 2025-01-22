@@ -9,7 +9,8 @@ class CategoriasController extends Controller
 {
     public function indexCategorias(Request $request)
     {
-        $data = Categorias::all();
+        $data = Categorias::with('receitas','despesas')->get();
+
         return response()->json(['data' =>$data]);
     }
 

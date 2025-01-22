@@ -12,10 +12,10 @@ use Illuminate\Support\Facades\DB;
 class ReceitasController extends Controller
 {
 
-   public function indexReceitas(Request $request)
+    public function indexReceitas(Request $request)
     {
         $data = Receitas::with('categoria')->get();
-        return response()->json(['data' =>$data]);
+        return response()->json(['data' => $data]);
     }
 
     /**
@@ -39,18 +39,12 @@ class ReceitasController extends Controller
      * @param StoreReceitasRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function storeReceitas(Request $request)
     {
-        try {
-            $data = $request->only(['descricao', 'valor', 'data_recebimento', 'categoria_id']);
-            $data['status'] = $request->input('status', 1); 
-
-            Receitas::create($data);
-
-            return redirect()->route('receitas.index')->with('success', 'Receita cadastrada com sucesso!');
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors('Erro ao cadastrar a receita: ' . $e->getMessage());
-        }
+        $data = $request->only(['descricao', 'valor', 'data_recebimento', 'categoria_id']);
+        $data['status'] = $request->input('status', 1);
+        Receitas::create($data);
+        return redirect()->route('receitas.index')->with('success', 'Receita cadastrada com sucesso!');
     }
 
     /**
