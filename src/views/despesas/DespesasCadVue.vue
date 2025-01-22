@@ -25,6 +25,16 @@
                         <div class="invalid-feedback">A categoria é obrigatória.</div>
                     </div>
                     <div class="form-group col-md-4">
+                        <label for="user_id" class="form-label">Usuário *</label>
+                        <select class="form-select" v-model="user_id" id="user_id" required>
+                            <option value="" disabled>Selecione a categoria</option>
+                            <option v-for="usuario in usuarios" :key="usuario.id" :value="usuario.id">
+                                {{ usuario.name }}
+                            </option>
+                        </select>
+                        <div class="invalid-feedback">A categoria é obrigatória.</div>
+                    </div>
+                    <div class="form-group col-md-4">
                         <label for="descricao" class="form-label">Descrição *</label>
                         <input type="text" v-model="descricao" class="form-control" id="descricao"
                             placeholder="Digite a descrição" required />
@@ -44,8 +54,8 @@
                 <legend class="w-auto px-2">Detalhes da Despesa</legend>
                 <div class="row g-3">
                     <div class="form-group col-md-4">
-                        <label for="data_recebimento" class="form-label">Data da despesa *</label>
-                        <input type="date" v-model="data_recebimento" class="form-control" id="data_recebimento"
+                        <label for="data_pagamento" class="form-label">Data da despesa *</label>
+                        <input type="date" v-model="data_pagamento" class="form-control" id="data_pagamento"
                             required />
                         <div class="invalid-feedback">A data de recebimento é obrigatória.</div>
                     </div>
@@ -53,8 +63,8 @@
                         <label for="status" class="form-label">Status *</label>
                         <select class="form-select" v-model="status" id="status" required>
                             <option value="" disabled>Selecione o status</option>
-                            <option value="pendente">Pendente</option>
-                            <option value="recebido">Recebido</option>
+                            <option value="0">Pendente</option>
+                            <option value="1">Recebido</option>
                         </select>
                         <div class="invalid-feedback">O status é obrigatório.</div>
                     </div>
@@ -69,20 +79,20 @@
 
 <script>
 export default {
-    name: "ReceitasForm",
+    name: "DespesasForm",
 
     data() {
         return {
-            receitas: [],
-            categorias: [], // Lista de categorias
-            despesas: [], // Lista de despesas vinculadas
+            despesas: [],
+            categorias: [], 
+            usuarios: [], 
             id: "",
             categoria_id: "",
+            user_id: "",
             descricao: "",
             valor: "",
-            data_recebimento: "",
+            data_pagamento: "",
             status: "",
-            despesa_id: "",
         };
     },
 
@@ -98,6 +108,17 @@ export default {
             }
         },
 
+        async loadUsuarios() {
+            try {
+                const response = await fetch("http://127.0.0.1:8000/api/index");
+                const data = await response.json();
+                this.usuarios = data.data; // Supondo que o formato é { data: [...] }
+            } catch (error) {
+                console.error("Erro ao carregar usuarios:", error);
+                alert("Erro ao carregar usuarios. Tente novamente.");
+            }
+        },
+
         async loadDespesas() {
             try {
                 const response = await fetch("http://127.0.0.1:8000/api/indexDespesas");
@@ -110,22 +131,22 @@ export default {
         },
 
         async show() {
-            const receitaId = this.$route.params.id;
-            this.id = receitaId;
+            const despesaId = this.$route.params.id;
+            this.id = despesaId;
 
             try {
-                const response = await fetch(`http://127.0.0.1:8000/api/receitas/${receitaId}`);
+                const response = await fetch(`http://127.0.0.1:8000/api/indexDespesas/${despesaId}`);
                 const data = await response.json();
 
                 this.categoria_id = data.data.categoria_id;
+                this.user_id = data.data.user_id;
                 this.descricao = data.data.descricao;
                 this.valor = data.data.valor;
-                this.data_recebimento = data.data.data_recebimento;
+                this.data_pagamento = data.data.data_pagamento;
                 this.status = data.data.status;
-                this.despesa_id = data.data.despesa_id;
             } catch (error) {
-                console.error("Erro ao carregar a receita:", error);
-                alert("Erro ao carregar a receita. Tente novamente.");
+                console.error("Erro ao carregar a desésa:", error);
+                alert("Erro ao carregar a despesa. Tente novamente.");
             }
         },
 
@@ -133,23 +154,23 @@ export default {
             const payload = {
                 id: this.id,
                 categoria_id: this.categoria_id,
+                user_id: this.user_id,
                 descricao: this.descricao,
                 valor: this.valor,
-                data_recebimento: this.data_recebimento,
+                data_pagamento: this.data_pagamento,
                 status: this.status,
-                despesa_id: this.despesa_id,
             };
 
             if (this.id) {
-                this.updateReceita(payload);
+                this.updateDespesa(payload);
             } else {
-                this.storeReceita(payload);
+                this.storeDespesa(payload);
             }
         },
 
-        async storeReceita(payload) {
+        async storeDespesa(payload) {
             try {
-                const response = await fetch("http://127.0.0.1:8000/api/indexReceitas", {
+                const response = await fetch("http://127.0.0.1:8000/api/storeDespesas", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -159,17 +180,17 @@ export default {
                 });
 
                 const data = await response.json();
-                alert("Receita salva com sucesso!");
+                alert("Despesa salva com sucesso!");
                 this.resetForm();
             } catch (error) {
-                console.error("Erro ao salvar receita:", error);
-                alert("Erro ao salvar receita. Tente novamente.");
+                console.error("Erro ao salvar despesa:", error);
+                alert("Erro ao salvar despesa. Tente novamente.");
             }
         },
 
-        async updateReceita(payload) {
+        async updateDespesa(payload) {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/api/receitas/${payload.id}`, {
+                const response = await fetch(`http://127.0.0.1:8000/api/despesas/${payload.id}`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -179,21 +200,21 @@ export default {
                 });
 
                 const data = await response.json();
-                alert("Receita atualizada com sucesso!");
+                alert("Despesa atualizada com sucesso!");
                 this.resetForm();
             } catch (error) {
-                console.error("Erro ao atualizar receita:", error);
-                alert("Erro ao atualizar receita. Tente novamente.");
+                console.error("Erro ao atualizar despesa:", error);
+                alert("Erro ao atualizar despesa. Tente novamente.");
             }
         },
 
         resetForm() {
             this.categoria_id = "";
+            this.user_id = "";
             this.descricao = "";
             this.valor = "";
-            this.data_recebimento = "";
+            this.data_pagamento = "";
             this.status = "";
-            this.despesa_id = "";
         },
     },
 
@@ -202,7 +223,9 @@ export default {
             await this.show();
         }
         await this.loadCategorias();
+        await this.loadUsuarios();
         await this.loadDespesas();
+        
     },
 };
 </script>

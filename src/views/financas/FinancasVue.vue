@@ -105,8 +105,8 @@ export default {
         async fetchData() {
             try {
                 // Exemplo de chamadas de API (substitua pelas suas rotas reais)
-                const despesasResponse = await fetch('/api/despesas');
-                const receitasResponse = await fetch('/api/receitas');
+                const despesasResponse = await fetch('http://127.0.0.1:8000/api/indexDespesas');
+                const receitasResponse = await fetch('http://127.0.0.1:8000/api/indexReceitas');
                 
                 const despesasData = await despesasResponse.json();
                 const receitasData = await receitasResponse.json();
