@@ -1,11 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router';
+
 import LoginView from '../views/LoginView.vue';
 import Dashboard from '../components/Dashboard.vue';
+//Usuários
 import UsuariosListVue from '../views/usuarios/UsuariosListVue.vue';
 import UsuariosCadVue from '../views/usuarios/UsuariosCadVue.vue';
 import UsuariosUpdate from '../views/usuarios/UsuariosUpdate.vue';
+//Receitas
 import ReceitasCadVue from '../views/receitas/ReceitasCadVue.vue';
+import ReceitasListVue from '../views/receitas/ReceitasListVue.vue';
+//Despesas
 import DespesasCadVue from '../views/despesas/DespesasCadVue.vue';
+import DespesasListVue from '../views/despesas/DespesasListVue.vue';
+//Finanças
 import FinancasVue from '../views/financas/FinancasVue.vue';
 
 const routes = [
@@ -51,9 +58,22 @@ const routes = [
     meta: { MenuLateral: 'default' }, 
   },
   {
+    path: '/receitas-lista',
+    name: 'lista-receitas',
+    component: ReceitasListVue,
+    meta: { MenuLateral: 'default' }, 
+  },
+
+  {
     path: '/despesas',
     name: 'cad-despesas',
     component: DespesasCadVue,
+    meta: { MenuLateral: 'default' }, 
+  },
+  {
+    path: '/despesas-lista',
+    name: 'lista-despesas',
+    component: DespesasListVue,
     meta: { MenuLateral: 'default' }, 
   },
   {
