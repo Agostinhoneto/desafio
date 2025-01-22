@@ -18,7 +18,7 @@
                 </div>
                 <div class="input-group" style="width: 300px;">
                     <input type="text" class="form-control" placeholder="Buscar despesas..." v-model="searchQuery">
-                    <button class="btn btn-outline-secondary" type="button" @click="filterUsers">Buscar</button>
+                    <button class="btn btn-outline-secondary" type="button" @click="filterDespesa">Buscar</button>
                 </div>
             </div>
             <div class="card">
@@ -30,47 +30,38 @@
                     <table v-else class="table table-striped table-hover table-responsive">
                         <thead>
                             <tr>
-                                <th>Usuário</th>
-                                <th>Categoria</th>
                                 <th>Descrição</th>
+                                <th>Categoria</th>
                                 <th>Valor</th>
                                 <th>Data de Pagamento</th>
-                                <th>Status</th>                               
+                                <th>Status</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="user in filterUser" :key="user.id">
-                                <td>{{ user.id }}</td>
-                                <td>{{ formatDate(user.created_at) }}</td>
-                                <td>{{ despesa.usuario?.nome || 'Usuário não disponível' }}</td>
-                                <td>{{ user.name || 'Nome não disponível' }}</td>
-                                <td>{{ user.email || 'Email não disponível' }}</td>
-                                <td>{{ user.cpf || 'CPF não disponível' }}</td>
-                                <td>{{ user.role ? user.role.name : 'Perfil não disponível' }}</td>
+                            <tr v-for="despesa in filterDespesas" :key="despesa.id">
+                                <td>{{ despesa.descricao || 'Categoria não disponível' }}</td>
+                                <td>{{ despesa.categoria?.descricao || 'Categoria não disponível' }}</td>
+                                <td>{{ despesa.valor ? `R$ ${parseFloat(despesa.valor).toFixed(2)}` : 'Valor não disponível' }}</td>
+                                <td>{{ despesa.data_pagamento ? formatDate(despesa.data_pagamento) : 'Data não disponível' }}</td>
+                                <td>{{ despesa.status || 'Status não disponível' }}</td>
                                 <td>
-                                    <router-link :to="{ name: 'user-todo', params: { id: user.id } }">
-                                        <button type="button" class="btn btn-light btn-sm">Detalhar</button>
-                                    </router-link>
-                                    <router-link :to="{ name: 'cad-usuarios', params: { id: user.id } }">
+                                    <router-link :to="{ name: 'cad-despesas', params: { id: despesa.id } }">
                                         <button type="button" class="btn btn-primary btn-sm">Editar</button>
                                     </router-link>
-                                    <router-link :to="{ name: 'cad-usuarios', params: { id: user.id } }">
-                                        <button type="button" class="btn btn-warning btn-sm">Desativar</button>
-                                    </router-link>
-                                    <router-link :to="{ name: 'cad-usuarios', params: { id: user.id } }">
-                                        <button type="button" class="btn btn-info btn-sm">Reativar</button>
-                                    </router-link>
+                                    <button type="button" class="btn btn-warning btn-sm"
+                                        @click="alterarStatus(despesa.id, 'desativar')">Desativar</button>
+                                    <button type="button" class="btn btn-info btn-sm"
+                                        @click="alterarStatus(despesa.id, 'reativar')">Reativar</button>
                                     <button type="button" class="btn btn-danger btn-sm"
-                                        @click="confirmDelete(user.id)">Delete</button>
+                                        @click="confirmDelete(despesa.id)">Excluir</button>
                                 </td>
                             </tr>
                         </tbody>
-
                     </table>
                 </div>
                 <div class="card-footer d-flex justify-content-between align-items-center">
-                    <span>Total de usuários: {{ users.length }}</span>
+                    <span>Total de despesas: {{ despesas.length }}</span>
                     <ul class="pagination pagination-sm m-0">
                         <li class="page-item" :class="{ disabled: currentPage === 1 }">
                             <a class="page-link" href="#" @click="changePage(currentPage - 1)">«</a>
@@ -114,31 +105,35 @@ export default {
     data() {
         return {
             search: "",
-            users: [],
+            despesas: [], 
             startDate: "",
             endDate: "",
             loading: false,
         };
     },
     computed: {
-        filterUser() {
-            return this.users.filter((user) => {
+        filterDespesas() {
+            return this.despesas.filter((despesa) => {
                 const searchText = this.search.toLowerCase();
-                const userCreatedAt = moment(user.created_at).format("YYYY-MM-DD");
+                const despesaCreatedAt = despesa.data_pagamento
+                    ? moment(despesa.data_pagamento).format("YYYY-MM-DD")
+                    : "";
+
                 const isWithinDateRange =
                     this.startDate && this.endDate
-                        ? userCreatedAt >= this.startDate && userCreatedAt <= this.endDate
+                        ? despesaCreatedAt >= this.startDate && despesaCreatedAt <= this.endDate
                         : true;
 
                 return (
                     isWithinDateRange &&
-                    (user.name.toLowerCase().includes(searchText) ||
-                        user.cpf.includes(this.search) ||
-                        user.email.toLowerCase().includes(searchText))
+                    (despesa.descricao?.toLowerCase().includes(searchText) || // Verifica se `descricao` existe
+                        despesa.valor?.toString().includes(this.search) || // Verifica se `valor` existe
+                        despesa.email?.toLowerCase().includes(searchText)) // Verifica se `email` existe
                 );
             });
         },
     },
+
     methods: {
         formatDate(date) {
             return moment(date).format("DD/MM/YYYY, HH:mm:ss");
@@ -146,30 +141,30 @@ export default {
         async listarTodos() {
             this.loading = true;
             try {
-                const response = await fetch("http://127.0.0.1:8000/api/index");
+                const response = await fetch("http://127.0.0.1:8000/api/indexDespesas");
                 const res = await response.json();
-                this.users = res.data;
+                this.despesas = Array.isArray(res.data) ? res.data : []; 
             } catch (error) {
-                console.error("Erro ao carregar usuários:", error);
+                console.error("Erro ao carregar Despesa:", error);
             } finally {
                 this.loading = false;
             }
         },
-        async remover(userId) {
-            if (!confirm("Deseja realmente excluir este usuário?")) return;
+        async remover(despesaId) {
+            if (!confirm("Deseja realmente excluir este Despesa?")) return;
 
             try {
-                await fetch(`http://127.0.0.1:8000/api/destroy/${userId}`, {
+                await fetch(`http://127.0.0.1:8000/api/DespesasDestroy/${despesaId}`, {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
                         Accept: "application/json",
                     },
                 });
-                alert("Usuário excluído com sucesso!");
+                alert("Despesa excluído com sucesso!");
                 await this.listarTodos();
             } catch (error) {
-                console.error("Erro ao excluir usuário:", error);
+                console.error("Erro ao excluir Despesa:", error);
             }
         },
     },
