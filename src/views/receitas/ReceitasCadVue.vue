@@ -1,84 +1,70 @@
 <template>
-    <div>
+    <div class="content-wrapper">
         <h2 class="my-4">Cadastrar Receitas</h2>
         <div class="card-tools">
-          <router-link :to="{ name: 'home' }" class="btn btn-secondary btn-sm ml-2">
-            <i class="fas fa-arrow"></i> Voltar
-          </router-link>
-          <router-link :to="{ name: 'home' }" class="btn btn-primary btn-sm ml-2">
+            <router-link :to="{ name: 'lista' }" class="btn btn-secondary btn-sm ml-2">
+                <i class="fas fa-arrow"></i> Voltar
+            </router-link>
+            <router-link :to="{ name: 'lista' }" class="btn btn-primary btn-sm ml-2">
                 <i class="fas fa-list"></i> Listar Receitas
             </router-link>
         </div>
 
-
-        <UserTodoForm :todo="updateUser" :user-id="userId" :endereco-id="enderecoId" @save="onSave"
-            @update="onUpdate" />
-
         <form @submit.prevent="submit">
-            <!-- Informações do Usuário -->
+            <!-- Informações da Receita -->
             <fieldset class="border p-3 mb-4">
-                <legend class="w-auto px-2">Informações do Receitas</legend>
+                <legend class="w-auto px-2">Informações da Receita</legend>
                 <div class="row g-3">
                     <div class="form-group col-md-4">
-                        <label for="name" class="form-label">Nome *</label>
-                        <input type="text" v-model="name" class="form-control" id="name" placeholder="Digite o nome"
-                            required>
-                        <div class="invalid-feedback">O nome é obrigatório.</div>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="email" class="form-label">Email *</label>
-                        <input type="email" v-model="email" class="form-control" id="email" placeholder="Digite o email"
-                            required>
-                        <div class="invalid-feedback">O email é obrigatório.</div>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="cpf" class="form-label">CPF *</label>
-                        <input type="text" v-model="cpf" class="form-control" id="cpf" placeholder="Digite o CPF"
-                            required>
-                        <div class="invalid-feedback">O CPF é obrigatório.</div>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="role" class="form-label">Perfil *</label>
-                        <select class="form-select" v-model="role_id" id="role" required>
-                            <option value="" disabled>Selecione</option>
-                            <option value="1">Admin</option>
-                            <option value="2">Usuário</option>
+                        <label for="categoria_id" class="form-label">Categoria *</label>
+                        <select class="form-select" v-model="categoria_id" id="categoria_id" required>
+                            <option value="" disabled>Selecione a categoria</option>
+                            <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
+                                {{ categoria.descricao }}
+                            </option>
                         </select>
-                        <div class="invalid-feedback">O perfil é obrigatório.</div>
+                        <div class="invalid-feedback">A categoria é obrigatória.</div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="descricao" class="form-label">Descrição *</label>
+                        <input type="text" v-model="descricao" class="form-control" id="descricao"
+                            placeholder="Digite a descrição" required />
+                        <div class="invalid-feedback">A descrição é obrigatória.</div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="valor" class="form-label">Valor *</label>
+                        <input type="number" v-model="valor" class="form-control" id="valor"
+                            placeholder="Digite o valor" required />
+                        <div class="invalid-feedback">O valor é obrigatório.</div>
                     </div>
                 </div>
             </fieldset>
 
-            <!-- Endereço -->
+            <!-- Informações adicionais -->
             <fieldset class="border p-3 mb-4">
-                <legend class="w-auto px-2">Endereço</legend>
+                <legend class="w-auto px-2">Detalhes da Receita</legend>
                 <div class="row g-3">
-                    <div class="form-group col-md-6">
-                        <label for="logradouro" class="form-label">Logradouro *</label>
-                        <select class="form-select" v-model="logradouro" id="logradouro" required>
-                            <option value="" disabled>Selecione o logradouro</option>
-                            <option v-for="endereco in enderecos" :key="endereco.id" :value="endereco.logradouro">
-                                {{ endereco.logradouro }}
-                            </option>
-                        </select>
-                        <div class="invalid-feedback">O logradouro é obrigatório.</div>
+                    <div class="form-group col-md-4">
+                        <label for="data_recebimento" class="form-label">Data de Recebimento *</label>
+                        <input type="date" v-model="data_recebimento" class="form-control" id="data_recebimento"
+                            required />
+                        <div class="invalid-feedback">A data de recebimento é obrigatória.</div>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="cep" class="form-label">CEP *</label>
-                        <select class="form-select" v-model="cep" id="cep" required>
-                            <option value="" disabled>Selecione o CEP</option>
-                            <option v-for="endereco in enderecos" :key="endereco.id" :value="endereco.cep">
-                                {{ endereco.cep }}
-                            </option>
+                    <div class="form-group col-md-4">
+                        <label for="status" class="form-label">Status *</label>
+                        <select class="form-select" v-model="status" id="status" required>
+                            <option value="" disabled>Selecione o status</option>
+                            <option value="0">Pendente</option>
+                            <option value="1">Recebido</option>
                         </select>
-                        <div class="invalid-feedback">O CEP é obrigatório.</div>
+                        <div class="invalid-feedback">O status é obrigatório.</div>
                     </div>
                 </div>
             </fieldset>
 
             <!-- Botão de envio -->
             <div class="text-end">
-                <button type="submit" class="btn btn-success">Adicionar</button>
+                <button type="submit" class="btn btn-success">Salvar Receita</button>
             </div>
         </form>
     </div>
@@ -86,160 +72,129 @@
 
 <script>
 export default {
-    name: 'UsuariosCadVue',
-
-    props: {
-        enderecoId: {
-            type: [String, Number],
-            default: null,
-        },
-    },
+    name: "ReceitasForm",
 
     data() {
         return {
-            users: [],
-            enderecos: [], // Armazena a lista de endereços
-            id: '',
-            name: '',
-            email: '',
-            cpf: '',
-            cep: '',
-            logradouro: '',
-            role_id: '',
+            receitas: [],
+            categorias: [], // Lista de categorias
+            despesas: [], // Lista de despesas vinculadas
+            id: "",
+            categoria_id: "",
+            descricao: "",
+            valor: "",
+            data_recebimento: "",
+            status: "",
+            despesa_id: "",
         };
     },
 
-    watch: {
-        todo(vl) {
-            this.id = vl.id;
-            this.name = vl.name;
-            this.email = vl.email;
-            this.cpf = vl.cpf;
-            this.cep = vl.cep;
-            this.logradouro = vl.logradouro;
-        },
-    },
-
     methods: {
-        async loadEndereco() {
+        async loadCategorias() {
             try {
-                const response = await fetch('http://127.0.0.1:8000/api/enderecoIndex');
+                const response = await fetch("http://127.0.0.1:8000/api/indexCategorias");
                 const data = await response.json();
-                this.enderecos = data.data; // Supondo que o formato é { data: [...] }
+                this.categorias = data.data; // Supondo que o formato é { data: [...] }
             } catch (error) {
-                console.error('Erro ao carregar os endereços:', error);
-                alert('Erro ao carregar os endereços. Tente novamente.');
+                console.error("Erro ao carregar categorias:", error);
+                alert("Erro ao carregar categorias. Tente novamente.");
+            }
+        },
+
+        async loadDespesas() {
+            try {
+                const response = await fetch("http://127.0.0.1:8000/api/indexDespesas");
+                const data = await response.json();
+                this.despesas = data.data; // Supondo que o formato é { data: [...] }
+            } catch (error) {
+                console.error("Erro ao carregar despesas:", error);
+                alert("Erro ao carregar despesas. Tente novamente.");
             }
         },
 
         async show() {
-            const userId = this.$route.params.id;
-            this.id = userId;
+            const receitaId = this.$route.params.id;
+            this.id = receitaId;
 
             try {
-                const response = await fetch(`http://127.0.0.1:8000/api/show/${userId}`);
+                const response = await fetch(`http://127.0.0.1:8000/api/indexReceitas/${receitaId}`);
                 const data = await response.json();
 
-                this.name = data.data.name;
-                this.email = data.data.email;
-                this.cpf = data.data.cpf;
-                this.cep = data.data.cep;
-                this.logradouro = data.data.logradouro;
+                this.categoria_id = data.data.categoria_id;
+                this.descricao = data.data.descricao;
+                this.valor = data.data.valor;
+                this.data_recebimento = data.data.data_recebimento;
+                this.status = data.data.status;
+                this.despesa_id = data.data.despesa_id;
             } catch (error) {
-                console.error('Erro ao carregar os dados do usuário:', error);
-                alert('Erro ao carregar os dados do usuário. Tente novamente.');
+                console.error("Erro ao carregar a receita:", error);
+                alert("Erro ao carregar a receita. Tente novamente.");
             }
         },
 
-        submit() {
+        async submit() {
             const payload = {
                 id: this.id,
-                name: this.name,
-                email: this.email,
-                cpf: this.cpf,
-                role_id: this.role_id,
-                logradouro: this.logradouro,
-                cep: this.cep,
+                categoria_id: this.categoria_id,
+                descricao: this.descricao,
+                valor: this.valor,
+                data_recebimento: this.data_recebimento,
+                status: this.status,
             };
 
             if (this.id) {
-                this.update(payload);
+                this.updateReceita(payload);
             } else {
-                this.storeTodo(payload);
+                this.storeReceita(payload);
             }
         },
 
-        async storeTodo(payload) {
+        async storeReceita(payload) {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/api/store/`, {
-                    method: 'POST',
+                const response = await fetch("http://127.0.0.1:8000/api/storeReceitas", {
+                    method: "POST",
                     headers: {
-                        'Content-Type': 'application/json',
-                        Accept: 'application/json',
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
                     },
                     body: JSON.stringify(payload),
                 });
 
                 const data = await response.json();
-                this.$emit('save', data.data);
+                alert("Receita salva com sucesso!");
                 this.resetForm();
-                alert('Dados Salvos com Sucesso');
             } catch (error) {
-                console.error('Erro ao salvar os dados:', error);
-                alert('Erro ao salvar os dados. Tente novamente.');
+                console.error("Erro ao salvar receita:", error);
+                alert("Erro ao salvar receita. Tente novamente.");
             }
         },
 
-        async update(payload) {
+        async updateReceita(payload) {
             try {
-                const response = await fetch(
-                    `http://127.0.0.1:8000/api/update/${payload.id}`,
-                    {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Accept: 'application/json',
-                        },
-                        body: JSON.stringify(payload),
-                    }
-                );
+                const response = await fetch(`http://127.0.0.1:8000/api/indexReceitas/${payload.id}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                    body: JSON.stringify(payload),
+                });
 
                 const data = await response.json();
-                this.$emit('update', data.data);
+                alert("Receita atualizada com sucesso!");
                 this.resetForm();
-                alert('Dados Atualizados com Sucesso');
             } catch (error) {
-                console.error('Erro ao atualizar os dados:', error);
-                alert('Erro ao atualizar os dados. Tente novamente.');
+                console.error("Erro ao atualizar receita:", error);
+                alert("Erro ao atualizar receita. Tente novamente.");
             }
-        },
-
-        remover(enderecoId) {
-            fetch(`http://127.0.0.1:8000/api/enderecoDestroy/${enderecoId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                },
-            })
-                .then(() => {
-                    const idx = this.enderecos.findIndex((o) => o.id === enderecoId);
-                    if (idx !== -1) this.enderecos.splice(idx, 1);
-                    alert('Dados excluídos com sucesso');
-                })
-                .catch((error) => {
-                    console.error('Erro ao excluir o endereço:', error);
-                    alert('Erro ao excluir o endereço.');
-                });
         },
 
         resetForm() {
-            this.name = '';
-            this.email = '';
-            this.cpf = '';
-            this.role_id = '';
-            this.cep = '';
-            this.logradouro = '';
+            this.categoria_id = "";
+            this.descricao = "";
+            this.valor = "";
+            this.data_recebimento = "";
+            this.status = "";
         },
     },
 
@@ -247,7 +202,8 @@ export default {
         if (this.$route.params.id) {
             await this.show();
         }
-        await this.loadEndereco();
+        await this.loadCategorias();
+        await this.loadDespesas();
     },
 };
 </script>

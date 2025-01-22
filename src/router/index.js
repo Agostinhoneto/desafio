@@ -1,57 +1,78 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import UsuariosCadVue from '../views/usuarios/UsuariosCadVue.vue'
-import UsuariosUpdate from '../views/usuarios/UsuariosUpdate.vue'
-import Dashboard from '../components/Dashboard.vue'
-import Enderecos from '../views/Enderecos.vue'
-import ReceitasCadVue from '../views/receitas/ReceitasCadVue.vue'
-import DespesasCadVue from '../views/despesas/DespesasCadVue.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import LoginView from '../views/LoginView.vue';
+import Dashboard from '../components/Dashboard.vue';
+import UsuariosListVue from '../views/usuarios/UsuariosListVue.vue';
+import UsuariosCadVue from '../views/usuarios/UsuariosCadVue.vue';
+import UsuariosUpdate from '../views/usuarios/UsuariosUpdate.vue';
+import ReceitasCadVue from '../views/receitas/ReceitasCadVue.vue';
+import DespesasCadVue from '../views/despesas/DespesasCadVue.vue';
+import FinancasVue from '../views/financas/FinancasVue.vue';
+
+const routes = [
+  {
+    path: '/',
+    name: 'Login',
+    component: LoginView,
+    meta: { MenuLateral: 'empty' }, // Não exibir o menu lateral
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard,
+    meta: { MenuLateral: 'default' }, 
+  },
+  {
+    path: '/lista-usuarios',
+    name: 'lista',
+    component: UsuariosListVue,
+    meta: { MenuLateral: 'default' }, 
+  },
+  {
+    path: '/usuarios',
+    name: 'cad-usuarios',
+    component: UsuariosCadVue,
+    meta: { MenuLateral: 'default' }, 
+  },
+  {
+    path: '/usuarios-update',
+    name: 'update-usuarios',
+    component: UsuariosUpdate,
+    meta: { MenuLateral: 'default' }, 
+  },
+  {
+    path: '/usuarios/id',
+    name: 'user-todo',
+    component: () => import('../views/AboutView.vue')
+  },
+  {
+    path: '/receitas',
+    name: 'cad-receitas',
+    component: ReceitasCadVue,
+    meta: { MenuLateral: 'default' }, 
+  },
+  {
+    path: '/despesas',
+    name: 'cad-despesas',
+    component: DespesasCadVue,
+    meta: { MenuLateral: 'default' }, 
+  },
+  {
+    path: '/enderecos',
+    name: 'user-enderecos',
+    component: () => import('../views/Enderecos.vue'),
+    meta: { MenuLateral: 'default' }, 
+  },
+  {
+    path: '/financas',
+    name: 'list-financas',
+    component: FinancasVue,
+    meta: { MenuLateral: 'default' }, 
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-   
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView
-    },
-    {
-      path: '/dashboard',
-      name: 'Dashboard',
-      component: Dashboard,
-    },
-    {
-      path: '/usuarios',
-      name: 'cad-usuarios',
-      component: UsuariosCadVue
-    },
-    {
-      path: '/usuarios-update',
-      name: 'update-usuarios',
-      component: UsuariosUpdate
-    },
-    {
-      path: '/usuarios/id',
-      name: 'user-todo',
-      component: () => import('../views/AboutView.vue')
-    },
-    {
-      path: '/receitas',
-      name: 'cad-receitas',
-      component: ReceitasCadVue
-    },
-    {
-      path: '/despesas',
-      name: 'cad-despesas',
-      component: DespesasCadVue
-    },
-    {
-      path: '/enderecos',
-      name: 'user-enderecos',
-      component: () => import('../views/Enderecos.vue')
-    }
-  ]
-})
+  routes,
+});
 
-export default router
+export default router;
