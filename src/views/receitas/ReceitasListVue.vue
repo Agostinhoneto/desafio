@@ -18,7 +18,7 @@
                 </div>
                 <div class="input-group" style="width: 300px;">
                     <input type="text" class="form-control" placeholder="Buscar receitas..." v-model="searchQuery">
-                    <button class="btn btn-outline-secondary" type="button" @click="filterUsers">Buscar</button>
+                    <button class="btn btn-outline-secondary" type="button" @click="filterReceitas">Buscar</button>
                 </div>
             </div>
             <div class="card">
@@ -40,24 +40,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="user in filterUser" :key="user.id">
-                                <td>{{ user.id }}</td>
-                                <td>{{ formatDate(user.created_at) }}</td>
-                                <td>{{ user.name || 'Nome não disponível' }}</td>
-                                <td>{{ user.email || 'Email não disponível' }}</td>
-                                <td>{{ user.cpf || 'CPF não disponível' }}</td>
-                                <td>{{ user.role ? user.role.name : 'Perfil não disponível' }}</td>
+                            <tr v-for="receita in filterReceita" :key="receita.id">
+                                <td>{{ receita.id }}</td>
+                                <td>{{ receita.descricao || 'descricao não disponível' }}</td>
+                                <td>{{ receita.valor || 'Email não disponível' }}</td>
+                                <td>{{ receita.status || 'CPF não disponível' }}</td>
+                                <td>{{ formatDate(receita.data_recebimento) }}</td>
                                 <td>
-                                    <router-link :to="{ name: 'user-todo', params: { id: user.id } }">
-                                        <button type="button" class="btn btn-light btn-sm">Detalhar</button>
-                                    </router-link>
-                                    <router-link :to="{ name: 'cad-usuarios', params: { id: user.id } }">
+                                    <router-link :to="{ name: 'cad-receitas', params: { id: receita.id } }">
                                         <button type="button" class="btn btn-primary btn-sm">Editar</button>
                                     </router-link>
-                                    <router-link :to="{ name: 'cad-usuarios', params: { id: user.id } }">
+                                    <router-link :to="{ name: 'cad-receitas', params: { id: receita.id } }">
                                         <button type="button" class="btn btn-warning btn-sm">Desativar</button>
                                     </router-link>
-                                    <router-link :to="{ name: 'cad-usuarios', params: { id: user.id } }">
+                                    <router-link :to="{ name: 'cad-receitas', params: { id: receita.id } }">
                                         <button type="button" class="btn btn-info btn-sm">Reativar</button>
                                     </router-link>
                                     <button type="button" class="btn btn-danger btn-sm"
@@ -69,7 +65,7 @@
                     </table>
                 </div>
                 <div class="card-footer d-flex justify-content-between align-items-center">
-                    <span>Total de usuários: {{ users.length }}</span>
+                    <span>Total de Receitas: {{ receitas.length }}</span>
                     <ul class="pagination pagination-sm m-0">
                         <li class="page-item" :class="{ disabled: currentPage === 1 }">
                             <a class="page-link" href="#" @click="changePage(currentPage - 1)">«</a>
@@ -97,7 +93,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-danger" @click="deleteUser">Deletar</button>
+                            <button type="button" class="btn btn-danger" @click="deleteReceita">Deletar</button>
                         </div>
                     </div>
                 </div>
@@ -113,27 +109,27 @@ export default {
     data() {
         return {
             search: "",
-            users: [],
+            receitas: [],
             startDate: "",
             endDate: "",
             loading: false,
         };
     },
     computed: {
-        filterUser() {
-            return this.users.filter((user) => {
+        filterReceita() {
+            return this.receitas.filter((receita) => {
                 const searchText = this.search.toLowerCase();
-                const userCreatedAt = moment(user.created_at).format("YYYY-MM-DD");
+                const receitaCreatedAt = moment(receita.created_at).format("YYYY-MM-DD");
                 const isWithinDateRange =
                     this.startDate && this.endDate
-                        ? userCreatedAt >= this.startDate && userCreatedAt <= this.endDate
+                        ? receitaCreatedAt >= this.startDate && receitaCreatedAt <= this.endDate
                         : true;
 
                 return (
                     isWithinDateRange &&
-                    (user.name.toLowerCase().includes(searchText) ||
-                        user.cpf.includes(this.search) ||
-                        user.email.toLowerCase().includes(searchText))
+                    (receita.descricao.toLowerCase().includes(searchText) ||
+                        receita.valor.includes(this.search) ||
+                        receita.status.toLowerCase().includes(searchText))
                 );
             });
         },
@@ -145,30 +141,30 @@ export default {
         async listarTodos() {
             this.loading = true;
             try {
-                const response = await fetch("http://127.0.0.1:8000/api/index");
+                const response = await fetch("http://127.0.0.1:8000/api/indexReceitas");
                 const res = await response.json();
-                this.users = res.data;
+                this.receitas = res.data;
             } catch (error) {
-                console.error("Erro ao carregar usuários:", error);
+                console.error("Erro ao carregar receitas:", error);
             } finally {
                 this.loading = false;
             }
         },
-        async remover(userId) {
-            if (!confirm("Deseja realmente excluir este usuário?")) return;
+        async remover(receitaId) {
+            if (!confirm("Deseja realmente excluir este receita?")) return;
 
             try {
-                await fetch(`http://127.0.0.1:8000/api/destroy/${userId}`, {
+                await fetch(`http://127.0.0.1:8000/api/ReceitasDestroy/${receitaId}`, {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
                         Accept: "application/json",
                     },
                 });
-                alert("Usuário excluído com sucesso!");
+                alert("Receita excluído com sucesso!");
                 await this.listarTodos();
             } catch (error) {
-                console.error("Erro ao excluir usuário:", error);
+                console.error("Erro ao excluir receita:", error);
             }
         },
     },

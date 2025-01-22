@@ -12,7 +12,7 @@
 
         <form @submit.prevent="submit">
             <fieldset class="border p-3 mb-4">
-                <legend class="w-auto px-2">Informações da Receita</legend>
+                <legend class="w-auto px-2">Informações da Receitas</legend>
                 <div class="row g-3">
                     <div class="form-group col-md-4">
                         <label for="categoria_id" class="form-label">Categoria *</label>
