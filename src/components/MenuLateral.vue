@@ -28,7 +28,7 @@
                     </router-link>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link text-white">
+                    <a href="/relatorios" class="nav-link text-white">
                         <i class="fas fa-chart-line"></i> <span class="ml-2">Relatórios</span>
                     </a>
                 </li>

@@ -14,6 +14,7 @@ import DespesasCadVue from '../views/despesas/DespesasCadVue.vue';
 import DespesasListVue from '../views/despesas/DespesasListVue.vue';
 //Finanças
 import FinancasVue from '../views/financas/FinancasVue.vue';
+import RelatoriosVue from '../views/relatorios/RelatoriosVue.vue';
 
 const routes = [
   {
@@ -87,6 +88,13 @@ const routes = [
     component: FinancasVue,
     meta: { MenuLateral: 'default' }, 
   },
+  {
+    path: '/relatorios',
+    name: 'list-relatorios',
+    component: RelatoriosVue,
+    meta: { MenuLateral: 'default' }, 
+  },
+  
 ];
 
 const router = createRouter({
