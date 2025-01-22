@@ -12,7 +12,7 @@
         <div class="container-fluid">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
-                    <router-link :to="{ name: 'cad-despesas' }" class="btn btn-success btn-sm">
+                    <router-link :to="{ name: 'cad-receitas' }" class="btn btn-success btn-sm">
                         <i class="fas fa-user-plus"></i> Adicionar Receitas
                     </router-link>
                 </div>
