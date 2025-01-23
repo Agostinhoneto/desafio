@@ -34,6 +34,7 @@
                     </div>
                 </div>
             </div>
+            
             <div class="row mt-4">
                 <h2>Últimas Despesas</h2>
                 <p class="text-muted">Confira as despesas recentes lançadas.</p>
@@ -93,8 +94,7 @@
 </template>
 
 <script>
-
-import axios from "axios"; // Importação necessária para usar o Axios
+import axios from "axios"; 
 export default {
     data() {
         return {
@@ -111,31 +111,52 @@ export default {
         };
     },
 
+    // axios
+    
     created() {
     axios
         .get("http://127.0.0.1:8000/api/indexDespesas")
         .then((response) => {
             console.log("Resposta da API:", response.data);
-
-            // Corrigindo o mapeamento para incluir os campos desejados
             this.ultimasDespesas = response.data.data.map((despesa) => ({
-                user_id: despesa.user_id,           // Adicionando user_id
-                categoria_id: despesa.categoria_id, // Adicionando categoria_id
-                descricao: despesa.descricao,       // Adicionando descricao
-                valor: despesa.valor,               // Adicionando valor
-                data_pagamento: despesa.data_pagamento, // Adicionando data_pagamento
-                status: despesa.status,             // Adicionando status
-                receita_id: despesa.receita_id,     // Adicionando receita_id
+                user_id: despesa.user_id,          
+                categoria_id: despesa.categoria_id,
+                descricao: despesa.descricao,      
+                valor: despesa.valor,              
+                data_pagamento: despesa.data_pagamento, 
+                status: despesa.status,             
+                receita_id: despesa.receita_id,     
                 valorFormatado: despesa.valor != null && !isNaN(despesa.valor)
                     ? `R$ ${parseFloat(despesa.valor).toFixed(2).replace('.', ',')}`
-                    : 'R$ 0,00', // Formatação do valor
+                    : 'R$ 0,00', 
             }));
         })
         .catch((error) => {
             console.error("Erro ao buscar despesas:", error);
         }); 
+
+        axios
+        .get("http://127.0.0.1:8000/api/indexReceitas")
+        .then((response) => {
+            console.log("Resposta da API:", response.data);
+            this.ultimasReceitas = response.data.data.map((receita) => ({
+                categoria_id: receita.categoria_id,
+                descricao: receita.descricao,      
+                valor: receita.valor,              
+                data_pagamento: receita.data_pagamento, 
+                status: receita.status,             
+                receita_id: receita.receita_id,     
+                valorFormatado: receita.valor != null && !isNaN(receita.valor)
+                    ? `R$ ${parseFloat(receita.valor).toFixed(2).replace('.', ',')}`
+                    : 'R$ 0,00', 
+            }));
+        })
+        .catch((error) => {
+            console.error("Erro ao buscar receitas:", error);
+        }); 
     },
 
+    // Métodos
     methods: {
         async fetchData() {
             try {
