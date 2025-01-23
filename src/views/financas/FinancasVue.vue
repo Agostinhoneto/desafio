@@ -34,7 +34,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="row mt-4">
                 <h2>Últimas Despesas</h2>
                 <p class="text-muted">Confira as despesas recentes lançadas.</p>
@@ -46,14 +45,16 @@
                                 <th>Descrição</th>
                                 <th>Categoria</th>
                                 <th>Valor</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="despesa in despesas" :key="despesa.id">
-                                <td>{{ despesa.data }}</td>
+                            <tr v-for="despesa in ultimasDespesas" :key="despesa.id">
+                                <td>{{ despesa.data_pagamento }}</td>
                                 <td>{{ despesa.descricao }}</td>
-                                <td>{{ despesa.categoria }}</td>
-                                <td>R$ {{ despesa.valor }}</td>
+                                <td>{{ despesa.categoria_id }}</td>
+                                <td>{{ despesa.valorFormatado }}</td>
+                                <td>{{ despesa.status }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -75,12 +76,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="despesa in filterDespesas" :key="despesa.id">
-                                <td>{{ despesa.descricao || 'Categoria não disponível' }}</td>
-                                <td>{{ despesa.categoria?.descricao || 'Categoria não disponível' }}</td>
-                                <td>{{ despesa.valor ? `R$ ${parseFloat(despesa.valor).toFixed(2)}` : 'Valor não disponível' }}</td>
-                                <td>{{ despesa.data_pagamento ? formatDate(despesa.data_pagamento) : 'Data não disponível' }}</td>
-                                <td>{{ despesa.status || 'Status não disponível' }}</td>
+                            <tr v-for="receita in ultimasReceitas" :key="receita.id">
+                                <td>{{ receita.descricao || 'Categoria não disponível' }}</td>
+                                <td>{{ receita.categoria?.descricao || 'Categoria não disponível' }}</td>
+                                <td>{{ receita.valor ? `R$ ${parseFloat(receita.valor).toFixed(2)}` : 'Valor não disponível' }}</td>
+                                <td>{{ receita.data_recebimento ? formatDate(receita.data_recebimento) : 'Data não disponível' }}</td>
+                                <td>{{ receita.status || 'Status não disponível' }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -92,6 +93,8 @@
 </template>
 
 <script>
+
+import axios from "axios"; // Importação necessária para usar o Axios
 export default {
     data() {
         return {
@@ -99,38 +102,40 @@ export default {
             totalReceitas: 0,
             saldoFinal: 0,
             despesas: [],
+            ultimasDespesas: [],
+            ultimasReceitas: [],
             receitas: [],
-            ultimasReceitas: [], // Corrected array initialization
-            search: "", // Assuming you have a search data property
-            startDate: "", // Assuming you have a startDate data property
-            endDate: "", // Assuming you have an endDate data property
+            search: "",
+            startDate: "",
+            endDate: "",
         };
     },
-    computed: {
-        filterDespesas() {
-            if (!Array.isArray(this.ultimasDespesas)) {
-                return []; // Retorna um array vazio se `ultimasDespesas` não for um array
-            }
 
-            return this.ultimasDespesas.filter((despesa) => {
-                const searchText = this.search.toLowerCase();
-                const despesaCreatedAt = despesa.data_pagamento
-                    ? moment(despesa.data_pagamento).format("YYYY-MM-DD")
-                    : "";
+    created() {
+    axios
+        .get("http://127.0.0.1:8000/api/indexDespesas")
+        .then((response) => {
+            console.log("Resposta da API:", response.data);
 
-                const isWithinDateRange =
-                    this.startDate && this.endDate
-                        ? despesaCreatedAt >= this.startDate && despesaCreatedAt <= this.endDate
-                        : true;
-
-                return (
-                    isWithinDateRange &&
-                    (despesa.descricao?.toLowerCase().includes(searchText) || // Verifica se `descricao` existe
-                        despesa.valor?.toString().includes(this.search)) // Verifica se `valor` existe
-                );
-            });
-        },
+            // Corrigindo o mapeamento para incluir os campos desejados
+            this.ultimasDespesas = response.data.data.map((despesa) => ({
+                user_id: despesa.user_id,           // Adicionando user_id
+                categoria_id: despesa.categoria_id, // Adicionando categoria_id
+                descricao: despesa.descricao,       // Adicionando descricao
+                valor: despesa.valor,               // Adicionando valor
+                data_pagamento: despesa.data_pagamento, // Adicionando data_pagamento
+                status: despesa.status,             // Adicionando status
+                receita_id: despesa.receita_id,     // Adicionando receita_id
+                valorFormatado: despesa.valor != null && !isNaN(despesa.valor)
+                    ? `R$ ${parseFloat(despesa.valor).toFixed(2).replace('.', ',')}`
+                    : 'R$ 0,00', // Formatação do valor
+            }));
+        })
+        .catch((error) => {
+            console.error("Erro ao buscar despesas:", error);
+        }); 
     },
+
     methods: {
         async fetchData() {
             try {
@@ -156,7 +161,7 @@ export default {
         try {
             const response = await fetch("http://127.0.0.1:8000/api/indexDespesas");
             const res = await response.json();
-            this.despesas = Array.isArray(res.data) ? res.data : [];
+            this.ultimasDespesas = Array.isArray(res.data) ? res.data : [];
         } catch (error) {
             console.error("Erro ao carregar Despesa:", error);
         } finally {
@@ -169,6 +174,7 @@ export default {
     }
 };
 </script>
+
 
 <style>
 .card-header {
