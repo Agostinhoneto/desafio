@@ -1,5 +1,5 @@
 <template>
-    <div class="content-wrapper">  
+    <div class="content-wrapper">
         <div class="container my-4">
             <h1>Minhas Finanças</h1>
             <p class="text-muted">Aqui você acompanha suas despesas, receitas e saldo atualizado.</p>
@@ -101,16 +101,37 @@ export default {
             receitas: []
         };
     },
+    computed: {
+        filterDespesas() {
+            return this.despesas.filter((despesa) => {
+                const searchText = this.search.toLowerCase();
+                const despesaCreatedAt = despesa.data_pagamento
+                    ? moment(despesa.data_pagamento).format("YYYY-MM-DD")
+                    : "";
+
+                const isWithinDateRange =
+                    this.startDate && this.endDate
+                        ? despesaCreatedAt >= this.startDate && despesaCreatedAt <= this.endDate
+                        : true;
+
+                return (
+                    isWithinDateRange &&
+                    (despesa.descricao?.toLowerCase().includes(searchText) || // Verifica se `descricao` existe
+                        despesa.valor?.toString().includes(this.search) || // Verifica se `valor` existe
+                        despesa.email?.toLowerCase().includes(searchText)) // Verifica se `email` existe
+                );
+            });
+        },
+    },
     methods: {
         async fetchData() {
             try {
-                // Exemplo de chamadas de API (substitua pelas suas rotas reais)
-                const despesasResponse = await fetch('http://127.0.0.1:8000/api/indexDespesas');
-                const receitasResponse = await fetch('http://127.0.0.1:8000/api/indexReceitas');
-                
+                const despesasResponse = await fetch('http://127.0.0.1:8000/api/indexFinancas');
+                const receitasResponse = await fetch('http://127.0.0.1:8000/api/indexFinancas');
+
                 const despesasData = await despesasResponse.json();
                 const receitasData = await receitasResponse.json();
-                
+
                 this.despesas = despesasData.ultimasDespesas;
                 this.receitas = receitasData.ultimasReceitas;
 
@@ -122,6 +143,19 @@ export default {
             }
         }
     },
+    async listarTodos() {
+        this.loading = true;
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/indexDespesas");
+            const res = await response.json();
+            this.despesas = Array.isArray(res.data) ? res.data : [];
+        } catch (error) {
+            console.error("Erro ao carregar Despesa:", error);
+        } finally {
+            this.loading = false;
+        }
+    },
+
     mounted() {
         this.fetchData();
     }
