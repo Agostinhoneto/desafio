@@ -38,9 +38,9 @@
                     </router-link>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link text-white">
+                    <router-link to="/lista-configuracoes" class="nav-link text-white" aria-label="Ir para a página Configurações">
                         <i class="fas fa-cogs"></i> <span class="ml-2">Configurações</span>
-                    </a>
+                    </router-link>
                 </li>
             </ul>
         </aside>

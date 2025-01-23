@@ -15,6 +15,8 @@ import DespesasListVue from '../views/despesas/DespesasListVue.vue';
 //Finanças
 import FinancasVue from '../views/financas/FinancasVue.vue';
 import RelatoriosVue from '../views/relatorios/RelatoriosVue.vue';
+//configurações
+import SettingsVue from '../views/config/SettingsVue.vue';
 
 const routes = [
   {
@@ -92,6 +94,12 @@ const routes = [
     path: '/relatorios',
     name: 'list-relatorios',
     component: RelatoriosVue,
+    meta: { MenuLateral: 'default' }, 
+  },
+  {
+    path: '/lista-configuracoes',
+    name: 'lista-configuracoes',
+    component: SettingsVue,
     meta: { MenuLateral: 'default' }, 
   },
   
