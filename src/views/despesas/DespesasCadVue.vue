@@ -5,7 +5,7 @@
             <router-link :to="{ name: 'lista-despesas' }" class="btn btn-secondary btn-sm ml-2">
                 <i class="fas fa-arrow"></i> Voltar
             </router-link>
-            <router-link :to="{ name: 'lista-despesas' }" class="btn btn-primary btn-sm ml-2">
+            <router-link :to="{ name: 'lista-despesas' }" class="btn btn-danger btn-sm ml-2">
                 <i class="fas fa-list"></i> Listar Despesas
             </router-link>
         </div>

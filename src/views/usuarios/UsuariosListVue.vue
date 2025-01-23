@@ -17,7 +17,7 @@
             <!-- Botões e Filtros -->
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
-                    <router-link :to="{ name: 'cad-usuarios' }" class="btn btn-success btn-sm">
+                    <router-link :to="{ name: 'cad-usuarios' }" class="btn btn-warning btn-sm">
                         <i class="fas fa-user-plus"></i> Adicionar Usuário
                     </router-link>
                 </div>
