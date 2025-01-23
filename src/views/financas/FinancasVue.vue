@@ -75,11 +75,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="receita in receitas" :key="receita.id">
-                                <td>{{ receita.data }}</td>
-                                <td>{{ receita.descricao }}</td>
-                                <td>{{ receita.categoria }}</td>
-                                <td>R$ {{ receita.valor }}</td>
+                            <tr v-for="despesa in filterDespesas" :key="despesa.id">
+                                <td>{{ despesa.descricao || 'Categoria não disponível' }}</td>
+                                <td>{{ despesa.categoria?.descricao || 'Categoria não disponível' }}</td>
+                                <td>{{ despesa.valor ? `R$ ${parseFloat(despesa.valor).toFixed(2)}` : 'Valor não disponível' }}</td>
+                                <td>{{ despesa.data_pagamento ? formatDate(despesa.data_pagamento) : 'Data não disponível' }}</td>
+                                <td>{{ despesa.status || 'Status não disponível' }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -98,12 +99,20 @@ export default {
             totalReceitas: 0,
             saldoFinal: 0,
             despesas: [],
-            receitas: []
+            receitas: [],
+            ultimasReceitas: [], // Corrected array initialization
+            search: "", // Assuming you have a search data property
+            startDate: "", // Assuming you have a startDate data property
+            endDate: "", // Assuming you have an endDate data property
         };
     },
     computed: {
         filterDespesas() {
-            return this.despesas.filter((despesa) => {
+            if (!Array.isArray(this.ultimasDespesas)) {
+                return []; // Retorna um array vazio se `ultimasDespesas` não for um array
+            }
+
+            return this.ultimasDespesas.filter((despesa) => {
                 const searchText = this.search.toLowerCase();
                 const despesaCreatedAt = despesa.data_pagamento
                     ? moment(despesa.data_pagamento).format("YYYY-MM-DD")
@@ -117,8 +126,7 @@ export default {
                 return (
                     isWithinDateRange &&
                     (despesa.descricao?.toLowerCase().includes(searchText) || // Verifica se `descricao` existe
-                        despesa.valor?.toString().includes(this.search) || // Verifica se `valor` existe
-                        despesa.email?.toLowerCase().includes(searchText)) // Verifica se `email` existe
+                        despesa.valor?.toString().includes(this.search)) // Verifica se `valor` existe
                 );
             });
         },
