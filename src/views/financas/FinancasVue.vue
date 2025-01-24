@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="row mt-4">
                 <h2>Últimas Despesas</h2>
                 <p class="text-muted">Confira as despesas recentes lançadas.</p>
@@ -53,7 +53,7 @@
                             <tr v-for="despesa in ultimasDespesas" :key="despesa.id">
                                 <td>{{ despesa.data_pagamento }}</td>
                                 <td>{{ despesa.descricao }}</td>
-                                <td>{{ despesa.categoria_id }}</td>
+                                <td>{{ despesa.categoriaNome }}</td>
                                 <td>{{ despesa.valorFormatado }}</td>
                                 <td>{{ despesa.status }}</td>
                             </tr>
@@ -94,7 +94,9 @@
 </template>
 
 <script>
-import axios from "axios"; 
+
+import axios from "axios";
+
 export default {
     data() {
         return {
@@ -105,57 +107,66 @@ export default {
             ultimasDespesas: [],
             ultimasReceitas: [],
             receitas: [],
+            categorias: {},
             search: "",
             startDate: "",
             endDate: "",
         };
     },
 
-    // axios
-    
     created() {
-    axios
-        .get("http://127.0.0.1:8000/api/indexDespesas")
-        .then((response) => {
-            console.log("Resposta da API:", response.data);
-            this.ultimasDespesas = response.data.data.map((despesa) => ({
-                user_id: despesa.user_id,          
-                categoria_id: despesa.categoria_id,
-                descricao: despesa.descricao,      
-                valor: despesa.valor,              
-                data_pagamento: despesa.data_pagamento, 
-                status: despesa.status,             
-                receita_id: despesa.receita_id,     
-                valorFormatado: despesa.valor != null && !isNaN(despesa.valor)
-                    ? `R$ ${parseFloat(despesa.valor).toFixed(2).replace('.', ',')}`
-                    : 'R$ 0,00', 
-            }));
-        })
-        .catch((error) => {
-            console.error("Erro ao buscar despesas:", error);
-        }); 
-
+        // Busca as categorias primeiro
         axios
-        .get("http://127.0.0.1:8000/api/indexReceitas")
-        .then((response) => {
-            console.log("Resposta da API:", response.data);
-            this.ultimasReceitas = response.data.data.map((receita) => ({
-                categoria_id: receita.categoria_id,
-                descricao: receita.descricao,      
-                valor: receita.valor,              
-                data_pagamento: receita.data_pagamento, 
-                status: receita.status,             
-                receita_id: receita.receita_id,     
-                valorFormatado: receita.valor != null && !isNaN(receita.valor)
-                    ? `R$ ${parseFloat(receita.valor).toFixed(2).replace('.', ',')}`
-                    : 'R$ 0,00', 
-            }));
-        })
-        .catch((error) => {
-            console.error("Erro ao buscar receitas:", error);
-        }); 
-    },
+            .get("http://127.0.0.1:8000/api/indexCategorias")
+            .then((response) => {
+                console.log("Resposta da API - Categorias:", response.data);
+                this.categorias = response.data.data.reduce((map, categoria) => {
+                    map[categoria.id] = categoria.descricao;
+                    return map;
+                }, {});
 
+                // Agora busca as despesas
+                return axios.get("http://127.0.0.1:8000/api/indexDespesas");
+            })
+            .then((response) => {
+                console.log("Resposta da API - Despesas:", response.data);
+                this.ultimasDespesas = response.data.data.map((despesa) => ({
+                    user_id: despesa.user_id,
+                    descricao: despesa.descricao,
+                    valor: despesa.valor,
+                    data_pagamento: despesa.data_pagamento,
+                    status: despesa.status,
+                    receita_id: despesa.receita_id,
+                    valorFormatado: despesa.valor != null && !isNaN(despesa.valor)
+                        ? `R$ ${parseFloat(despesa.valor).toFixed(2).replace('.', ',')}`
+                        : 'R$ 0,00',
+                    categoriaNome: this.categorias[despesa.categoria_id] || 'Sem Categoria',
+                    statusNome: this.statusMap?.[despesa.status] || 'Indefinido',
+                }));
+            })
+            .catch((error) => {
+                console.error("Erro ao buscar dados:", error);
+            });
+        axios
+            .get("http://127.0.0.1:8000/api/indexReceitas")
+            .then((response) => {
+                console.log("Resposta da API:", response.data);
+                this.ultimasReceitas = response.data.data.map((receita) => ({
+                    categoria_id: receita.categoria_id,
+                    descricao: receita.descricao,
+                    valor: receita.valor,
+                    data_pagamento: receita.data_pagamento,
+                    status: receita.status,
+                    receita_id: receita.receita_id,
+                    valorFormatado: receita.valor != null && !isNaN(receita.valor)
+                        ? `R$ ${parseFloat(receita.valor).toFixed(2).replace('.', ',')}`
+                        : 'R$ 0,00',
+                }));
+            })
+            .catch((error) => {
+                console.error("Erro ao buscar receitas:", error);
+            });
+    },
     // Métodos
     methods: {
         async fetchData() {
@@ -175,18 +186,18 @@ export default {
             } catch (error) {
                 console.error('Erro ao carregar dados:', error);
             }
-        }
-    },
-    async listarTodos() {
-        this.loading = true;
-        try {
-            const response = await fetch("http://127.0.0.1:8000/api/indexDespesas");
-            const res = await response.json();
-            this.ultimasDespesas = Array.isArray(res.data) ? res.data : [];
-        } catch (error) {
-            console.error("Erro ao carregar Despesa:", error);
-        } finally {
-            this.loading = false;
+        },
+        async listarTodos() {
+            this.loading = true;
+            try {
+                const response = await fetch("http://127.0.0.1:8000/api/indexDespesas");
+                const res = await response.json();
+                this.ultimasDespesas = Array.isArray(res.data) ? res.data : [];
+            } catch (error) {
+                console.error("Erro ao carregar Despesa:", error);
+            } finally {
+                this.loading = false;
+            }
         }
     },
 
@@ -194,6 +205,7 @@ export default {
         this.fetchData();
     }
 };
+
 </script>
 
 
