@@ -70,19 +70,20 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Data</th>
                                 <th>Descrição</th>
                                 <th>Categoria</th>
                                 <th>Valor</th>
+                                <th>Data do Recebimento</th>
+                                <th>Status</th> 
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="receita in ultimasReceitas" :key="receita.id">
-                                <td>{{ receita.descricao || 'Categoria não disponível' }}</td>
-                                <td>{{ receita.categoria?.descricao || 'Categoria não disponível' }}</td>
+                                <td>{{ receita.descricao }}</td>
+                                <td>{{ receita.categoriaNome }}</td>
                                 <td>{{ receita.valor ? `R$ ${parseFloat(receita.valor).toFixed(2)}` : 'Valor não disponível' }}</td>
-                                <td>{{ receita.data_recebimento ? formatDate(receita.data_recebimento) : 'Data não disponível' }}</td>
-                                <td>{{ receita.status || 'Status não disponível' }}</td>
+                                <td>{{ receita.data_recebimento}}</td>
+                                <td>{{ statusMap[receita.status]}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -94,7 +95,6 @@
 </template>
 
 <script>
-
 import axios from "axios";
 
 export default {
@@ -119,21 +119,36 @@ export default {
     },
 
     created() {
-        // Busca as categorias primeiro
-        axios
-            .get("http://127.0.0.1:8000/api/indexCategorias")
-            .then((response) => {
-                console.log("Resposta da API - Categorias:", response.data);
+        // Carregar categorias, despesas e receitas em paralelo
+        Promise.all([this.fetchCategorias(), this.fetchDespesas(), this.fetchReceitas()])
+            .then(() => {
+                console.log("Dados carregados com sucesso.");
+            })
+            .catch((error) => {
+                console.error("Erro ao carregar os dados:", error);
+            });
+    },
+
+    methods: {
+        // Busca categorias e formata o resultado
+        async fetchCategorias() {
+            try {
+                const response = await axios.get("http://127.0.0.1:8000/api/indexCategorias");
+                console.log("Categorias carregadas:", response.data);
                 this.categorias = response.data.data.reduce((map, categoria) => {
                     map[categoria.id] = categoria.descricao;
                     return map;
                 }, {});
+            } catch (error) {
+                console.error("Erro ao buscar categorias:", error);
+            }
+        },
 
-                // Agora busca as despesas
-                return axios.get("http://127.0.0.1:8000/api/indexDespesas");
-            })
-            .then((response) => {
-                console.log("Resposta da API - Despesas:", response.data);
+        // Busca despesas e formata o resultado
+        async fetchDespesas() {
+            try {
+                const response = await axios.get("http://127.0.0.1:8000/api/indexDespesas");
+                console.log("Despesas carregadas:", response.data);
                 this.ultimasDespesas = response.data.data.map((despesa) => ({
                     user_id: despesa.user_id,
                     descricao: despesa.descricao,
@@ -141,76 +156,69 @@ export default {
                     data_pagamento: despesa.data_pagamento,
                     status: despesa.status,
                     receita_id: despesa.receita_id,
-                    valorFormatado: despesa.valor != null && !isNaN(despesa.valor)
+                    valorFormatado: despesa.valor
                         ? `R$ ${parseFloat(despesa.valor).toFixed(2).replace('.', ',')}`
                         : 'R$ 0,00',
                     categoriaNome: this.categorias[despesa.categoria_id] || 'Sem Categoria',
-                    statusNome: this.statusMap?.[despesa.status] || 'Indefinido',
+                    statusNome: this.statusMap[despesa.status] || 'Indefinido',
                 }));
-            })
-            .catch((error) => {
-                console.error("Erro ao buscar dados:", error);
-            });
-        axios
-            .get("http://127.0.0.1:8000/api/indexReceitas")
-            .then((response) => {
-                console.log("Resposta da API:", response.data);
+            } catch (error) {
+                console.error("Erro ao buscar despesas:", error);
+            }
+        },
+
+        // Busca receitas e formata o resultado
+        async fetchReceitas() {
+            try {
+                const response = await axios.get("http://127.0.0.1:8000/api/indexReceitas");
+                console.log("Receitas carregadas:", response.data);
                 this.ultimasReceitas = response.data.data.map((receita) => ({
                     categoria_id: receita.categoria_id,
                     descricao: receita.descricao,
                     valor: receita.valor,
-                    data_pagamento: receita.data_pagamento,
+                    data_recebimento: receita.data_recebimento,
                     status: receita.status,
                     receita_id: receita.receita_id,
-                    valorFormatado: receita.valor != null && !isNaN(receita.valor)
+                    valorFormatado: receita.valor
                         ? `R$ ${parseFloat(receita.valor).toFixed(2).replace('.', ',')}`
                         : 'R$ 0,00',
+                    categoriaNome: this.categorias[receita.categoria_id] || 'Sem Categoria',
+                    statusNome: this.statusMap[receita.status] || 'Indefinido',
                 }));
-            })
-            .catch((error) => {
-                console.error("Erro ao buscar receitas:", error);
-            });
-    },
-    // Métodos
-    methods: {
-        async fetchData() {
-            try {
-                const despesasResponse = await fetch('http://127.0.0.1:8000/api/indexFinancas');
-                const receitasResponse = await fetch('http://127.0.0.1:8000/api/indexFinancas');
-
-                const despesasData = await despesasResponse.json();
-                const receitasData = await receitasResponse.json();
-
-                this.despesas = despesasData.ultimasDespesas;
-                this.receitas = receitasData.ultimasReceitas;
-
-                this.totalDespesas = despesasData.totalDespesas;
-                this.totalReceitas = receitasData.totalReceitas;
-                this.saldoFinal = this.totalReceitas - this.totalDespesas;
             } catch (error) {
-                console.error('Erro ao carregar dados:', error);
+                console.error("Erro ao buscar receitas:", error);
             }
         },
+
+        // Método para listar todas as despesas (opcional)
         async listarTodos() {
             this.loading = true;
             try {
-                const response = await fetch("http://127.0.0.1:8000/api/indexDespesas");
-                const res = await response.json();
-                this.ultimasDespesas = Array.isArray(res.data) ? res.data : [];
+                const response = await axios.get("http://127.0.0.1:8000/api/indexDespesas");
+                this.ultimasDespesas = response.data.data || [];
             } catch (error) {
-                console.error("Erro ao carregar Despesa:", error);
+                console.error("Erro ao listar despesas:", error);
             } finally {
                 this.loading = false;
             }
-        }
+        },
+
+        // Atualizar os saldos financeiros
+        calcularSaldos() {
+            this.totalDespesas = this.ultimasDespesas.reduce((acc, despesa) => acc + parseFloat(despesa.valor || 0), 0);
+            this.totalReceitas = this.ultimasReceitas.reduce((acc, receita) => acc + parseFloat(receita.valor || 0), 0);
+            this.saldoFinal = this.totalReceitas - this.totalDespesas;
+        },
     },
 
-    mounted() {
-        this.fetchData();
-    }
+    watch: {
+        // Atualiza os saldos automaticamente ao carregar as despesas e receitas
+        ultimasDespesas: "calcularSaldos",
+        ultimasReceitas: "calcularSaldos",
+    },
 };
-
 </script>
+
 
 
 <style>
