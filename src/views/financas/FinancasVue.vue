@@ -55,7 +55,7 @@
                                 <td>{{ despesa.descricao }}</td>
                                 <td>{{ despesa.categoriaNome }}</td>
                                 <td>{{ despesa.valorFormatado }}</td>
-                                <td>{{ despesa.status }}</td>
+                                <td>{{ statusMap[despesa.status] }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -111,6 +111,10 @@ export default {
             search: "",
             startDate: "",
             endDate: "",
+            statusMap: {
+                1: 'Ativo',
+                0: 'Inativo',
+            },
         };
     },
 
