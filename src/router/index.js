@@ -9,6 +9,7 @@ import UsuariosUpdate from '../views/usuarios/UsuariosUpdate.vue';
 //Receitas
 import ReceitasCadVue from '../views/receitas/ReceitasCadVue.vue';
 import ReceitasListVue from '../views/receitas/ReceitasListVue.vue';
+import ReceitasUpdate from '../views/receitas/ReceitasUpdate.vue';
 //Despesas
 import DespesasCadVue from '../views/despesas/DespesasCadVue.vue';
 import DespesasListVue from '../views/despesas/DespesasListVue.vue';
@@ -58,6 +59,12 @@ const routes = [
     path: '/receitas',
     name: 'cad-receitas',
     component: ReceitasCadVue,
+    meta: { MenuLateral: 'default' }, 
+  },
+  {
+    path: '/receitas-update',
+    name: 'update-receitas',
+    component: ReceitasUpdate,
     meta: { MenuLateral: 'default' }, 
   },
   {

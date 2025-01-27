@@ -46,7 +46,7 @@
                                 <td>{{ receita.data_recebimento ? formatDate(receita.data_recebimento) : 'Data não disponível' }}</td>
                                 <td>{{ receita.status || 'Status não disponível' }}</td>
                                 <td>
-                                    <router-link :to="{ name: 'cad-receitas', params: { id: receita.id } }">
+                                    <router-link :to="{ name: 'update-receitas', params: { id: receita.id } }">
                                         <button type="button" class="btn btn-primary btn-sm">Editar</button>
                                     </router-link>
                                     <button type="button" class="btn btn-warning btn-sm"
