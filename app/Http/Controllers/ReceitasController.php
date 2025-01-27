@@ -27,7 +27,6 @@ class ReceitasController extends Controller
         return response()->json(['data' => $receita]);
     }
 
-
     public function create()
     {
         try {
@@ -61,34 +60,15 @@ class ReceitasController extends Controller
             return redirect()->back()->withErrors('Erro ao carregar o formulário de edição: ' . $e->getMessage());
         }
     }
-
-    /**
-     * Update the specified receita in storage.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(Request $request, $id)
+   
+    public function updateReceita(Request $request, $id)
     {
-        try {
-            $receitas = Receitas::findOrFail($id);
-            $receitas->update($request->only(['descricao', 'valor', 'data_recebimento', 'categoria_id', 'status']));
-
-            return redirect()->route('receitas.index')->with('success', 'Receita atualizada com sucesso!');
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return redirect()->route('receitas.index')->withErrors('Receita não encontrada.');
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors('Erro ao atualizar a receita: ' . $e->getMessage());
-        }
+        $dataRequest = $request->all();
+        $data = Receitas::findOrFail($id);
+        $data->update($dataRequest);
+        return response()->json(['msg' => 'Dados atualizados com sucesso', 'data' => $data]);
     }
 
-    /**
-     * Remove the specified receita from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function destroy($id)
     {
         try {
