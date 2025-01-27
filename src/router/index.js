@@ -62,7 +62,7 @@ const routes = [
     meta: { MenuLateral: 'default' }, 
   },
   {
-    path: '/receitas-update',
+    path: '/receitas-update/:id',
     name: 'update-receitas',
     component: ReceitasUpdate,
     meta: { MenuLateral: 'default' }, 

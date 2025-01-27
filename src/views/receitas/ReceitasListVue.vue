@@ -47,7 +47,9 @@
                                 <td>{{ receita.status || 'Status não disponível' }}</td>
                                 <td>
                                     <router-link :to="{ name: 'update-receitas', params: { id: receita.id } }">
-                                        <button type="button" class="btn btn-primary btn-sm">Editar</button>
+                                    <button type="button" class="btn btn-primary btn-sm">
+                                        Editar
+                                    </button>
                                     </router-link>
                                     <button type="button" class="btn btn-warning btn-sm"
                                         @click="alterarStatus(receita.id, 'desativar')">Desativar</button>
@@ -161,9 +163,10 @@ export default {
             try {
                 const response = await fetch("http://127.0.0.1:8000/api/indexReceitas");
                 const res = await response.json();
-                this.receitas = res.data;
+                this.receitas = res.data || []; // Garante que será um array
             } catch (error) {
                 console.error("Erro ao carregar receitas:", error);
+                this.receitas = []; // Reseta como array vazio em caso de erro
             } finally {
                 this.loading = false;
             }
