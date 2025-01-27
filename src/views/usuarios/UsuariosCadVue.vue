@@ -7,7 +7,7 @@
           <router-link :to="{ name: 'lista' }" class="btn btn-secondary btn-sm ml-2">
             <i class="fas fa-arrow"></i> Voltar
           </router-link>
-          <router-link :to="{ name: 'lista' }" class="btn btn-primary btn-sm ml-2">
+          <router-link :to="{ name: 'lista' }" class="btn btn-warning btn-sm ml-2">
                 <i class="fas fa-list"></i> Listar Usuários
             </router-link>
         </div>
