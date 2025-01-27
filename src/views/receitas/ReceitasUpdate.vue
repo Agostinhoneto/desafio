@@ -44,7 +44,7 @@
                 </div>
                 <br><br>
                 <div class="mt-2">
-                    <button type="submit" class="btn btn-primary">SALVAR</button>
+                    <button type="submit" class="btn btn-primary">EDITAR</button>
                 </div>
             </form>
         </div>
