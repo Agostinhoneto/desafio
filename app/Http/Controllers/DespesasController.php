@@ -21,7 +21,7 @@ class DespesasController extends Controller
         return response()->json(['data' =>$data]);
     }
 
-    public function showDespesa($id)
+    public function showDespesas($id)
     {
         $despesa = Despesas::find($id);
         if (!$despesa) {
@@ -38,6 +38,13 @@ class DespesasController extends Controller
         return response()->json(['data' =>$data]);
     }
 
+    public function updateDespesas(Request $request, Despesas $despesas, $id)
+    {
+        $despesas = Despesas::findOrFail($id);
+        $despesas->update($request->all());
+        return response()->json(['msg' => 'Dados atualizados com sucesso', 'data' => $despesas]);
+    }
+
     public function edit(Request $request, Despesas $despesas, $id)
     {
         try {
@@ -49,13 +56,6 @@ class DespesasController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withErrors('Erro ao carregar o formulário de criação: ' . $e->getMessage());
         }
-    }
-
-    public function update(Request $request, Despesas $despesas, $id)
-    {
-        $despesas = Despesas::findOrFail($id);
-        $despesas->update($request->all());
-        return redirect()->route('despesas.index')->with('success', 'Despesas atualizada com sucesso!');
     }
 
     public function destroy(Despesas $despesas)

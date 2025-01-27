@@ -49,7 +49,9 @@ Route::controller(ReceitasController::class)->group(function () {
 
 Route::controller(DespesasController::class)->group(function () {
     Route::get('indexDespesas', 'indexDespesas');
+    Route::get('showDespesas/{id}', 'showDespesas'); 
     Route::post('storeDespesas', 'storeDespesas');
+    Route::put('updateDespesas/{id}', 'updateDespesas'); 
     Route::delete('DespesasDestroy/{id}', 'DespesasDestroy');
 });
 
