@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\DespesasController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EnderecoController;
+use App\Http\Controllers\FinancasController;
 use App\Http\Controllers\ReceitasController;
 use App\Models\Categorias;
 use App\Models\User;
@@ -52,6 +53,12 @@ Route::controller(DespesasController::class)->group(function () {
 
 Route::controller(CategoriasController::class)->group(function () {
     Route::get('indexCategorias', 'indexCategorias');
+    Route::post('storeCategorias', 'storeCategorias');
+    Route::delete('CategoriasDestroy/{id}', 'CategoriasDestroy');
+});
+
+Route::controller(FinancasController::class)->group(function () {
+    Route::get('indexFinancas', 'indexFinancas');
     Route::post('storeCategorias', 'storeCategorias');
     Route::delete('CategoriasDestroy/{id}', 'CategoriasDestroy');
 });
