@@ -22,8 +22,8 @@
                 </div>
                 <br>
                 <div class="form-group col-md-6">
-                    <label for="data_recebimento">Data de Pagamento</label>
-                    <input type="date" v-model="data_recebimento" class="form-control" id="data_recebimento" />
+                    <label for="data_pagamento">Data de Pagamento</label>
+                    <input type="date" v-model="data_pagamento" class="form-control" id="data_pagamento" />
                 </div>
                 <br>
                 <div class="form-group col-md-6">
@@ -62,27 +62,27 @@ export default {
             id: null,
             descricao: "",
             valor: "",
-            data_recebimento: "",
+            data_pagamento: "",
             status: "1",
             categoria_id: null,
             categorias: [],
         };
     },
     methods: {
-        async carregardespesa() {
+        async carregarDespesa() {
             try {
                 const id = this.$route.params.id;
                 if (!id) throw new Error("ID da despesa não fornecido na rota.");
                 
-                const response = await axios.get(`http://127.0.0.1:8000/api/showdespesa/${id}`);
+                const response = await axios.get(`http://127.0.0.1:8000/api/showDespesas/${id}`);
                 const despesa = response.data.data;
 
                 this.id = despesa.id;
                 this.descricao = despesa.descricao || "";
                 this.valor = despesa.valor || 0;
-                this.data_recebimento = despesa.data_recebimento
-                    ? new Date(despesa.data_recebimento).toISOString().split("T")[0]
-                    : ""; // Formata para "YYYY-MM-DD"
+                this.data_pagamento = despesa.data_pagamento
+                    ? new Date(despesa.data_pagamento).toISOString().split("T")[0]
+                    : ""; 
                 this.status = despesa.status !== undefined ? despesa.status.toString() : "1";
                 this.categoria_id = despesa.categoria_id || null;
             } catch (error) {
@@ -106,12 +106,12 @@ export default {
                 const payload = {
                     descricao: this.descricao,
                     valor: this.valor,
-                    data_recebimento: this.data_recebimento,
+                    data_pagamento: this.data_pagamento,
                     status: this.status,
                     categoria_id: this.categoria_id,
                 };
 
-                await axios.put(`http://127.0.0.1:8000/api/updatedespesa/${this.id}`, payload);
+                await axios.put(`http://127.0.0.1:8000/api/updateDespesas/${this.id}`, payload);
 
                 alert("despesa atualizada com sucesso!");
                 this.$router.push({ name: "lista-despesas" });
@@ -122,7 +122,7 @@ export default {
     },
     mounted: async function () {
         await this.carregarCategorias();
-        await this.carregardespesa();
+        await this.carregarDespesa();
     },
 };
 </script>
