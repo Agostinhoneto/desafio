@@ -1,70 +1,62 @@
 <template>
     <br>
-    <div>
-        <h2>Cadastrar Usuários</h2>
+    <div class="content-wrapper">
+        <h2>Editar despesa</h2>
         <hr>
         <div>
-            <router-link :to="{ name: 'home' }">Voltar</router-link>
+            <router-link :to="{ name: 'lista-despesas' }">Voltar</router-link>
         </div>
-        <UserTodoForm :todo="updateUser" :user-id="userId" @save="onSave" @update="onUpdate" />
         <div class="row">
             <form @submit.stop.prevent="submit">
                 <br><br>
                 <div class="form-group col-md-6">
-                    <label for="exampleInputEmail1">Nome</label>
-                    <input type="text" v-model="this.name" class="form-control" id="name" aria-describedby="emailHelp"
-                        placeholder="Nome">
+                    <label for="descricao">Descrição</label>
+                    <input type="text" v-model="descricao" class="form-control" id="descricao"
+                        placeholder="Descrição" />
                 </div>
                 <br>
                 <div class="form-group col-md-6">
-                    <label for="exampleInputPassword1">CPF</label>
-                    <input type="text" v-model="this.cpf" class="form-control" id="cpf" placeholder="CPF">
+                    <label for="valor">Valor</label>
+                    <input type="number" step="0.01" v-model="valor" class="form-control" id="valor"
+                        placeholder="Valor" />
                 </div>
                 <br>
                 <div class="form-group col-md-6">
-                    <label for="exampleInputPassword1">Email</label>
-                    <br>
-                    <input type="email" v-model="this.email" class="form-control" id="email" placeholder="Email">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="">Pefil</label>
-                    <br>
-                    <input type="text" v-model="this.role_id" class="form-control" id="role_id" placeholder="Perfil">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="">Cep</label>
-                    <br>
-                    <input type="text" v-model="this.role_id" class="form-control" id="role_id" placeholder="Cep">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="">Logradouro</label>
-                    <br>
-                    <input type="text" v-model="this.role_id" class="form-control" id="role_id"
-                        placeholder="Logradouro">
+                    <label for="data_recebimento">Data de Pagamento</label>
+                    <input type="date" v-model="data_recebimento" class="form-control" id="data_recebimento" />
                 </div>
                 <br>
+                <div class="form-group col-md-6">
+                    <label for="status">Status</label>
+                    <select v-model="status" class="form-control" id="status">
+                        <option value="1">Ativo</option>
+                        <option value="0">Inativo</option>
+                    </select>
+                </div>
                 <br>
+                <div class="form-group col-md-6">
+                    <label for="categoria_id">Categoria</label>
+                    <select v-model="categoria_id" class="form-control" id="categoria_id">
+                        <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
+                            {{ categoria.descricao }}
+                        </option>
+                    </select>
+                </div>
+                <br><br>
                 <div class="mt-2">
-                    <button type="submit" class="btn btn-primary">
-                        EDITAR
-                    </button>
+                    <button type="submit" class="btn btn-primary">EDITAR</button>
                 </div>
             </form>
         </div>
-        <br>
-        <hr>
-        <div class="col-md-9">
-
-        </div>
-    </div>
-    <div>
+        <br />
+        <hr />
     </div>
 </template>
 
 <script>
 import axios from "axios";
 export default {
-    name: "EditarDespesa",
+    name: "Editardespesa",
     data() {
         return {
             id: null,
@@ -77,26 +69,26 @@ export default {
         };
     },
     methods: {
-        async carregarReceita() {
+        async carregardespesa() {
             try {
                 const id = this.$route.params.id;
-                if (!id) throw new Error("ID da receita não fornecido na rota.");
+                if (!id) throw new Error("ID da despesa não fornecido na rota.");
+                
+                const response = await axios.get(`http://127.0.0.1:8000/api/showdespesa/${id}`);
+                const despesa = response.data.data;
 
-                const response = await axios.get(`http://127.0.0.1:8000/api/showReceita/${id}`);
-                const receita = response.data.data;
-
-                this.id = receita.id;
-                this.descricao = receita.descricao || "";
-                this.valor = receita.valor || 0;
-                this.data_recebimento = receita.data_recebimento
-                    ? new Date(receita.data_recebimento).toISOString().split("T")[0]
+                this.id = despesa.id;
+                this.descricao = despesa.descricao || "";
+                this.valor = despesa.valor || 0;
+                this.data_recebimento = despesa.data_recebimento
+                    ? new Date(despesa.data_recebimento).toISOString().split("T")[0]
                     : ""; // Formata para "YYYY-MM-DD"
-                this.status = receita.status !== undefined ? receita.status.toString() : "1";
-                this.categoria_id = receita.categoria_id || null;
+                this.status = despesa.status !== undefined ? despesa.status.toString() : "1";
+                this.categoria_id = despesa.categoria_id || null;
             } catch (error) {
-                console.error("Erro ao carregar receita:", error.message);
-                alert("Erro ao carregar receita.");
-                this.$router.push({ name: "lista-receitas" });
+                console.error("Erro ao carregar despesa:", error.message);
+                alert("Erro ao carregar despesa.");
+                this.$router.push({ name: "lista-despesas" });
             }
         },
         // Carrega as categorias
@@ -108,6 +100,7 @@ export default {
                 console.error("Erro ao carregar categorias:", error);
             }
         },
+        // Submete as alterações da despesa
         async submit() {
             try {
                 const payload = {
@@ -118,18 +111,18 @@ export default {
                     categoria_id: this.categoria_id,
                 };
 
-                await axios.put(`http://127.0.0.1:8000/api/updateReceita/${this.id}`, payload);
+                await axios.put(`http://127.0.0.1:8000/api/updatedespesa/${this.id}`, payload);
 
-                alert("Receita atualizada com sucesso!");
-                this.$router.push({ name: "lista-receitas" });
+                alert("despesa atualizada com sucesso!");
+                this.$router.push({ name: "lista-despesas" });
             } catch (error) {
-                console.error("Erro ao atualizar receita:", error);
+                console.error("Erro ao atualizar despesa:", error);
             }
         },
     },
     mounted: async function () {
         await this.carregarCategorias();
-        await this.carregarReceita();
+        await this.carregardespesa();
     },
 };
 </script>

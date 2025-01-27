@@ -2,20 +2,26 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import LoginView from '../views/LoginView.vue';
 import Dashboard from '../components/Dashboard.vue';
+
 //Usuários
 import UsuariosListVue from '../views/usuarios/UsuariosListVue.vue';
 import UsuariosCadVue from '../views/usuarios/UsuariosCadVue.vue';
 import UsuariosUpdate from '../views/usuarios/UsuariosUpdate.vue';
+
 //Receitas
 import ReceitasCadVue from '../views/receitas/ReceitasCadVue.vue';
 import ReceitasListVue from '../views/receitas/ReceitasListVue.vue';
 import ReceitasUpdate from '../views/receitas/ReceitasUpdate.vue';
+
 //Despesas
 import DespesasCadVue from '../views/despesas/DespesasCadVue.vue';
 import DespesasListVue from '../views/despesas/DespesasListVue.vue';
+import DespesasUpdate from '../views/despesas/DespesasUpdate.vue';
+
 //Finanças
 import FinancasVue from '../views/financas/FinancasVue.vue';
 import RelatoriosVue from '../views/relatorios/RelatoriosVue.vue';
+
 //configurações
 import SettingsVue from '../views/config/SettingsVue.vue';
 
@@ -77,6 +83,12 @@ const routes = [
     path: '/despesas',
     name: 'cad-despesas',
     component: DespesasCadVue,
+    meta: { MenuLateral: 'default' }, 
+  },
+  {
+    path: '/despesas-update/:id',
+    name: 'update-despesas',
+    component: DespesasUpdate,
     meta: { MenuLateral: 'default' }, 
   },
   {
