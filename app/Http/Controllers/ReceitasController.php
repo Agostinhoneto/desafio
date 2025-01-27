@@ -17,7 +17,7 @@ class ReceitasController extends Controller
         $data = Receitas::with('categoria')->get();
         return response()->json(['data' => $data]);
     }
-    
+
     public function showReceita($id)
     {
         $receita = Receitas::find($id);
@@ -47,13 +47,6 @@ class ReceitasController extends Controller
         return response()->json(['data' => $data]);
     }
 
-    /**
-     * Show the form for editing the specified receita.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
-     */
     public function edit(Request $request, $id)
     {
         try {
