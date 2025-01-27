@@ -17,12 +17,13 @@ class ReceitasController extends Controller
         $data = Receitas::with('categoria')->get();
         return response()->json(['data' => $data]);
     }
+    public function showReceita($id)
+    {
+        $data = Receitas::find($id);
+        return response()->json(['data' => $data]);
 
-    /**
-     * Show the form for creating a new receita.
-     *
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
-     */
+    }
+
     public function create()
     {
         try {
@@ -33,12 +34,7 @@ class ReceitasController extends Controller
         }
     }
 
-    /**
-     * Store a newly created receita in storage.
-     *
-     * @param StoreReceitasRequest $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
+    
     public function storeReceitas(Request $request)
     {
         $data = $request->only(['descricao', 'valor', 'data_recebimento', 'categoria_id']);

@@ -41,7 +41,9 @@ Route::controller(UserController::class)->group(function () {
 
 Route::controller(ReceitasController::class)->group(function () {
     Route::get('indexReceitas', 'indexReceitas');
+    Route::get('showReceita/{id}', 'showReceita'); 
     Route::post('storeReceitas', 'storeReceitas');
+    Route::put('updateReceita/{id}', 'updateReceita'); 
     Route::delete('ReceitasDestroy/{id}', 'ReceitasDestroy');
 });
 
