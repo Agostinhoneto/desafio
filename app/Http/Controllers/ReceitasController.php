@@ -17,12 +17,16 @@ class ReceitasController extends Controller
         $data = Receitas::with('categoria')->get();
         return response()->json(['data' => $data]);
     }
+    
     public function showReceita($id)
     {
-        $data = Receitas::find($id);
-        return response()->json(['data' => $data]);
-
+        $receita = Receitas::find($id);
+        if (!$receita) {
+            return response()->json(['error' => 'Receita não encontrada'], 404);
+        }
+        return response()->json(['data' => $receita]);
     }
+
 
     public function create()
     {
@@ -34,13 +38,13 @@ class ReceitasController extends Controller
         }
     }
 
-    
+
     public function storeReceitas(Request $request)
     {
         $data = $request->only(['descricao', 'valor', 'data_recebimento', 'categoria_id']);
         $data['status'] = $request->input('status', 1);
         Receitas::create($data);
-        return response()->json(['data' =>$data]);
+        return response()->json(['data' => $data]);
     }
 
     /**
