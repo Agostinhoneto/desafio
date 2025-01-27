@@ -46,7 +46,7 @@
                                 <td>{{ despesa.data_pagamento ? formatDate(despesa.data_pagamento) : 'Data não disponível' }}</td>
                                 <td>{{ despesa.status || 'Status não disponível' }}</td>
                                 <td>
-                                    <router-link :to="{ name: 'cad-despesas', params: { id: despesa.id } }">
+                                    <router-link :to="{ name: 'update-despesas', params: { id: despesa.id } }">
                                         <button type="button" class="btn btn-primary btn-sm">Editar</button>
                                     </router-link>
                                     <button type="button" class="btn btn-warning btn-sm"
