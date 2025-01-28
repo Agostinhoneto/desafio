@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\EnderecoController;
 use App\Http\Controllers\FinancasController;
 use App\Http\Controllers\ReceitasController;
+use App\Http\Controllers\RoleController;
 use App\Models\Categorias;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -37,6 +38,11 @@ Route::controller(UserController::class)->group(function () {
     Route::put('updateUsers/{id}', 'updateUsers');
     Route::delete('destroyUsers/{id}', 'destroyUsers');
     Route::get('search', 'search');
+});
+
+
+Route::controller(RoleController::class)->group(function () {
+    Route::get('indexRoles', 'indexRoles');
 });
 
 Route::controller(ReceitasController::class)->group(function () {
