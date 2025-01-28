@@ -31,11 +31,11 @@ Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::controller(UserController::class)->group(function () {
-    Route::get('index', 'index');
-    Route::get('show/{id}', 'show');
-    Route::post('store', 'store');
-    Route::put('update/{id}', 'update');
-    Route::delete('destroy/{id}', 'destroy');
+    Route::get('indexUsers', 'indexUsers');
+    Route::get('showUsers/{id}', 'showUsers');
+    Route::post('storeUsers', 'storeUsers');
+    Route::put('updateUsers/{id}', 'updateUsers');
+    Route::delete('destroyUsers/{id}', 'destroyUsers');
     Route::get('search', 'search');
 });
 
