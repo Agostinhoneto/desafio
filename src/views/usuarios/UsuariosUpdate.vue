@@ -60,10 +60,10 @@
     <div>
     </div>
 </template>
+
 <script>
 export default {
     name: 'UsuariosUpdateVue',
-
     props: {
         todo: {
             type: Object,
@@ -73,103 +73,8 @@ export default {
             type: [String, Number],
             default: null,
         },
-
-    },
-    data() {
-        return {
-            user: {},
-            toBeUpdated: {},
-        };
     },
 
-    watch: {
-        todo(vl) {
-            this.id = vl.id;
-            this.name = vl.name;
-            this.email = vl.email;
-            this.cpf = vl.cpf;
-            this.logradouro = vl.logradouro;
-        },
-    },
-    methods: {
-        submit() {
-            console.log('id', this.id);
-            const payload = {
-                id: this.id,
-                name: this.name,
-                email: this.email,
-                cpf: this.cpf,
-                logradouro: this.logradouro,
-            };
-
-            if (this.id) {
-                this.update(payload);
-            } else {
-                alert(this.id);
-                this.storeTodo(payload);
-            }
-        },
-
-
-        storeTodo(payload) {
-            fetch(`http://localhost:8000/api/store/`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                    },
-                    body: JSON.stringify(payload)
-                })
-                .then(response => response.json())
-                .then((res) => {
-                    this.$emit('save', res.data);
-                    this.resetForm()
-                });
-        },
-
-        update(payload) {
-            console.log(payload);
-            fetch(`http://localhost:8000/api/update/${payload.id}`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                    },
-                    body: JSON.stringify(payload)
-                })
-                .then(response => response.json())
-                .then((res) => {
-                    this.$emit('update', res.data);
-                    this.resetForm()
-                });
-        },
-
-        remover(userId) {
-            fetch(`http://127.0.0.1:8000/api/destroy/${userId}`,
-                {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                    },
-                })
-                .then(() => {
-                    const todos = this.user;
-                    const idx = todos.findIndex(o => o.id === userId);
-                    todos.splice(idx, 1);
-                });
-            alert(userId);
-        },
-        resetForm() {
-            this.name = '';
-            this.email = '';
-            this.cpf = '';
-            this.role_id = '';
-        },
-
-    },
     data() {
         return {
             users: [],
@@ -178,24 +83,130 @@ export default {
             email: '',
             cpf: '',
             role_id: '',
-
         };
     },
 
+    watch: {
+        todo: {
+            handler(newValue) {
+                this.id = newValue.id || '';
+                this.name = newValue.name || '';
+                this.email = newValue.email || '';
+                this.cpf = newValue.cpf || '';
+                this.logradouro = newValue.logradouro || '';
+            },
+            immediate: true,
+            deep: true,
+        },
+    },
+
+    methods: {
+        async submit() {
+            const payload = {
+                id: this.id,
+                name: this.name,
+                email: this.email,
+                cpf: this.cpf,
+                logradouro: this.logradouro,
+            };
+
+            try {
+                if (this.id) {
+                    await this.updateUser(payload);
+                } else {
+                    await this.createUser(payload);
+                }
+            } catch (error) {
+                console.error('Erro ao enviar os dados:', error);
+            }
+        },
+
+        async createUser(payload) {
+            try {
+                const response = await fetch(`http://localhost:8000/api/storeUsers/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                const res = await response.json();
+                this.$emit('save', res.data);
+                this.resetForm();
+            } catch (error) {
+                console.error('Erro ao criar o usuário:', error);
+            }
+        },
+
+        async updateUser(payload) {
+            try {
+                const response = await fetch(`http://localhost:8000/api/updateUsers/${payload.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                const res = await response.json();
+                this.$emit('update', res.data);
+                this.resetForm();
+            } catch (error) {
+                console.error('Erro ao atualizar o usuário:', error);
+            }
+        },
+
+        async removeUser(userId) {
+            try {
+                await fetch(`http://127.0.0.1:8000/api/destroyUsers/${userId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                    },
+                });
+
+                const idx = this.users.findIndex(user => user.id === userId);
+                if (idx !== -1) {
+                    this.users.splice(idx, 1);
+                }
+
+                alert(`Usuário ${userId} removido com sucesso.`);
+            } catch (error) {
+                console.error('Erro ao remover o usuário:', error);
+            }
+        },
+
+        resetForm() {
+            this.id = '';
+            this.name = '';
+            this.email = '';
+            this.cpf = '';
+            this.role_id = '';
+        },
+    },
 
     async mounted() {
-        const userId = this.$route.params.id;
-        var resp = null;
-        this.id = userId;
-        await fetch(`http://127.0.0.1:8000/api/show/${userId}`)
-            .then(response => response.json())
-            .then(res => resp = { ...res.data });
-        this.name = resp.name
-        this.email = resp.email
-        this.cpf = resp.cpf
-        this.role.name = resp.role_id
-        console.log('response', resp)
+        const userId = this.$route.params.id || this.userId;
 
+        if (userId) {
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/api/showUsers/${userId}`);
+                const res = await response.json();
+
+                const user = res.data || {};
+                this.id = user.id || '';
+                this.name = user.name || '';
+                this.email = user.email || '';
+                this.cpf = user.cpf || '';
+                this.role_id = user.role_id || '';
+            } catch (error) {
+                console.error('Erro ao buscar os dados do usuário:', error);
+            }
+        }
     },
 };
 </script>

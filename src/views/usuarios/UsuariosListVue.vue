@@ -139,7 +139,7 @@ export default {
         async listarTodos() {
             this.loading = true;
             try {
-                const response = await fetch("http://127.0.0.1:8000/api/index");
+                const response = await fetch("http://127.0.0.1:8000/api/indexUsers");
                 const res = await response.json();
                 this.users = res.data;
             } catch (error) {
@@ -152,7 +152,7 @@ export default {
             if (!confirm("Deseja realmente excluir este usuário?")) return;
 
             try {
-                await fetch(`http://127.0.0.1:8000/api/destroy/${userId}`, {
+                await fetch(`http://127.0.0.1:8000/api/destroyUsers/${userId}`, {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
