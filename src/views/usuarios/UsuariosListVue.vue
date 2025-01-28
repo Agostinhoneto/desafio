@@ -161,7 +161,7 @@ export default {
             if (!confirm("Deseja realmente excluir este usuário?")) return;
 
             try {
-                await fetch(`http://127.0.0.1:8000/api/destroy/${userId}`, {
+                await fetch(`http://127.0.0.1:8000/api/destroyUsers/${userId}`, {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",

@@ -187,7 +187,7 @@ export default {
 
         async updateDespesa(payload) {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/api/despesas/${payload.id}`, {
+                const response = await fetch(`http://127.0.0.1:8000/api/updateDespesas/${payload.id}`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
