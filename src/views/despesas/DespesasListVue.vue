@@ -122,9 +122,9 @@ export default {
 
                 return (
                     isWithinDateRange &&
-                    (despesa.descricao?.toLowerCase().includes(searchText) || // Verifica se `descricao` existe
-                        despesa.valor?.toString().includes(this.search) || // Verifica se `valor` existe
-                        despesa.email?.toLowerCase().includes(searchText)) // Verifica se `email` existe
+                    (despesa.descricao?.toLowerCase().includes(searchText) || 
+                        despesa.valor?.toString().includes(this.search) || 
+                        despesa.email?.toLowerCase().includes(searchText)) 
                 );
             });
         },
