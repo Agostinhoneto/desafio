@@ -148,7 +148,7 @@ export default {
         async listarTodos() {
             this.loading = true;
             try {
-                const response = await fetch("http://127.0.0.1:8000/api/index");
+                const response = await fetch("http://127.0.0.1:8000/api/indexUsers");
                 const res = await response.json();
                 this.users = res.data;
             } catch (error) {

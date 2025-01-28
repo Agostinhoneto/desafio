@@ -107,7 +107,7 @@ export default {
 
         async loadUsuarios() {
             try {
-                const response = await fetch("http://127.0.0.1:8000/api/index");
+                const response = await fetch("http://127.0.0.1:8000/api/indexUsers");
                 const data = await response.json();
                 this.usuarios = data.data;
             } catch (error) {
