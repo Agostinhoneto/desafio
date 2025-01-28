@@ -44,15 +44,11 @@
                                 <td>{{ despesa.categoria?.descricao || 'Categoria não disponível' }}</td>
                                 <td>{{ despesa.valor ? `R$ ${parseFloat(despesa.valor).toFixed(2)}` : 'Valor não disponível' }}</td>
                                 <td>{{ despesa.data_pagamento ? formatDate(despesa.data_pagamento) : 'Data não disponível' }}</td>
-                                <td>{{ despesa.status || 'Status não disponível' }}</td>
+                                <td>{{ getStatus(despesa.status) }}</td>
                                 <td>
                                     <router-link :to="{ name: 'update-despesas', params: { id: despesa.id } }">
                                         <button type="button" class="btn btn-primary btn-sm">Editar</button>
                                     </router-link>
-                                    <button type="button" class="btn btn-warning btn-sm"
-                                        @click="alterarStatus(despesa.id, 'desativar')">Desativar</button>
-                                    <button type="button" class="btn btn-info btn-sm"
-                                        @click="alterarStatus(despesa.id, 'reativar')">Reativar</button>
                                     <button type="button" class="btn btn-danger btn-sm"
                                         @click="confirmDelete(despesa.id)">Excluir</button>
                                 </td>
@@ -135,6 +131,11 @@ export default {
     },
 
     methods: {
+        getStatus(status) {
+            if (status === 1) return 'Ativo';
+            if (status === 0) return 'Inativo';
+            return 'Status não disponível';
+        },
         formatDate(date) {
             return moment(date).format("DD/MM/YYYY, HH:mm:ss");
         },

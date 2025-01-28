@@ -51,17 +51,8 @@
                                 <td>{{ user.cpf || 'CPF não disponível' }}</td>
                                 <td>{{ user.role ? user.role.name : 'Perfil não disponível' }}</td>
                                 <td>
-                                    <router-link :to="{ name: 'user-todo', params: { id: user.id } }">
-                                        <button type="button" class="btn btn-light btn-sm">Detalhar</button>
-                                    </router-link>
                                     <router-link :to="{ name: 'cad-usuarios', params: { id: user.id } }">
                                         <button type="button" class="btn btn-primary btn-sm">Editar</button>
-                                    </router-link>
-                                    <router-link :to="{ name: 'cad-usuarios', params: { id: user.id } }">
-                                        <button type="button" class="btn btn-warning btn-sm">Desativar</button>
-                                    </router-link>
-                                    <router-link :to="{ name: 'cad-usuarios', params: { id: user.id } }">
-                                        <button type="button" class="btn btn-info btn-sm">Reativar</button>
                                     </router-link>
                                     <button type="button" class="btn btn-danger btn-sm"
                                         @click="confirmDelete(user.id)">Delete</button>

@@ -44,19 +44,17 @@
                                 <td>{{ receita.categoria.descricao || 'Categoria não disponível' }}</td>
                                 <td>{{ receita.valor ? `R$ ${parseFloat(receita.valor).toFixed(2)}` : 'Valor não disponível' }}</td>
                                 <td>{{ receita.data_recebimento ? formatDate(receita.data_recebimento) : 'Data não disponível' }}</td>
-                                <td>{{ receita.status || 'Status não disponível' }}</td>
+                                <td>{{ getStatus(receita.status)}}</td>
+
                                 <td>
                                     <router-link :to="{ name: 'update-receitas', params: { id: receita.id } }">
                                     <button type="button" class="btn btn-primary btn-sm">
                                         Editar
                                     </button>
                                     </router-link>
-                                    <button type="button" class="btn btn-warning btn-sm"
-                                        @click="alterarStatus(receita.id, 'desativar')">Desativar</button>
-                                    <button type="button" class="btn btn-info btn-sm"
-                                        @click="alterarStatus(receita.id, 'reativar')">Reativar</button>
                                     <button type="button" class="btn btn-danger btn-sm"
-                                        @click="confirmDelete(receita.id)">Excluir</button>
+                                        @click="confirmDelete(receita.id)">Excluir
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -133,6 +131,11 @@ export default {
         },
     },
     methods: {
+        getStatus(status) {
+            if (status === 1) return 'Ativo';
+            if (status === 0) return 'Inativo';
+            return 'Status não disponível';
+        },
         formatDate(date) {
             if (!date) return 'Data não disponível';
             return new Date(date).toLocaleDateString('pt-BR');
