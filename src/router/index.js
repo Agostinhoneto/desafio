@@ -51,7 +51,7 @@ const routes = [
     meta: { MenuLateral: 'default' }, 
   },
   {
-    path: '/usuarios-update',
+    path: '/usuarios-update/:id',
     name: 'update-usuarios',
     component: UsuariosUpdate,
     meta: { MenuLateral: 'default' }, 
