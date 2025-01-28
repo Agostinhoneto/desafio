@@ -54,7 +54,7 @@
                                     <router-link :to="{ name: 'user-todo', params: { id: user.id } }">
                                         <button type="button" class="btn btn-light btn-sm">Detalhar</button>
                                     </router-link>
-                                    <router-link :to="{ name: 'cad-usuarios', params: { id: user.id } }">
+                                    <router-link :to="{ name: 'update-usuarios', params: { id: user.id } }">
                                         <button type="button" class="btn btn-primary btn-sm">Editar</button>
                                     </router-link>
                                     <router-link :to="{ name: 'cad-usuarios', params: { id: user.id } }">

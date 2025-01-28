@@ -4,7 +4,7 @@
         <h2>Cadastrar Usuários</h2>
         <hr>
         <div>
-            <router-link :to="{ name: 'home' }">Voltar</router-link>
+            <router-link :to="{ name: 'lista-usuarios' }">Voltar</router-link>
         </div>
         <UserTodoForm :todo="updateUser" :user-id="userId" @save="onSave" @update="onUpdate" />
         <div class="row">
@@ -60,153 +60,74 @@
     <div>
     </div>
 </template>
-
 <script>
+import axios from "axios";
 export default {
-    name: 'UsuariosUpdateVue',
-    props: {
-        todo: {
-            type: Object,
-            default: () => ({}),
-        },
-        userId: {
-            type: [String, Number],
-            default: null,
-        },
-    },
-
+    name: "EditarUsuario",
     data() {
         return {
-            users: [],
-            id: '',
-            name: '',
-            email: '',
-            cpf: '',
-            role_id: '',
+            id: null,
+            name: "",
+            email: "",
+            cpf: "",
+            role_id: null,
+            roles: [], // Lista de roles (se necessário)
         };
     },
-
-    watch: {
-        todo: {
-            handler(newValue) {
-                this.id = newValue.id || '';
-                this.name = newValue.name || '';
-                this.email = newValue.email || '';
-                this.cpf = newValue.cpf || '';
-                this.logradouro = newValue.logradouro || '';
-            },
-            immediate: true,
-            deep: true,
-        },
-    },
-
     methods: {
+        // Carrega os dados do usuário
+        async carregarUsuario() {
+            try {
+                const id = this.$route.params.id;
+                if (!id) throw new Error("ID do usuário não fornecido na rota.");
+                
+                const response = await axios.get(`http://127.0.0.1:8000/api/showUsers/${id}`);
+                const usuario = response.data.data;
+
+                this.id = usuario.id;
+                this.name = usuario.name || "";
+                this.email = usuario.email || "";
+                this.cpf = usuario.cpf || "";
+                this.role_id = usuario.role_id || null;
+            } catch (error) {
+                console.error("Erro ao carregar usuário:", error.message);
+                alert("Erro ao carregar usuário.");
+                this.$router.push({ name: "lista-usuarios" });
+            }
+        },
+
+        // Carrega os roles (se necessário)
+        async carregarRoles() {
+            try {
+                const response = await axios.get("http://127.0.0.1:8000/api/indexRoles");
+                this.roles = response.data.data;
+            } catch (error) {
+                console.error("Erro ao carregar roles:", error);
+            }
+        },
+
+        // Submete as alterações do usuário
         async submit() {
-            const payload = {
-                id: this.id,
-                name: this.name,
-                email: this.email,
-                cpf: this.cpf,
-                logradouro: this.logradouro,
-            };
-
             try {
-                if (this.id) {
-                    await this.updateUser(payload);
-                } else {
-                    await this.createUser(payload);
-                }
+                const payload = {
+                    name: this.name,
+                    email: this.email,
+                    cpf: this.cpf,
+                    role_id: this.role_id,
+                };
+
+                await axios.put(`http://127.0.0.1:8000/api/updateUsers/${this.id}`, payload);
+
+                alert("Usuário atualizado com sucesso!");
+                this.$router.push({ name: "lista-usuarios", params: { id: this.id } });
             } catch (error) {
-                console.error('Erro ao enviar os dados:', error);
+                console.error("Erro ao atualizar usuário:", error);
             }
-        },
-
-        async createUser(payload) {
-            try {
-                const response = await fetch(`http://localhost:8000/api/storeUsers/`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Accept: 'application/json',
-                    },
-                    body: JSON.stringify(payload),
-                });
-
-                const res = await response.json();
-                this.$emit('save', res.data);
-                this.resetForm();
-            } catch (error) {
-                console.error('Erro ao criar o usuário:', error);
-            }
-        },
-
-        async updateUser(payload) {
-            try {
-                const response = await fetch(`http://localhost:8000/api/updateUsers/${payload.id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Accept: 'application/json',
-                    },
-                    body: JSON.stringify(payload),
-                });
-
-                const res = await response.json();
-                this.$emit('update', res.data);
-                this.resetForm();
-            } catch (error) {
-                console.error('Erro ao atualizar o usuário:', error);
-            }
-        },
-
-        async removeUser(userId) {
-            try {
-                await fetch(`http://127.0.0.1:8000/api/destroyUsers/${userId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Accept: 'application/json',
-                    },
-                });
-
-                const idx = this.users.findIndex(user => user.id === userId);
-                if (idx !== -1) {
-                    this.users.splice(idx, 1);
-                }
-
-                alert(`Usuário ${userId} removido com sucesso.`);
-            } catch (error) {
-                console.error('Erro ao remover o usuário:', error);
-            }
-        },
-
-        resetForm() {
-            this.id = '';
-            this.name = '';
-            this.email = '';
-            this.cpf = '';
-            this.role_id = '';
         },
     },
-
-    async mounted() {
-        const userId = this.$route.params.id || this.userId;
-
-        if (userId) {
-            try {
-                const response = await fetch(`http://127.0.0.1:8000/api/showUsers/${userId}`);
-                const res = await response.json();
-
-                const user = res.data || {};
-                this.id = user.id || '';
-                this.name = user.name || '';
-                this.email = user.email || '';
-                this.cpf = user.cpf || '';
-                this.role_id = user.role_id || '';
-            } catch (error) {
-                console.error('Erro ao buscar os dados do usuário:', error);
-            }
-        }
+    mounted: async function () {
+        await this.carregarRoles(); // Carregar roles, caso necessário
+        await this.carregarUsuario(); // Carregar dados do usuário
     },
 };
 </script>

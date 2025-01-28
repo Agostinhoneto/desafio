@@ -40,7 +40,7 @@ const routes = [
   },
   {
     path: '/lista-usuarios',
-    name: 'lista',
+    name: "lista-usuarios",
     component: UsuariosListVue,
     meta: { MenuLateral: 'default' }, 
   },
