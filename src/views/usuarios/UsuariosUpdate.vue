@@ -1,10 +1,15 @@
 <template>
-    <br>
-    <div>
-        <h2>Cadastrar Usuários</h2>
-        <hr>
-        <div>
-            <router-link :to="{ name: 'lista-usuarios' }">Voltar</router-link>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+        <h2 class="my-4">Cadastrar Usuários</h2>
+        <div class="card-tools">
+          <router-link :to="{ name: 'lista-usuarios' }" class="btn btn-secondary btn-sm ml-2">
+            <i class="fas fa-arrow"></i> Voltar
+          </router-link>
+          <router-link :to="{ name: 'lista-usuarios' }" class="btn btn-warning btn-sm ml-2">
+                <i class="fas fa-list"></i> Listar Usuários
+            </router-link>
         </div>
         <UserTodoForm :todo="updateUser" :user-id="userId" @save="onSave" @update="onUpdate" />
         <div class="row">
@@ -53,8 +58,6 @@
         </div>
         <br>
         <hr>
-        <div class="col-md-9">
-
         </div>
     </div>
     <div>
