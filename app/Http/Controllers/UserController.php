@@ -50,8 +50,7 @@ class UserController extends Controller
             'user_id' => $request->user_id,
             'endereco_id' => $request->endereco_id,
         ]);
-           //dd($user);
-     
+
         return response()->json(['msg' => 'Dados Salvos com sucesso', 'data' => $user]);
      }
  
@@ -65,7 +64,6 @@ class UserController extends Controller
 
     public function updateUsers(Request $request, $id)
     {
-    
         $dataRequest = $request->all();
         $data = User::findOrFail($id);
         
@@ -102,8 +100,6 @@ class UserController extends Controller
 
         if (Auth::attempt(['email' => $validatedData['email'], 'password' => $validatedData['password']])) {
             $user = Auth::user();
-
-            // Gera um token de autenticação para o usuário
             $token = $user->createToken('authToken')->plainTextToken;
             return response()->json([
                 'status' => 'success',
