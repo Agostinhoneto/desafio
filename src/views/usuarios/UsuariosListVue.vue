@@ -51,9 +51,6 @@
                                 <td>{{ user.cpf || 'CPF não disponível' }}</td>
                                 <td>{{ user.role ? user.role.name : 'Perfil não disponível' }}</td>
                                 <td>
-                                    <router-link :to="{ name: 'user-todo', params: { id: user.id } }">
-                                        <button type="button" class="btn btn-light btn-sm">Detalhar</button>
-                                    </router-link>
                                     <router-link :to="{ name: 'update-usuarios', params: { id: user.id } }">
                                         <button type="button" class="btn btn-primary btn-sm">Editar</button>
                                     </router-link>
