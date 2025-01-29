@@ -25,13 +25,13 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-    public function index()
+    public function indexUsers()
     {
        $data = User::with('role','enderecoUsers')->get();
        return response()->json(['data' =>$data]);
     }
 
-    public function store(UserFormRequest $request)
+    public function storeUsers(UserFormRequest $request)
     {
         
         $user = User::create([
@@ -50,27 +50,20 @@ class UserController extends Controller
             'user_id' => $request->user_id,
             'endereco_id' => $request->endereco_id,
         ]);
-           //dd($user);
-     
+
         return response()->json(['msg' => 'Dados Salvos com sucesso', 'data' => $user]);
      }
  
      
-    public function show($id)
+    public function showUsers($id)
     {
         $data = User::with('enderecoUsers')->find($id);
         return response()->json(['msg' => 'Dados exibidos com sucesso', 'data' => $data]);
 
     }
 
-    public function edit($id)
+    public function updateUsers(Request $request, $id)
     {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-    
         $dataRequest = $request->all();
         $data = User::findOrFail($id);
         
@@ -84,7 +77,7 @@ class UserController extends Controller
         return response()->json(['msg' => 'Dados atualizados com sucesso', 'data' => $data]);
     }   
 
-    public function destroy($id)
+    public function destroyUsers($id)
     {
         $data = User::find($id);
         $data->delete();
@@ -107,8 +100,6 @@ class UserController extends Controller
 
         if (Auth::attempt(['email' => $validatedData['email'], 'password' => $validatedData['password']])) {
             $user = Auth::user();
-
-            // Gera um token de autenticação para o usuário
             $token = $user->createToken('authToken')->plainTextToken;
             return response()->json([
                 'status' => 'success',
