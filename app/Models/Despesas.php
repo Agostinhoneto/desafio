@@ -9,6 +9,8 @@ class Despesas extends Model
 {
     use HasFactory;
 
+
+    protected $table = 'despesas';
     protected $fillable = ['user_id','categoria_id','descricao', 'valor', 'data_pagamento','status','receita_id'];
 
     public function categoria()

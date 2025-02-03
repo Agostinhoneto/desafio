@@ -19,29 +19,28 @@ class ProcessarDespesa implements ShouldQueue
 
     protected $despesa;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
     public function __construct($despesa)
     {
         $this->despesa = $despesa;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-
     public function handle()
     {
-        Log::info('Processando despesa:', $this->despesa);
+        try {
+            Log::info('Processando despesa:', $this->despesa);
 
-        // Criar a despesa no banco de dados
-        Despesas::create($this->despesa);
-
-        Log::info('Despesa processada com sucesso!');
+            // Criar a despesa no banco de dados
+          $despesa = Despesas::create($this->despesa);
+            dd($despesa);
+            Log::info('Despesa processada com sucesso!');
+        } catch (\Exception $e) {
+            Log::error('Erro ao processar despesa: ' . $e->getMessage());
+        }
     }
+
+    // Método público para acessar a propriedade $despesa nos testes
+    public function getDespesa()
+    {
+        return $this->despesa;
+    }       
 }

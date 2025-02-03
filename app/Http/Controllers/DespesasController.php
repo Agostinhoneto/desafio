@@ -32,7 +32,26 @@ class DespesasController extends Controller
     }
 
 
+    public function storeDespesas(Request $request)
+    {
+        $validatedData = $request->validate([
+            'descricao' => 'required|string|max:255',
+            'valor' => 'required|numeric',
+            'data_pagamento' => 'required|date',
+            'categoria_id' => 'required|integer|exists:categorias,id',
+            'user_id' => 'required|integer|exists:users,id'
+        ]);
 
+        $validatedData['status'] = $request->input('status', 1);
+
+        // Enviar o job para a fila
+        ProcessarDespesa::dispatch($validatedData);
+
+        return response()->json(['message' => 'Despesa enviada para processamento!', 'data' => $validatedData]);
+    }
+
+
+    /*
     public function storeDespesas(Request $request)
     {
         $data = $request->only(['descricao', 'valor', 'data_pagamento', 'categoria_id', 'user_id']);
@@ -43,6 +62,7 @@ class DespesasController extends Controller
 
         return response()->json(['message' => 'Despesa enviada para processamento!', 'data' => $data]);
     }
+    */
 
     public function updateDespesas(Request $request, Despesas $despesas, $id)
     {
