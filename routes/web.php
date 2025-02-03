@@ -16,3 +16,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+use App\Jobs\TestQueueJob;
+
+Route::get('/test-queue', function () {
+    dispatch(new TestQueueJob());
+    return 'Job enviado para a fila!';
+});

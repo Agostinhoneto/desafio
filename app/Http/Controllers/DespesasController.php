@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessarDespesa;
 use App\Mail\MailDespesas as MailMailDespesas;
 use App\Mail\SendWelcomeEmail;
 use App\Models\Categorias;
@@ -18,7 +19,7 @@ class DespesasController extends Controller
     public function indexDespesas(Request $request)
     {
         $data = Despesas::with('categoria')->get();
-        return response()->json(['data' =>$data]);
+        return response()->json(['data' => $data]);
     }
 
     public function showDespesas($id)
@@ -29,13 +30,18 @@ class DespesasController extends Controller
         }
         return response()->json(['data' => $despesa]);
     }
-        
+
+
+
     public function storeDespesas(Request $request)
     {
-        $data = $request->only(['descricao', 'valor', 'data_pagamento', 'categoria_id','user_id']);
+        $data = $request->only(['descricao', 'valor', 'data_pagamento', 'categoria_id', 'user_id']);
         $data['status'] = $request->input('status', 1);
-        Despesas::create($data);
-        return response()->json(['data' =>$data]);
+
+        // Enviar o job para a fila
+        ProcessarDespesa::dispatch($data);
+
+        return response()->json(['message' => 'Despesa enviada para processamento!', 'data' => $data]);
     }
 
     public function updateDespesas(Request $request, Despesas $despesas, $id)
